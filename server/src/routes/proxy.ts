@@ -8,8 +8,9 @@ import crypto from 'crypto';
 
 const router = Router();
 
-// Cache Directory
-const CACHE_DIR = path.join(process.cwd(), 'cache', 'images');
+// Cache Directory (use DATA_DIR for Windows compatibility)
+const DATA_DIR = process.env.DATA_DIR || './data';
+const CACHE_DIR = path.join(DATA_DIR, 'cache', 'images');
 if (!fs.existsSync(CACHE_DIR)) {
     console.log('[Proxy] Creating cache directory:', CACHE_DIR);
     fs.mkdirSync(CACHE_DIR, { recursive: true });

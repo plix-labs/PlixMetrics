@@ -61,7 +61,25 @@ git pull && docker-compose up -d --build
 
 ---
 
-### 🛠️ Method 2: Manual Installation (Linux/Node.js)
+### 📦 Method 2: Windows Installer (Easiest for Windows)
+
+Download the latest standalone executable (`.exe`) from the [Releases page](https://github.com/plix-labs/PlixMetrics/releases).
+
+**Installation:**
+1.  Download `PlixMetrics-Setup-vX.X.X.exe`.
+2.  Run the installer and follow the prompts.
+3.  PlixMetrics will launch automatically in a console window, and your browser will open to the dashboard.
+
+**Features:**
+*   **Portable:** Includes its own Node.js runtime (no need to install Node separately).
+*   **Auto-Updates:** Checks for new versions on startup and updates itself automatically.
+*   **Persistent Data:** All data is stored in `%APPDATA%\PlixMetrics`.
+
+To uninstall, use Windows "dApps & features" or run `unins000.exe` in the installation folder.
+
+---
+
+### 🛠️ Method 3: Manual Installation (Linux/Node.js)
 
 If you prefer running directly on the metal or in an LXC container.
 

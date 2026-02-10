@@ -8,6 +8,7 @@ interface VersionInfo {
     latest: string;
     updateAvailable: boolean;
     isDocker?: boolean;
+    isWindows?: boolean;
     error?: string;
 }
 
@@ -34,12 +35,20 @@ export const UpdateChecker = () => {
     };
 
     const handleUpdate = async () => {
-        if (!confirm('Are you sure you want to update? The server will restart.')) return;
+        const text = info?.isWindows
+            ? 'PlixMetrics will download the update and restart automatically. This may take a minute.'
+            : 'Are you sure you want to update? The server will restart.';
+
+        if (!confirm(text)) return;
 
         setUpdating(true);
         try {
             await systemApi.update();
-            setMessage('Update started! Please wait a few minutes and refresh the page manually.');
+            if (info?.isWindows) {
+                setMessage('Downloading & Installing... PlixMetrics will restart shortly.');
+            } else {
+                setMessage('Update started! Please wait a few minutes and refresh the page manually.');
+            }
         } catch (err: any) {
             setMessage('Update failed: ' + (err.response?.data?.error || err.message));
             setUpdating(false);

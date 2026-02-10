@@ -51,3 +51,8 @@ coverage/
 server/cache
 .eslintcache
 *.tsbuildinfo
+
+# Windows Build
+build-win/
+.build-cache/
+releases/

@@ -2,8 +2,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import axios from 'axios';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
+
+const streamPipeline = promisify(pipeline);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +21,7 @@ interface VersionInfo {
     latest: string;
     updateAvailable: boolean;
     isDocker?: boolean;
+    isWindows?: boolean;
     error?: string;
 }
 
@@ -71,12 +76,14 @@ export class SystemService {
 
             // Check for Docker environment (reliably set via docker-compose)
             const isDocker = process.env.IS_DOCKER === 'true';
+            const isWindows = process.platform === 'win32';
 
             return {
                 current,
                 latest,
                 updateAvailable,
-                isDocker
+                isDocker,
+                isWindows
             };
         } catch (e) {
             return {
@@ -102,13 +109,17 @@ export class SystemService {
         return 0;
     }
 
-    static update(): Promise<void> {
+    static async update(): Promise<void> {
+        if (process.platform === 'win32') {
+            return this.updateWindows();
+        }
+
         return new Promise((resolve, reject) => {
             // Construct command to pull and rebuild
             // We use 'npm install' to ensure deps are updated, and then trigger build
             // Note: This assumes the process running has permissions and git is available.
 
-            console.log('[System] Starting update process...');
+            console.log('[System] Starting update process (Git/Docker mode)...');
 
             const command = `git pull && npm install && npm run build:all`;
 
@@ -125,5 +136,75 @@ export class SystemService {
                 resolve();
             });
         });
+    }
+
+    private static async updateWindows(): Promise<void> {
+        console.log('[System] Starting Windows update process...');
+        const tempDir = path.join(process.env.APPDATA || '.', 'PlixMetrics', 'temp');
+        if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+        // 1. Get download URL
+        const releaseUrl = `https://api.github.com/repos/plix-labs/PlixMetrics/releases/latest`;
+        const { data } = await axios.get(releaseUrl);
+        const asset = data.assets.find((a: any) => a.name.endsWith('.exe'));
+
+        if (!asset) throw new Error('No Windows installer found in the latest release.');
+
+        const installerPath = path.join(tempDir, asset.name);
+
+        // 2. Download Installer
+        console.log(`[System] Downloading installer from ${asset.browser_download_url}...`);
+        const response = await axios.get(asset.browser_download_url, { responseType: 'stream' });
+        await streamPipeline(response.data, fs.createWriteStream(installerPath));
+        console.log('[System] Download complete.');
+
+        // 3. Locate Updater Script
+        // In prod: app/server/dist/services/system.js -> ... -> app/scripts/updater.js
+        // We need to be careful with paths.
+        // In dev: server/src/services/system.ts -> ... -> scripts/updater.js
+
+        // Let's assume standard structure:
+        // Dev: ROOT/scripts/updater.js
+        // Prod: APP_DIR/scripts/updater.js
+
+        let updaterScript = path.join(ROOT_DIR, 'scripts', 'updater.js');
+
+        // Adjust for production structure specifically
+        // ROOT_DIR in dev is the project root.
+        // In prod, __dirname is .../app/server/dist/services
+        // We want .../app/scripts/updater.js
+        if (process.env.NODE_ENV === 'production') {
+            updaterScript = path.join(__dirname, '..', '..', '..', 'scripts', 'updater.js');
+        }
+
+        if (!fs.existsSync(updaterScript)) {
+            // Fallback try to find it relative to current working directory
+            updaterScript = path.join(process.cwd(), 'scripts', 'updater.js');
+        }
+
+        if (!fs.existsSync(updaterScript)) {
+            throw new Error(`Updater script not found at: ${updaterScript}`);
+        }
+
+        // 4. Launch Updater
+        console.log(`[System] Launching updater: ${updaterScript}`);
+
+        const nodeExe = process.execPath;
+        const appLauncher = process.argv[1]; // Should be the entry point script
+
+        // Spawn detached process
+        const child = spawn(nodeExe, [updaterScript, installerPath, appLauncher, String(process.pid)], {
+            detached: true,
+            stdio: 'ignore'
+        });
+
+        child.unref();
+
+        console.log('[System] Update initiated. Server will exit now.');
+
+        // Give the response time to flush to the client
+        setTimeout(() => {
+            process.exit(0);
+        }, 1000);
     }
 }
