@@ -106,6 +106,19 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
         return getImageProxyUrl(serverId, path, 300);
     };
 
+    // Preload images for smoother hovering
+    React.useEffect(() => {
+        if (type === 'media' && data) {
+            const items = data as StatItem[];
+            items.slice(0, 5).forEach(item => {
+                if (item.thumb && item.server_id) {
+                    const img = new Image();
+                    img.src = getImageUrl(item.thumb, item.server_id);
+                }
+            });
+        }
+    }, [data, type]);
+
     // Layout especial para media type con poster + lista scrollable
     if (type === 'media') {
         const mediaItems = items as StatItem[];
