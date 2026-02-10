@@ -22,6 +22,7 @@ interface VersionInfo {
     updateAvailable: boolean;
     isDocker?: boolean;
     isWindows?: boolean;
+    downloadUrl?: string; // URL for the installer (Windows)
     error?: string;
 }
 
@@ -77,13 +78,29 @@ export class SystemService {
             // Check for Docker environment (reliably set via docker-compose)
             const isDocker = process.env.IS_DOCKER === 'true';
             const isWindows = process.platform === 'win32';
+            let downloadUrl: string | undefined;
+
+            if (updateAvailable && isWindows) {
+                try {
+                    const repo = 'plix-labs/PlixMetrics';
+                    const url = `https://api.github.com/repos/${repo}/releases/latest`;
+                    const { data } = await axios.get(url, { headers: { 'User-Agent': 'PlixMetrics-Server' } });
+                    const asset = data.assets.find((a: any) => a.name.endsWith('.exe'));
+                    if (asset) {
+                        downloadUrl = asset.browser_download_url;
+                    }
+                } catch (e) {
+                    console.error('Failed to get download URL', e);
+                }
+            }
 
             return {
                 current,
                 latest,
                 updateAvailable,
                 isDocker,
-                isWindows
+                isWindows,
+                downloadUrl
             };
         } catch (e) {
             return {

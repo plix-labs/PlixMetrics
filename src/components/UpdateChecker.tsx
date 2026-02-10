@@ -9,6 +9,7 @@ interface VersionInfo {
     updateAvailable: boolean;
     isDocker?: boolean;
     isWindows?: boolean;
+    downloadUrl?: string;
     error?: string;
 }
 
@@ -35,20 +36,21 @@ export const UpdateChecker = () => {
     };
 
     const handleUpdate = async () => {
-        const text = info?.isWindows
-            ? 'PlixMetrics will download the update and restart automatically. This may take a minute.'
-            : 'Are you sure you want to update? The server will restart.';
+        if (info?.isWindows) {
+            const url = info.downloadUrl || `https://github.com/plix-labs/PlixMetrics/releases/tag/v${info.latest}`;
+            window.open(url, '_blank');
+            setMessage('Opening download page... Please install the update manually.');
+            return;
+        }
+
+        const text = 'Are you sure you want to update? The server will restart.';
 
         if (!confirm(text)) return;
 
         setUpdating(true);
         try {
             await systemApi.update();
-            if (info?.isWindows) {
-                setMessage('Downloading & Installing... PlixMetrics will restart shortly.');
-            } else {
-                setMessage('Update started! Please wait a few minutes and refresh the page manually.');
-            }
+            setMessage('Update started! Please wait a few minutes and refresh the page manually.');
         } catch (err: any) {
             setMessage('Update failed: ' + (err.response?.data?.error || err.message));
             setUpdating(false);
@@ -129,7 +131,7 @@ export const UpdateChecker = () => {
                                     disabled={updating}
                                     className="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
                                 >
-                                    {updating ? 'Updating...' : 'Update Now'}
+                                    {updating ? 'Updating...' : (info.isWindows ? 'Download .exe' : 'Update Now')}
                                 </button>
                                 <button
                                     onClick={() => setInfo(null)}
