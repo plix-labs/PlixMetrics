@@ -1,0 +1,52 @@
+name: Windows Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on tags like v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup --no-progress
+      shell: powershell
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd server
+        npm ci
+        cd ..
+      shell: powershell
+
+    - name: Build and Package
+      # We pass just "ISCC.exe" because choco adds it to PATH
+      run: |
+        .\scripts\build-win.ps1 -InnoSetupPath "ISCC.exe"
+      shell: powershell
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Release Asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: releases/*.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

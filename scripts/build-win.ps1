@@ -153,7 +153,7 @@ Write-Host "  Launcher created." -ForegroundColor Green
 # ─── Step 7: Build Installer ─────────────────────────────────────
 Write-Host "[7/7] Building installer..." -ForegroundColor Yellow
 
-if (Test-Path $InnoSetupPath) {
+if ((Test-Path $InnoSetupPath) -or (Get-Command $InnoSetupPath -ErrorAction SilentlyContinue)) {
     & $InnoSetupPath /DAppVersion=$VERSION /DSourceDir=$BUILD_DIR /DOutputDir=$ROOT\releases "$ROOT\scripts\installer.iss"
     if ($LASTEXITCODE -eq 0) {
         Write-Host ""
