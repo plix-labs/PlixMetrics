@@ -1,6 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../api/client';
 
 interface MobilePairingModalProps {
     onClose: () => void;
@@ -20,7 +20,7 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
     useEffect(() => {
         const fetchInfo = async () => {
             try {
-                const { data } = await axios.get('/api/config/info');
+                const { data } = await api.get('/api/config/info');
                 setNetworkInfo(data);
             } catch (error) {
                 console.error('Failed to fetch network info', error);
@@ -72,8 +72,8 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
                             <button
                                 onClick={() => setViewMode('local')}
                                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${viewMode === 'local'
-                                        ? 'bg-cyan-500 text-white shadow-md'
-                                        : 'text-slate-400 hover:text-slate-300'
+                                    ? 'bg-cyan-500 text-white shadow-md'
+                                    : 'text-slate-400 hover:text-slate-300'
                                     }`}
                             >
                                 Local Network
@@ -82,8 +82,8 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
                                 onClick={() => setViewMode('public')}
                                 disabled={!canSwitch}
                                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${viewMode === 'public'
-                                        ? 'bg-cyan-500 text-white shadow-md'
-                                        : 'text-slate-400 hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed'
+                                    ? 'bg-cyan-500 text-white shadow-md'
+                                    : 'text-slate-400 hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed'
                                     }`}
                                 title={!canSwitch ? "Public IP not found" : ""}
                             >
