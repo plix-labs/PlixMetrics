@@ -49,8 +49,14 @@ export class SystemService {
             // Tag usually comes as 'v1.0.1', so strip 'v' if present
             const tag = response.data.tag_name;
             return tag.replace(/^v/, '');
-        } catch (e) {
-            console.error('Error checking latest version:', e);
+        } catch (e: any) {
+            // Log a clean message instead of the full AxiosError stack trace
+            const status = e?.response?.status;
+            if (status === 404) {
+                console.log('[System] No GitHub releases found yet. Skipping update check.');
+            } else {
+                console.error(`[System] Error checking latest version: ${e?.message || e}`);
+            }
             throw new Error('Failed to check for updates');
         }
     }

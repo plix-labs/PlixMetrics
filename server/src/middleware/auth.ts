@@ -26,11 +26,18 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     }
 
     // 2. Check for Token (Remote Access)
+    // Support token from Authorization header OR query param (for img src tags)
+    let token: string | undefined;
+
     const authHeader = req.headers.authorization;
     if (authHeader) {
-        const token = authHeader.split(' ')[1];
-        const user = AuthService.verifyToken(token);
+        token = authHeader.split(' ')[1];
+    } else if (req.query.token && typeof req.query.token === 'string') {
+        token = req.query.token;
+    }
 
+    if (token) {
+        const user = AuthService.verifyToken(token);
         if (user) {
             req.user = user;
             return next();
