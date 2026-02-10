@@ -252,7 +252,7 @@ function AppDashboard() {
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setShowMobilePairing(true)}
-                                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors"
+                                className="hidden md:block p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors"
                                 title="Pair Mobile Device"
                             >
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
