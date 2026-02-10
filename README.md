@@ -31,31 +31,40 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 
 ### 🐳 Method 1: Docker (Recommended)
 
-The easiest way to get up and running.
+Run the container directly from the GitHub Container Registry. No need to clone the repo or build manually!
 
-**1. Clone the repository:**
-```bash
-git clone https://github.com/plix-labs/PlixMetrics.git
-cd PlixMetrics
+**1. Create a `docker-compose.yml` file:**
+
+```yaml
+version: '3.8'
+services:
+  plixmetrics:
+    image: ghcr.io/plix-labs/plixmetrics:latest
+    container_name: plixmetrics
+    restart: unless-stopped
+    ports:
+      - "8282:8282"
+    volumes:
+      - plixmetrics-data:/data
+    environment:
+      - PORT=8282
+      # Optional: set user/group ID if needed
+      # - PUID=1000
+      # - PGID=1000
+
+volumes:
+  plixmetrics-data:
 ```
 
-**2. Configure Environment (Optional):**
-Create a `.env` file if you want to customize settings:
+**2. Start the container:**
 ```bash
-PORT=8282
-JWT_SECRET=your_secure_random_string
-```
-
-**3. Start the container:**
-```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 Access the dashboard at `http://YOUR_SERVER_IP:8282`.
 
 **Updating (Docker):**
-When an update is available, the app will show a notification with the command to run:
 ```bash
-git pull && docker-compose up -d --build
+docker-compose pull && docker-compose up -d
 ```
 
 

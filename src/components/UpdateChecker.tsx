@@ -55,11 +55,7 @@ export const UpdateChecker = () => {
         }
     };
 
-    const copyCommand = () => {
-        navigator.clipboard.writeText('git pull && docker-compose up -d --build');
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+
 
     if (!info || !info.updateAvailable) return null;
 
@@ -83,26 +79,45 @@ export const UpdateChecker = () => {
                             <p className="text-sm text-emerald-400 font-medium animate-pulse">{message}</p>
                         ) : info.isDocker ? (
                             // Docker install - show command to copy
-                            <div className="space-y-2">
-                                <p className="text-xs text-slate-400">Run this command to update:</p>
-                                <div
-                                    onClick={copyCommand}
-                                    className="bg-slate-900 p-2 rounded-lg text-xs text-cyan-400 font-mono cursor-pointer hover:bg-slate-950 transition-colors"
-                                >
-                                    git pull && docker-compose up -d --build
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={copyCommand}
-                                        className="flex-1 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded-lg transition-colors"
+                            <div className="space-y-3">
+                                <p className="text-xs text-slate-400">Run one of these commands to update:</p>
+
+                                {/* Image Update (Recommended) */}
+                                <div className="space-y-1">
+                                    <span className="text-[10px] text-slate-500 font-medium">Using Docker Image (GHCR):</span>
+                                    <div
+                                        onClick={() => {
+                                            navigator.clipboard.writeText('docker-compose pull && docker-compose up -d');
+                                            setCopied(true);
+                                            setTimeout(() => setCopied(false), 2000);
+                                        }}
+                                        className="bg-slate-900 p-2 rounded-lg text-xs text-cyan-400 font-mono cursor-pointer hover:bg-slate-950 transition-colors border border-cyan-900/30"
                                     >
-                                        {copied ? '✓ Copied!' : 'Copy Command'}
-                                    </button>
+                                        docker-compose pull && docker-compose up -d
+                                    </div>
+                                </div>
+
+                                {/* Source Update (Legacy) */}
+                                <div className="space-y-1 opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="text-[10px] text-slate-500 font-medium">Using Source Code (git):</span>
+                                    <div
+                                        onClick={() => {
+                                            navigator.clipboard.writeText('git pull && docker-compose up -d --build');
+                                            setCopied(true);
+                                            setTimeout(() => setCopied(false), 2000);
+                                        }}
+                                        className="bg-slate-900 p-2 rounded-lg text-xs text-slate-400 font-mono cursor-pointer hover:bg-slate-950 transition-colors border border-slate-800"
+                                    >
+                                        git pull && docker-compose up -d --build
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 pt-2">
                                     <button
                                         onClick={() => setInfo(null)}
-                                        className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-lg transition-colors"
+                                        className="w-full px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-lg transition-colors"
                                     >
-                                        Later
+                                        {copied ? '✓ Command Copied!' : 'Dismiss'}
                                     </button>
                                 </div>
                             </div>
