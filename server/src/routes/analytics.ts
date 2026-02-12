@@ -5,15 +5,7 @@ import { AnalyticsResponse, HourlyActivityItem, DevicePreferenceItem, PlaybackHe
 
 const router = Router();
 
-// Helper to categorize platforms
-const getDeviceCategory = (platform: string): string => {
-    const p = platform.toLowerCase();
-    if (p.includes('tv') || p.includes('android tv') || p.includes('smart') || p.includes('lg') || p.includes('samsung') || p.includes('roku') || p.includes('fire')) return 'TV (Smart/Android)';
-    if (p.includes('chrome') || p.includes('firefox') || p.includes('edge') || p.includes('safari') || p.includes('web')) return 'Web Browser';
-    if (p.includes('mobile') || p.includes('ios') || p.includes('android') || p.includes('iphone') || p.includes('ipad')) return 'Mobile (iOS/Android)';
-    if (p.includes('playstation') || p.includes('xbox') || p.includes('switch')) return 'Console';
-    return 'Other';
-};
+// Helper to categorize platforms removed - using raw names now
 
 /**
  * GET /api/analytics?days=30&server_id=all
@@ -49,6 +41,7 @@ router.get('/', async (req, res) => {
 
         // For Library Quality
         const librariesQualityMap = new Map<string, { '4K': number, '1080p': number, '720p': number, 'SD': number }>();
+        const genreMap = new Map<string, number>();
 
         // Fetch data from servers in parallel
         console.log('[Analytics] Starting parallel fetch for servers...');
@@ -57,7 +50,6 @@ router.get('/', async (req, res) => {
             try {
                 const apiParams = { apikey: server.api_key_secret, time_range: days };
 
-                // 1. Hourly Activity
                 // 1. Hourly Activity
                 console.log(`[Analytics] [${server.name}] Requesting get_plays_by_hourofday...`);
                 const hourlyRes = await axios.get(`${server.tautulli_url}/api/v2`, {
@@ -100,8 +92,8 @@ router.get('/', async (req, res) => {
                                 count += (serie.data[index] || 0);
                             });
 
-                            const category = getDeviceCategory(platform);
-                            deviceMap.set(category, (deviceMap.get(category) || 0) + count);
+                            // Use raw platform name
+                            deviceMap.set(platform, (deviceMap.get(platform) || 0) + count);
                             totalDevicePlays += count;
                         });
                     }
@@ -127,7 +119,58 @@ router.get('/', async (req, res) => {
                     console.log(`[Analytics] [${server.name}] get_stream_type_by_top_10_platforms success.`);
                 }
 
-                // 4. Library Quality
+                // 4. Genre Popularity (via Home Stats & Metadata)
+                console.log(`[Analytics] [${server.name}] Requesting get_home_stats for genres...`);
+                const homeStatsRes = await axios.get(`${server.tautulli_url}/api/v2`, {
+                    params: { apikey: server.api_key_secret, cmd: 'get_home_stats', time_range: days },
+                    timeout: 5000
+                });
+
+                if (homeStatsRes.data.response.result === 'success') {
+                    const homeData = homeStatsRes.data.response.data; // Array of stat objects
+                    const topItems: any[] = [];
+
+                    // Helper to push items from stat rows
+                    const collectItems = (statId: string) => {
+                        const stat = Array.isArray(homeData) ? homeData.find((s: any) => s.stat_id === statId) : null;
+                        if (stat && stat.rows) {
+                            stat.rows.forEach((r: any) => topItems.push(r));
+                        }
+                    };
+
+                    collectItems('top_movies');
+                    collectItems('top_tv');
+
+                    console.log(`[Analytics] [${server.name}] Found ${topItems.length} top items for genre analysis.`);
+
+                    // Fetch metadata for each item to get genres
+                    // We limit to top 20 total items to avoid too many requests
+                    const itemsToFetch = topItems.slice(0, 20);
+
+                    await Promise.allSettled(itemsToFetch.map(async (item) => {
+                        try {
+                            const metaRes = await axios.get(`${server.tautulli_url}/api/v2`, {
+                                params: { apikey: server.api_key_secret, cmd: 'get_metadata', rating_key: item.rating_key },
+                                timeout: 5000
+                            });
+
+                            if (metaRes.data.response.result === 'success') {
+                                const meta = metaRes.data.response.data;
+                                if (meta.genres && Array.isArray(meta.genres)) {
+                                    const plays = item.total_plays || 1; // Weighted by plays
+                                    meta.genres.forEach((g: string) => {
+                                        genreMap.set(g, (genreMap.get(g) || 0) + plays);
+                                    });
+                                }
+                            }
+                        } catch (err) {
+                            // Ignore individual metadata failures
+                        }
+                    }));
+                    console.log(`[Analytics] [${server.name}] Genre analysis complete.`);
+                }
+
+                // 5. Library Quality
                 console.log(`[Analytics] [${server.name}] Requesting get_libraries...`);
                 const libsRes = await axios.get(`${server.tautulli_url}/api/v2`, {
                     params: { apikey: server.api_key_secret, cmd: 'get_libraries' },
@@ -185,10 +228,46 @@ router.get('/', async (req, res) => {
             plays: hourlyActivityMap.get(i) || 0
         }));
 
-        const device_preferences: DevicePreferenceItem[] = Array.from(deviceMap.entries()).map(([name, value]) => ({
-            name,
-            value: totalDevicePlays > 0 ? Math.round((value / totalDevicePlays) * 100) : 0
-        })).sort((a, b) => b.value - a.value);
+        // Process Device Preferences: Top 4 + Others
+        const allDevices = Array.from(deviceMap.entries())
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+
+        const topDevices = allDevices.slice(0, 4);
+        const otherDevicesCount = allDevices.slice(4).reduce((sum, item) => sum + item.count, 0);
+
+        const device_preferences: DevicePreferenceItem[] = topDevices.map(d => ({
+            name: d.name,
+            value: totalDevicePlays > 0 ? Math.round((d.count / totalDevicePlays) * 100) : 0
+        }));
+
+        if (otherDevicesCount > 0) {
+            device_preferences.push({
+                name: 'Others',
+                value: totalDevicePlays > 0 ? Math.round((otherDevicesCount / totalDevicePlays) * 100) : 0
+            });
+        }
+
+        // Process Genre Popularity
+        const allGenres = Array.from(genreMap.entries())
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+
+        // Take top 8 for Radar Chart
+        const topGenres = allGenres.slice(0, 8);
+        const maxGenreCount = topGenres.length > 0 ? topGenres[0].count : 100;
+
+        // Map to Radar Chart format expected by frontend (subject, A, fullMark)
+        const genre_popularity: GenrePopularityItem[] = topGenres.map((g: { name: string, count: number }) => ({
+            subject: g.name,
+            A: g.count,
+            fullMark: maxGenreCount
+        }));
+
+        // Ensure percentages sum to 100? Pie chart handles it, but let's be cleaner. Actually strict math might result in 99 or 101.
+        // Recharts Pie handles absolute values too if we don't normalize, but the frontend expects 'value' to be the percentage string in tooltip 'value%'.
+        // Wait, frontend component displays `{value}%` in text. So it expects 0-100 number.
+        // It's fine if they don't exactly equal 100, but logic above is correct for approximation.
 
         const playback_health: PlaybackHealthItem[] = [
             { name: 'Direct Play', value: directPlayCount, color: '#10b981' },
@@ -200,16 +279,6 @@ router.get('/', async (req, res) => {
             name,
             ...counts
         }));
-
-        // Mock Genre for now
-        const genre_popularity: GenrePopularityItem[] = [
-            { subject: 'Action', A: Math.floor(Math.random() * 150), fullMark: 150 },
-            { subject: 'Sci-Fi', A: Math.floor(Math.random() * 150), fullMark: 150 },
-            { subject: 'Drama', A: Math.floor(Math.random() * 150), fullMark: 150 },
-            { subject: 'Comedy', A: Math.floor(Math.random() * 150), fullMark: 150 },
-            { subject: 'Horror', A: Math.floor(Math.random() * 150), fullMark: 150 },
-            { subject: 'Animation', A: Math.floor(Math.random() * 150), fullMark: 150 },
-        ];
 
 
         const response: AnalyticsResponse = {

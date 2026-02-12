@@ -75,6 +75,7 @@ export const HourlyActivityChart: React.FC<HourlyActivityChartProps> = ({ data }
                     <Area
                         type="monotone"
                         dataKey="value"
+                        name="Plays"
                         stroke="#06b6d4"
                         fillOpacity={1}
                         fill="url(#colorValue)"
