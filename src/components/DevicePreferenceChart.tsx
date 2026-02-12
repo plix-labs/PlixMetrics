@@ -9,16 +9,22 @@ import {
     Legend
 } from 'recharts';
 
-const data = [
-    { name: 'TV (Smart/Android)', value: 45 },
-    { name: 'Mobile (iOS/Android)', value: 30 },
-    { name: 'Web Browser', value: 15 },
-    { name: 'Console/Other', value: 10 },
-];
+interface DevicePreferenceChartProps {
+    data?: { name: string; value: number }[];
+}
 
-const COLORS = ['#06b6d4', '#3b82f6', '#8b5cf6', '#64748b'];
+const COLORS = ['#06b6d4', '#3b82f6', '#8b5cf6', '#64748b', '#f59e0b', '#ec4899'];
 
-export const DevicePreferenceChart: React.FC = () => {
+export const DevicePreferenceChart: React.FC<DevicePreferenceChartProps> = ({ data }) => {
+
+    // Use data from props or fallback to mock data
+    const chartData = (data && data.length > 0) ? data : [
+        { name: 'TV (Smart/Android)', value: 45 },
+        { name: 'Mobile (iOS/Android)', value: 30 },
+        { name: 'Web Browser', value: 15 },
+        { name: 'Console/Other', value: 10 },
+    ];
+
     // Custom active shape for hover effect (with percentage in center)
     const renderActiveShape = (props: any) => {
         const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, value } = props;
@@ -63,7 +69,7 @@ export const DevicePreferenceChart: React.FC = () => {
                     <Pie
                         activeIndex={activeIndex}
                         activeShape={renderActiveShape}
-                        data={data}
+                        data={chartData}
                         cx="50%"
                         cy="50%"
                         innerRadius={60}
@@ -73,7 +79,7 @@ export const DevicePreferenceChart: React.FC = () => {
                         onMouseEnter={onPieEnter}
                         stroke="none"
                     >
-                        {data.map((_, index) => (
+                        {chartData.map((_, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>

@@ -11,6 +11,7 @@ import proxyRouter from './routes/proxy.js';
 import usersRouter from './routes/users.js';
 import configRouter from './routes/config.js';
 import authRouter from './routes/auth.js';
+import analyticsRouter from './routes/analytics.js';
 import systemRouter from './routes/system.js';
 
 // Middleware imports
@@ -36,6 +37,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/servers', checkAuth, serversRouter);
 app.use('/api/network', checkAuth, networkRouter);
 app.use('/api/stats', checkAuth, statsRouter);
+app.use('/api/analytics', checkAuth, analyticsRouter);
 app.use('/api/proxy', checkAuth, proxyRouter);
 app.use('/api/users', checkAuth, usersRouter);
 app.use('/api/config', checkAuth, configRouter);

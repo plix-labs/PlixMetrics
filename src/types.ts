@@ -58,3 +58,41 @@ export interface UserTableItem {
     server_id?: number;
     server_name?: string;
 }
+
+export interface HourlyActivityItem {
+    hour: number;
+    plays: number;
+}
+
+export interface DevicePreferenceItem {
+    name: string;
+    value: number; // percentage or count
+}
+
+export interface PlaybackHealthItem {
+    name: string; // Direct Play, Transcode, etc.
+    value: number;
+    color?: string; // Optional
+}
+
+export interface LibraryQualityItem {
+    name: string; // Movie, TV Show
+    '4K': number;
+    '1080p': number;
+    '720p': number;
+    'SD': number;
+}
+
+export interface GenrePopularityItem {
+    subject: string;
+    A: number;
+    fullMark: number;
+}
+
+export interface AnalyticsResponse {
+    hourly_activity: HourlyActivityItem[];
+    device_preferences: DevicePreferenceItem[];
+    playback_health: PlaybackHealthItem[];
+    library_quality: LibraryQualityItem[];
+    genre_popularity: GenrePopularityItem[];
+}

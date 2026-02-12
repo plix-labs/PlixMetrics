@@ -9,20 +9,26 @@ import {
     Tooltip
 } from 'recharts';
 
-const data = [
-    { subject: 'Action', A: 120, fullMark: 150 },
-    { subject: 'Sci-Fi', A: 98, fullMark: 150 },
-    { subject: 'Drama', A: 86, fullMark: 150 },
-    { subject: 'Comedy', A: 99, fullMark: 150 },
-    { subject: 'Horror', A: 85, fullMark: 150 },
-    { subject: 'Animation', A: 65, fullMark: 150 },
-];
+interface GenrePopularityChartProps {
+    data?: { subject: string; A: number; fullMark: number }[];
+}
 
-export const GenrePopularityChart: React.FC = () => {
+export const GenrePopularityChart: React.FC<GenrePopularityChartProps> = ({ data }) => {
+
+    // Fallback data
+    const chartData = (data && data.length > 0) ? data : [
+        { subject: 'Action', A: 120, fullMark: 150 },
+        { subject: 'Sci-Fi', A: 98, fullMark: 150 },
+        { subject: 'Drama', A: 86, fullMark: 150 },
+        { subject: 'Comedy', A: 99, fullMark: 150 },
+        { subject: 'Horror', A: 85, fullMark: 150 },
+        { subject: 'Animation', A: 65, fullMark: 150 },
+    ];
+
     return (
         <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
                     <PolarGrid stroke="#334155" />
                     <PolarAngleAxis
                         dataKey="subject"

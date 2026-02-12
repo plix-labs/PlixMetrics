@@ -9,39 +9,32 @@ import {
     ResponsiveContainer
 } from 'recharts';
 
-const data = [
-    { hour: '00:00', value: 12 },
-    { hour: '01:00', value: 8 },
-    { hour: '02:00', value: 4 },
-    { hour: '03:00', value: 2 },
-    { hour: '04:00', value: 1 },
-    { hour: '05:00', value: 0 },
-    { hour: '06:00', value: 1 },
-    { hour: '07:00', value: 3 },
-    { hour: '08:00', value: 5 },
-    { hour: '09:00', value: 4 },
-    { hour: '10:00', value: 6 },
-    { hour: '11:00', value: 8 },
-    { hour: '12:00', value: 10 },
-    { hour: '13:00', value: 12 },
-    { hour: '14:00', value: 11 },
-    { hour: '15:00', value: 14 },
-    { hour: '16:00', value: 18 },
-    { hour: '17:00', value: 25 },
-    { hour: '18:00', value: 32 },
-    { hour: '19:00', value: 45 },
-    { hour: '20:00', value: 58 },
-    { hour: '21:00', value: 52 },
-    { hour: '22:00', value: 40 },
-    { hour: '23:00', value: 25 },
-];
+interface HourlyActivityChartProps {
+    data?: { hour: number; plays: number }[];
+}
 
-export const HourlyActivityChart: React.FC = () => {
+export const HourlyActivityChart: React.FC<HourlyActivityChartProps> = ({ data }) => {
+    // Transform data for chart if valid, otherwise use empty or mock
+    const chartData = data ? data.map(item => ({
+        hour: `${item.hour.toString().padStart(2, '0')}:00`,
+        value: item.plays
+    })) : [
+        // Mock data as fallback (or remove if preferred)
+        { hour: '00:00', value: 0 },
+        { hour: '06:00', value: 0 },
+        { hour: '12:00', value: 0 },
+        { hour: '18:00', value: 0 },
+    ];
+
+    if (data && data.length === 0) {
+        // If data is provided but empty, show empty chart structure
+    }
+
     return (
         <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                    data={data}
+                    data={chartData}
                     margin={{
                         top: 10,
                         right: 30,
@@ -62,7 +55,7 @@ export const HourlyActivityChart: React.FC = () => {
                         tick={{ fontSize: 12 }}
                         tickLine={false}
                         axisLine={false}
-                        interval={2}
+                        interval={data ? 3 : 2} // Adjust interval based on data density
                     />
                     <YAxis
                         stroke="#94a3b8"

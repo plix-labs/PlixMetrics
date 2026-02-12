@@ -10,29 +10,35 @@ import {
     ResponsiveContainer
 } from 'recharts';
 
-const data = [
-    {
-        name: 'Movies',
-        '4K': 120,
-        '1080p': 850,
-        '720p': 200,
-        'SD': 50,
-    },
-    {
-        name: 'TV Shows',
-        '4K': 50,
-        '1080p': 2400,
-        '720p': 500,
-        'SD': 150,
-    },
-];
+interface LibraryQualityChartProps {
+    data?: { name: string; '4K': number; '1080p': number; '720p': number; 'SD': number }[];
+}
 
-export const LibraryQualityChart: React.FC = () => {
+export const LibraryQualityChart: React.FC<LibraryQualityChartProps> = ({ data }) => {
+
+    // Fallback data
+    const chartData = (data && data.length > 0) ? data : [
+        {
+            name: 'Movies',
+            '4K': 120,
+            '1080p': 850,
+            '720p': 200,
+            'SD': 50,
+        },
+        {
+            name: 'TV Shows',
+            '4K': 50,
+            '1080p': 2400,
+            '720p': 500,
+            'SD': 150,
+        },
+    ];
+
     return (
         <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                    data={data}
+                    data={chartData}
                     margin={{
                         top: 20,
                         right: 30,

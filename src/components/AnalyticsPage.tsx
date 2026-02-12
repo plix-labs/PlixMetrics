@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HourlyActivityChart } from './HourlyActivityChart';
 import { useServers } from '../hooks/useServers';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 import { DevicePreferenceChart } from './DevicePreferenceChart';
 import { PlaybackHealthChart } from './PlaybackHealthChart';
@@ -36,7 +37,11 @@ export const AnalyticsPage: React.FC = () => {
     // Fetch servers for the dropdown
     const { servers } = useServers();
 
+    // Fetch Analytics Data
+    const { data: analyticsData, isLoading, error } = useAnalytics(filters.days, filters.server_id);
+
     const [daysInput, setDaysInput] = useState(filters.days.toString());
+
 
     // Sync daysInput when filters.days changes
     useEffect(() => {
@@ -99,8 +104,13 @@ export const AnalyticsPage: React.FC = () => {
                                 {controls}
                             </div>
                         </div>
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors">
-                            <HourlyActivityChart />
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative min-h-[300px]">
+                            {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10 backdrop-blur-sm rounded-3xl">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+                                </div>
+                            )}
+                            <HourlyActivityChart data={analyticsData?.hourly_activity} />
                         </div>
                     </section>
                 );
@@ -116,8 +126,13 @@ export const AnalyticsPage: React.FC = () => {
                                 {controls}
                             </div>
                         </div>
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors">
-                            <DevicePreferenceChart />
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative min-h-[300px]">
+                            {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10 backdrop-blur-sm rounded-3xl">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+                                </div>
+                            )}
+                            <DevicePreferenceChart data={analyticsData?.device_preferences} />
                         </div>
                     </section>
                 );
@@ -133,8 +148,13 @@ export const AnalyticsPage: React.FC = () => {
                                 {controls}
                             </div>
                         </div>
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors">
-                            <PlaybackHealthChart />
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative min-h-[300px]">
+                            {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10 backdrop-blur-sm rounded-3xl">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+                                </div>
+                            )}
+                            <PlaybackHealthChart data={analyticsData?.playback_health} />
                         </div>
                     </section>
                 );
@@ -150,8 +170,13 @@ export const AnalyticsPage: React.FC = () => {
                                 {controls}
                             </div>
                         </div>
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors">
-                            <LibraryQualityChart />
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative min-h-[300px]">
+                            {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10 backdrop-blur-sm rounded-3xl">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                                </div>
+                            )}
+                            <LibraryQualityChart data={analyticsData?.library_quality} />
                         </div>
                     </section>
                 );
@@ -167,8 +192,13 @@ export const AnalyticsPage: React.FC = () => {
                                 {controls}
                             </div>
                         </div>
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors">
-                            <GenrePopularityChart />
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative min-h-[300px]">
+                            {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10 backdrop-blur-sm rounded-3xl">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
+                                </div>
+                            )}
+                            <GenrePopularityChart data={analyticsData?.genre_popularity} />
                         </div>
                     </section>
                 );
@@ -229,6 +259,13 @@ export const AnalyticsPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {error && (
+                <div className="bg-red-500/20 text-red-100 p-4 rounded-xl border border-red-500/50">
+                    <p className="font-bold">Error loading analytics data:</p>
+                    <p className="text-sm">{error.message}</p>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {analyticsOrder.map((id, index) => {
