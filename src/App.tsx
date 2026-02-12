@@ -10,6 +10,7 @@ import { PlexServer } from './types';
 
 // Lazy load Statistics page (solo se carga cuando se necesita)
 const StatisticsPage = lazy(() => import('./components/StatisticsPage').then(module => ({ default: module.StatisticsPage })));
+const AnalyticsPage = lazy(() => import('./components/AnalyticsPage').then(module => ({ default: module.AnalyticsPage })));
 const UsersPage = lazy(() => import('./components/UsersPage').then(module => ({ default: module.UsersPage })));
 
 
@@ -61,7 +62,7 @@ function AppDashboard() {
     const [showAddServer, setShowAddServer] = useState(false);
     const [showServerListModal, setShowServerListModal] = useState(false);
     const [serverToEdit, setServerToEdit] = useState<PlexServer | undefined>(undefined);
-    const [currentView, setCurrentView] = useState<'dashboard' | 'statistics' | 'users'>('dashboard');
+    const [currentView, setCurrentView] = useState<'dashboard' | 'statistics' | 'analytics' | 'users'>('dashboard');
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
     const [showMobilePairing, setShowMobilePairing] = useState(false);
 
@@ -297,6 +298,15 @@ function AppDashboard() {
                             Watch Statistics
                         </button>
                         <button
+                            onClick={() => setCurrentView('analytics')}
+                            className={`px-4 py-2 text-sm font-medium transition-all ${currentView === 'analytics'
+                                ? 'text-cyan-400 border-b-2 border-cyan-400'
+                                : 'text-slate-400 hover:text-white'
+                                }`}
+                        >
+                            Analytics
+                        </button>
+                        <button
                             onClick={() => setCurrentView('users')}
                             className={`px-4 py-2 text-sm font-medium transition-all ${currentView === 'users'
                                 ? 'text-cyan-400 border-b-2 border-cyan-400'
@@ -340,6 +350,15 @@ function AppDashboard() {
                             </div>
                         }>
                             <StatisticsPage />
+                        </Suspense>
+                    ) : currentView === 'analytics' ? (
+                        <Suspense fallback={
+                            <div className="text-center py-20">
+                                <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
+                                <p className="text-slate-400 mt-4">Loading analytics...</p>
+                            </div>
+                        }>
+                            <AnalyticsPage />
                         </Suspense>
                     ) : currentView === 'users' ? (
                         <Suspense fallback={
