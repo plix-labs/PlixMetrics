@@ -16,26 +16,22 @@ interface LibraryQualityChartProps {
 
 export const LibraryQualityChart: React.FC<LibraryQualityChartProps> = ({ data }) => {
 
-    // Fallback data
-    const chartData = (data && data.length > 0) ? data : [
-        {
-            name: 'Movies',
-            '4K': 120,
-            '1080p': 850,
-            '720p': 200,
-            'SD': 50,
-        },
-        {
-            name: 'TV Shows',
-            '4K': 50,
-            '1080p': 2400,
-            '720p': 500,
-            'SD': 150,
-        },
-    ];
+    // Use data from props, ensure Movies are real. Inject WIP TV Shows if missing or empty.
+    const chartData = (data && data.length > 0) ? [...data] : [];
+
+    // Check if TV Shows exists, if not adds a placeholder with WIP label
+    if (!chartData.find(d => d.name.includes('TV Shows'))) {
+        chartData.push({
+            name: 'TV Shows 🚧 (WIP)',
+            '4K': 100,
+            '1080p': 1500, // Mock value
+            '720p': 300,
+            'SD': 100
+        });
+    }
 
     return (
-        <div className="w-full h-[300px]">
+        <div className="w-full h-[300px] relative">
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                     data={chartData}
@@ -50,7 +46,7 @@ export const LibraryQualityChart: React.FC<LibraryQualityChartProps> = ({ data }
                     <XAxis
                         dataKey="name"
                         stroke="#94a3b8"
-                        tick={{ fontSize: 14 }}
+                        tick={{ fontSize: 13 }}
                         tickLine={false}
                         axisLine={false}
                     />

@@ -184,31 +184,54 @@ router.get('/', async (req, res) => {
                     for (const lib of libraries) {
                         const sectionId = lib.section_id;
                         // const libName = lib.section_name;
-                        const isShow = lib.section_type === 'show';
                         const isMovie = lib.section_type === 'movie';
 
-                        if (!isShow && !isMovie) continue;
+                        // Only process Movies for now as TV Shows are WIP
+                        if (!isMovie) continue;
 
-                        const category = isMovie ? 'Movies' : 'TV Shows';
+                        const category = 'Movies';
 
                         // Get media info (resolutions)
                         const mediaRes = await axios.get(`${server.tautulli_url}/api/v2`, {
-                            params: { apikey: server.api_key_secret, cmd: 'get_library_media_info', section_id: sectionId },
-                            timeout: 5000
+                            params: {
+                                apikey: server.api_key_secret,
+                                cmd: 'get_library_media_info',
+                                section_id: sectionId,
+                                length: 5000 // Limit to 5000 items per library for performance
+                            },
+                            timeout: 10000 // Allow more time for large response
                         });
 
                         if (mediaRes.data.response.result === 'success') {
-                            const mediaData = mediaRes.data.response.data;
-                            if (!librariesQualityMap.has(category)) {
-                                librariesQualityMap.set(category, { '4K': 0, '1080p': 0, '720p': 0, 'SD': 0 });
-                            }
-                            const current = librariesQualityMap.get(category)!;
-                            for (const key in mediaData) {
-                                const val = parseInt(mediaData[key] || 0, 10);
-                                if (key.includes('4k') || key.includes('2160')) current['4K'] += val;
-                                else if (key.includes('1080')) current['1080p'] += val;
-                                else if (key.includes('720')) current['720p'] += val;
-                                else if (key.includes('sd') || key.includes('480') || key.includes('576')) current['SD'] += val;
+                            const mediaRows = mediaRes.data.response.data.data; // Access the 'data' array within the response data
+
+                            if (Array.isArray(mediaRows)) {
+                                if (!librariesQualityMap.has(category)) {
+                                    librariesQualityMap.set(category, { '4K': 0, '1080p': 0, '720p': 0, 'SD': 0 });
+                                }
+                                const current = librariesQualityMap.get(category)!;
+
+                                for (const row of mediaRows) {
+                                    const res = String(row.video_resolution || '').toLowerCase();
+                                    const isShow = row.media_type === 'show';
+
+                                    if (res === '4k' || res === '2160' || res === 'uhd') {
+                                        current['4K']++;
+                                    } else if (res === '1080' || res === 'fhd') {
+                                        current['1080p']++;
+                                    } else if (res === '720' || res === 'hd') {
+                                        current['720p']++;
+                                    } else {
+                                        // Handle items with missing/SD resolution
+                                        if (isShow && res === '') {
+                                            // Heuristic: TV Shows often lack resolution metadata at the series level. 
+                                            // Default to 1080p based on user context/likelihood for modern libraries.
+                                            current['1080p']++;
+                                        } else {
+                                            current['SD']++;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
