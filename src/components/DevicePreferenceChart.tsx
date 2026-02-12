@@ -19,12 +19,15 @@ const data = [
 const COLORS = ['#06b6d4', '#3b82f6', '#8b5cf6', '#64748b'];
 
 export const DevicePreferenceChart: React.FC = () => {
-    // Custom active shape for hover effect (without text)
+    // Custom active shape for hover effect (with percentage in center)
     const renderActiveShape = (props: any) => {
-        const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+        const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, value } = props;
 
         return (
             <g>
+                <text x={cx} y={cy} dy={10} textAnchor="middle" fill={fill} className="text-4xl font-bold">
+                    {value}%
+                </text>
                 <Sector
                     cx={cx}
                     cy={cy}
