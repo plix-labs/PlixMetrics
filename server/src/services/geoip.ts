@@ -1,12 +1,31 @@
 import geoip from 'geoip-lite';
 import db from '../db/index.js';
 
+const GEO_CACHE_MAX_AGE_DAYS = 90;
+const GEO_CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
 interface GeoLocation {
     lat: number;
     lon: number;
     city?: string;
     country?: string;
 }
+
+/**
+ * Remove geo_cache entries older than 90 days
+ */
+export function cleanupGeoCache(): number {
+    const stmt = db.prepare(`DELETE FROM geo_cache WHERE updated_at < datetime('now', ?)`);
+    const result = stmt.run(`-${GEO_CACHE_MAX_AGE_DAYS} days`);
+    if (result.changes > 0) {
+        console.log(`[GeoIP] Cleaned up ${result.changes} stale cache entries (>${GEO_CACHE_MAX_AGE_DAYS} days old)`);
+    }
+    return result.changes;
+}
+
+// Run cleanup on startup and every 24 hours
+cleanupGeoCache();
+setInterval(cleanupGeoCache, GEO_CLEANUP_INTERVAL_MS);
 
 /**
  * Batch geolocation lookup - reduces DB reads from O(n) to O(1)

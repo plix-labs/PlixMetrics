@@ -2,6 +2,7 @@ import { Router } from 'express';
 import axios from 'axios';
 import db from '../db/index.js';
 import { PlexServer } from '../types.js';
+import { clearServerCaches } from '../services/cache.js';
 
 const router = Router();
 
@@ -54,6 +55,7 @@ router.post('/', async (req, res) => {
     try {
         const stmt = db.prepare('INSERT INTO servers (name, tautulli_url, api_key_secret) VALUES (?, ?, ?)');
         const result = stmt.run(name, cleanUrl, api_key);
+        clearServerCaches();
 
         res.json({
             success: true,
@@ -101,6 +103,7 @@ router.put('/:id', async (req, res) => {
     try {
         const stmt = db.prepare('UPDATE servers SET name = ?, tautulli_url = ?, api_key_secret = ? WHERE id = ?');
         stmt.run(name, cleanUrl, api_key, id);
+        clearServerCaches();
 
         res.json({ success: true, message: 'Server updated successfully' });
     } catch (error) {
@@ -118,6 +121,7 @@ router.delete('/:id', (req, res) => {
     try {
         const stmt = db.prepare('DELETE FROM servers WHERE id = ?');
         stmt.run(id);
+        clearServerCaches();
 
         res.json({ success: true, message: 'Server deleted successfully' });
     } catch (error) {
