@@ -81,13 +81,35 @@ export const AnalyticsPage: React.FC = () => {
 
     const moveSection = (index: number, direction: 'up' | 'down') => {
         const newOrder = [...analyticsOrder];
-        const targetIndex = direction === 'up' ? index - 1 : index + 1;
+        const id = newOrder[index];
+        const isFullWidth = id === 'hourly_activity';
 
-        if (targetIndex >= 0 && targetIndex < newOrder.length) {
-            [newOrder[index], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[index]];
-            setAnalyticsOrder(newOrder);
-            localStorage.setItem('analyticsOrder', JSON.stringify(newOrder));
+        // Full-width card always moves 2 positions
+        // Half-width card moves 2 if its neighbor in that direction is the full-width card (jump over it)
+        let step = 1;
+        if (isFullWidth) {
+            step = 2;
+        } else {
+            const adjacentIndex = direction === 'up' ? index - 1 : index + 1;
+            if (adjacentIndex >= 0 && adjacentIndex < newOrder.length && newOrder[adjacentIndex] === 'hourly_activity') {
+                step = 2;
+            }
         }
+
+        const targetIndex = direction === 'up' ? index - step : index + step;
+        if (targetIndex < 0 || targetIndex >= newOrder.length) return;
+
+        if (isFullWidth) {
+            // Remove and reinsert to keep half-width cards paired
+            const [item] = newOrder.splice(index, 1);
+            newOrder.splice(targetIndex, 0, item);
+        } else {
+            // Swap works for half-width cards (both step=1 and step=2)
+            [newOrder[index], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[index]];
+        }
+
+        setAnalyticsOrder(newOrder);
+        localStorage.setItem('analyticsOrder', JSON.stringify(newOrder));
     };
 
     const renderWidget = (id: string, controls: React.ReactNode) => {
