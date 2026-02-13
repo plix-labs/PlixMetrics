@@ -9,6 +9,24 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+            workbox: {
+                runtimeCaching: [
+                    {
+                        urlPattern: /\/api\/proxy\/image\?/,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'plix-images',
+                            expiration: {
+                                maxEntries: 500,
+                                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+                            },
+                            cacheableResponse: {
+                                statuses: [0, 200],
+                            },
+                        },
+                    },
+                ],
+            },
             manifest: {
                 name: 'PlixMetrics - Global Network Monitor',
                 short_name: 'PlixMetrics',
