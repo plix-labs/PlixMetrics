@@ -54,7 +54,7 @@ export const systemApi = {
 };
 
 // Image proxy helper
-export const getImageProxyUrl = (serverId: number | string, img: string, width = 300) => {
+export const getImageProxyUrl = (serverId: number | string, img: string, width = 200) => {
     const params = new URLSearchParams({
         serverId: String(serverId),
         img,

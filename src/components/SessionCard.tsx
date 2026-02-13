@@ -37,7 +37,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
             {/* Background Art */}
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-20 blur-sm pointer-events-none"
-                style={{ backgroundImage: `url(${getImageUrl(session.art || session.thumb, session.server_id, 300)})` }}
+                style={{ backgroundImage: `url(${getImageUrl(session.art || session.thumb, session.server_id, 150)})` }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent pointer-events-none"></div>
 

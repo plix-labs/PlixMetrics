@@ -103,7 +103,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
 
     const getImageUrl = (path: string | undefined, serverId: number | string | undefined) => {
         if (!path || !serverId) return '';
-        return getImageProxyUrl(serverId, path, 300);
+        return getImageProxyUrl(serverId, path, 200);
     };
 
     // Preload images for smoother hovering

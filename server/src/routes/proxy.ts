@@ -31,7 +31,7 @@ router.get('/image', async (req: Request, res: Response) => {
     // We use a simple hash to keep filenames short and filesystem friendly
     const cacheKey = crypto
         .createHash('md5')
-        .update(`${serverId}-${img}-${width || '500'}-${height || '500'}`)
+        .update(`${serverId}-${img}-${width || '300'}-${height || '300'}`)
         .digest('hex');
 
     // We assume JPEG by default for cached files, could improve by checking mime types but this covers 99% of Plex artwork
@@ -66,8 +66,8 @@ router.get('/image', async (req: Request, res: Response) => {
         // Construct Tautulli Proxy URL
         const params = new URLSearchParams();
         params.append('img', String(img));
-        params.append('width', String(width || 500));
-        params.append('height', String(height || 500));
+        params.append('width', String(width || 300));
+        params.append('height', String(height || 300));
         params.append('apikey', server.api_key_secret);
         params.append('fallback', 'poster');
 
