@@ -205,9 +205,8 @@
         "subText": "Monitor de Red Global"
     },
     "liveMap": {
-        "title": "Actividad de Red en Vivo",
-        "subtitle": "Conexiones globales en tiempo real",
-        "activeStream": "Stream Activo"
+        "activeStream": "Stream Activo",
+        "group": "Grupo"
     },
     "hooks": {
         "failedToLoadServers": "Error al cargar los servidores."

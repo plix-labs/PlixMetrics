@@ -205,9 +205,8 @@
         "subText": "Global Network Monitor"
     },
     "liveMap": {
-        "title": "Live Network Activity",
-        "subtitle": "Real-time global connections",
-        "activeStream": "Active Stream"
+        "activeStream": "Active Stream",
+        "group": "Group"
     },
     "hooks": {
         "failedToLoadServers": "Failed to load servers."

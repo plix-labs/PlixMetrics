@@ -205,9 +205,8 @@
         "subText": "Moniteur de Réseau Global"
     },
     "liveMap": {
-        "title": "Activité Réseau en Direct",
-        "subtitle": "Connexions mondiales en temps réel",
-        "activeStream": "Flux Actif"
+        "activeStream": "Flux Actif",
+        "group": "Groupe"
     },
     "hooks": {
         "failedToLoadServers": "Échec du chargement des serveurs."

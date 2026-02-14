@@ -225,7 +225,10 @@ function AppDashboard() {
                             </div>
                         </div>
                         <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-1 rounded-2xl overflow-hidden shadow-2xl h-[500px]">
-                            <LiveMap sessions={data?.active_sessions || []} />
+                            <LiveMap
+                                sessions={data?.active_sessions || []}
+                                onUserClick={setSelectedUser}
+                            />
                         </div>
                     </section>
                 );

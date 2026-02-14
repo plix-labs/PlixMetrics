@@ -205,9 +205,8 @@
         "subText": "全球网络监控"
     },
     "liveMap": {
-        "title": "实时网络活动",
-        "subtitle": "全球实时连接",
-        "activeStream": "活跃流"
+        "activeStream": "活跃流",
+        "group": "组"
     },
     "hooks": {
         "failedToLoadServers": "加载服务器失败。"

@@ -205,9 +205,8 @@
         "subText": "Globaler Netzwerkmonitor"
     },
     "liveMap": {
-        "title": "Live-Netzwerkaktivität",
-        "subtitle": "Globale Verbindungen in Echtzeit",
-        "activeStream": "Aktiver Stream"
+        "activeStream": "Aktiver Stream",
+        "group": "Gruppe"
     },
     "hooks": {
         "failedToLoadServers": "Server konnten nicht geladen werden."
