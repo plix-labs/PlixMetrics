@@ -1,0 +1,219 @@
+{
+    "nav": {
+        "dashboard": "Tableau de Bord",
+        "statistics": "Statistiques",
+        "analytics": "Analytiques",
+        "users": "Utilisateurs",
+        "stats": "Stats"
+    },
+    "common": {
+        "servers": "Serveurs",
+        "syncing": "Synchronisation...",
+        "loading": "Chargement...",
+        "cancel": "Annuler",
+        "error": "Erreur",
+        "allServers": "Tous les Serveurs",
+        "allServersAggregated": "Tous les Serveurs (Agrégé)",
+        "server": "Serveur",
+        "noDataAvailable": "Aucune donnée disponible",
+        "moveUp": "Monter",
+        "moveDown": "Descendre",
+        "pressEnterToApply": "Appuyez sur Entrée pour appliquer",
+        "never": "Jamais",
+        "unknownError": "Erreur inconnue"
+    },
+    "dashboard": {
+        "activeStreams": "Flux Actifs",
+        "transcoding": "Transcodage",
+        "totalUsers": "Utilisateurs Totaux",
+        "bandwidth": "Bande Passante",
+        "mbps": "Mbps",
+        "activeSessions": "Sessions Actives",
+        "noStreamsActive": "Aucun flux actif actuellement",
+        "activityWillAppear": "L'activité apparaîtra ici automatiquement",
+        "liveUserMap": "Carte des Utilisateurs en Direct",
+        "loadingStatistics": "Chargement des statistiques...",
+        "loadingAnalytics": "Chargement des analytiques...",
+        "loadingUsers": "Chargement des utilisateurs..."
+    },
+    "login": {
+        "title": "PlixMetrics",
+        "subtitle": "Connexion à Distance",
+        "password": "Mot de passe",
+        "placeholder": "Entrez votre mot de passe",
+        "verifying": "Vérification...",
+        "loginButton": "Se Connecter",
+        "loginFailed": "Échec de la connexion"
+    },
+    "setup": {
+        "title": "Bienvenue sur PlixMetrics",
+        "subtitle": "Configurez votre mot de passe administrateur",
+        "adminPassword": "Mot de passe Admin",
+        "createPassword": "Créez un mot de passe fort",
+        "confirmPassword": "Confirmer le Mot de Passe",
+        "repeatPassword": "Répétez le mot de passe",
+        "minLength": "Le mot de passe doit contenir au moins 6 caractères",
+        "mismatch": "Les mots de passe ne correspondent pas",
+        "settingUp": "Configuration...",
+        "completeSetup": "Terminer la Configuration",
+        "remoteNote": "Ce mot de passe sera requis pour accéder à PlixMetrics depuis des appareils distants.",
+        "setupFailed": "Échec de la configuration"
+    },
+    "stats": {
+        "displayMode": "Mode d'Affichage",
+        "playCount": "Nombre de Lectures",
+        "playDuration": "Durée de Lecture",
+        "timeRange": "Période (Jours)",
+        "loadingStatistics": "Chargement des statistiques...",
+        "errorLoading": "Erreur lors du chargement des statistiques :",
+        "mostWatchedMovies": "Films les Plus Regardés",
+        "mostPopularMovies": "Films les Plus Populaires",
+        "mostWatchedShows": "Séries les Plus Regardées",
+        "mostPopularShows": "Séries les Plus Populaires",
+        "mostActiveLibraries": "Bibliothèques les Plus Actives",
+        "mostActiveUsers": "Utilisateurs les Plus Actifs",
+        "mostActivePlatforms": "Plateformes les Plus Actives",
+        "mostConcurrentStreams": "Flux les Plus Simultanés",
+        "plays": "Lectures",
+        "users": "Utilisateurs",
+        "streams": "Flux"
+    },
+    "analytics": {
+        "timeRange": "Période (Jours)",
+        "errorLoading": "Erreur lors du chargement des données analytiques :",
+        "hourlyActivity": "Activité par Heure",
+        "devicePreferences": "Préférences d'Appareil",
+        "playbackHealth": "Santé de Lecture",
+        "libraryQuality": "Qualité de Bibliothèque",
+        "genrePopularity": "Popularité par Genre"
+    },
+    "usersPage": {
+        "title": "Utilisateurs",
+        "searchPlaceholder": "Rechercher des utilisateurs...",
+        "selectColumns": "Sélectionner les colonnes",
+        "user": "Utilisateur",
+        "email": "Email",
+        "server": "Serveur",
+        "lastStreamed": "Dernier Flux",
+        "lastKnownIP": "Dernière IP Connue",
+        "lastPlatform": "Dernière Plateforme",
+        "lastPlayer": "Dernier Lecteur",
+        "lastPlayed": "Dernière Lecture",
+        "totalPlays": "Lectures Totales",
+        "totalPlayedDuration": "Durée Totale de Lecture",
+        "loadingUsers": "Chargement des utilisateurs...",
+        "noUsersFound": "Aucun utilisateur trouvé.",
+        "showingUsers": "Affichage de {{count}} utilisateurs",
+        "updating": "Mise à jour...",
+        "yearsAgo": "il y a {{count}} ans",
+        "monthsAgo": "il y a {{count}} mois",
+        "daysAgo": "il y a {{count}} jours",
+        "hoursAgo": "il y a {{count}} heures",
+        "minutesAgo": "il y a {{count}} minutes",
+        "secondsAgo": "il y a {{count}} secondes",
+        "zeroMins": "0 min",
+        "daysUnit": "{{count}} jours",
+        "hrsUnit": "{{count}} h",
+        "minsUnit": "{{count}} min"
+    },
+    "userDetails": {
+        "profileNotFound": "Profil Non Trouvé",
+        "couldNotRetrieve": "Impossible de récupérer les données de l'utilisateur \"{{username}}\".",
+        "firstSeen": "Première visite :",
+        "lastActive": "Dernière activité :",
+        "totalPlays": "Lectures Totales",
+        "hoursWatched": "Heures Visionnées",
+        "topPlatforms": "Plateformes Principales",
+        "plays": "{{count}} lectures",
+        "dailyActivity": "Activité Journalière (24h)",
+        "recentlyWatched": "Vus Récemment",
+        "all": "TOUT",
+        "oneYear": "1A"
+    },
+    "serverModal": {
+        "editServer": "Modifier le Serveur",
+        "addServer": "Ajouter un Serveur Tautulli",
+        "serverName": "Nom du Serveur",
+        "serverNamePlaceholder": "Mon Serveur Plex",
+        "tautulliUrl": "URL Tautulli",
+        "tautulliUrlPlaceholder": "http://votre-serveur-ip:8181",
+        "mustBeReachable": "Doit être accessible depuis ce serveur.",
+        "apiKey": "Clé API",
+        "apiKeyPlaceholder": "VOTRE_CLE_API",
+        "updateServer": "Mettre à Jour le Serveur",
+        "addServerButton": "Ajouter le Serveur",
+        "updating": "Mise à jour...",
+        "verifyingAdding": "Vérification et Ajout...",
+        "serverUpdated": "Serveur \"{{name}}\" mis à jour avec succès",
+        "serverAdded": "Serveur \"{{name}}\" ajouté avec succès",
+        "failedToSave": "Échec de l'enregistrement du serveur. Vérifiez les détails.",
+        "manageServers": "Gérer les Serveurs",
+        "addNewServer": "Ajouter un Nouveau Serveur"
+    },
+    "serverList": {
+        "loadingServers": "Chargement des serveurs...",
+        "noServersAdded": "Aucun serveur ajouté.",
+        "editServer": "Modifier le Serveur",
+        "removeServer": "Supprimer le Serveur",
+        "confirmRemove": "Êtes-vous sûr de vouloir supprimer ce serveur ?"
+    },
+    "session": {
+        "hoursMinutesLeft": "{{h}}h {{m}}m restantes",
+        "minutesLeft": "{{m}}m restantes",
+        "viewUserProfile": "Voir le Profil Utilisateur"
+    },
+    "statCard": {
+        "shareOnTelegram": "Partager sur Telegram"
+    },
+    "pairing": {
+        "title": "Associer un Appareil Mobile",
+        "localNetwork": "Réseau Local",
+        "publicInternet": "Public (Internet)",
+        "publicIpNotFound": "IP publique non trouvée",
+        "serverAddress": "Adresse du Serveur :",
+        "ensurePhone": "Assurez-vous que votre téléphone est sur le",
+        "sameWifi": "même Wi-Fi",
+        "internet": "internet",
+        "scanCode": "Scannez le code ci-dessus",
+        "requiresPort": "Nécessite la redirection du port {{port}} !",
+        "addToHomeScreen": "Ajouter à l'écran d'accueil pour une expérience d'application"
+    },
+    "update": {
+        "available": "Mise à Jour Disponible",
+        "versionAvailable": "La version {{version}} est disponible.",
+        "current": "Actuelle :",
+        "openingDownload": "Ouverture de la page de téléchargement... Installez la mise à jour manuellement.",
+        "confirmUpdate": "Êtes-vous sûr de vouloir mettre à jour ? Le serveur va redémarrer.",
+        "updateStarted": "Mise à jour lancée ! Veuillez patienter quelques minutes et rafraîchir la page manuellement.",
+        "updateFailed": "Échec de la mise à jour :",
+        "runCommands": "Exécutez l'une de ces commandes pour mettre à jour :",
+        "usingDocker": "Avec Docker Image (GHCR) :",
+        "usingSource": "Avec le Code Source (git) :",
+        "commandCopied": "Commande Copiée !",
+        "dismiss": "Fermer",
+        "updatingButton": "Mise à jour...",
+        "downloadExe": "Télécharger .exe",
+        "updateNow": "Mettre à Jour",
+        "later": "Plus Tard"
+    },
+    "charts": {
+        "waitingForData": "En attente de données...",
+        "bandwidth": "Bande Passante",
+        "plays": "Lectures"
+    },
+    "logo": {
+        "subText": "Moniteur de Réseau Global"
+    },
+    "liveMap": {
+        "title": "Activité Réseau en Direct",
+        "subtitle": "Connexions mondiales en temps réel",
+        "activeStream": "Flux Actif"
+    },
+    "hooks": {
+        "failedToLoadServers": "Échec du chargement des serveurs."
+    },
+    "telegram": {
+        "allTime": "Depuis Toujours",
+        "lastDays": "{{days}} Derniers Jours"
+    }
+}

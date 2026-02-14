@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActiveSession } from '../types';
 import { getImageProxyUrl } from '../api/client';
 
@@ -8,6 +9,7 @@ interface SessionCardProps {
 }
 
 export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }) => {
+    const { t } = useTranslation();
     // ... (rest of the code same until return)
     const getImageUrl = (path: string | undefined, serverId: number | string | undefined, w = 300) => {
         if (!path || !serverId) return '';
@@ -27,9 +29,9 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
         if (mins >= 60) {
             const h = Math.floor(mins / 60);
             const m = mins % 60;
-            return `${h}h ${m}m left`;
+            return t('session.hoursMinutesLeft', { h, m });
         }
-        return `${mins}m left`;
+        return t('session.minutesLeft', { m: mins });
     };
 
     return (
@@ -100,7 +102,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
                                 onUserClick && onUserClick(session.user);
                             }}
                             className={`transition-colors ${onUserClick ? 'cursor-pointer hover:text-cyan-400 hover:underline hover:decoration-cyan-400/50' : ''}`}
-                            title={onUserClick ? "View User Profile" : undefined}
+                            title={onUserClick ? t('session.viewUserProfile') : undefined}
                         >
                             {session.user}
                         </span>

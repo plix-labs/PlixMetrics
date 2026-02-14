@@ -1,5 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 
 interface MobilePairingModalProps {
@@ -13,6 +14,7 @@ interface NetworkInfo {
 }
 
 export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
+    const { t } = useTranslation();
     const [networkInfo, setNetworkInfo] = useState<NetworkInfo | null>(null);
     const [viewMode, setViewMode] = useState<'local' | 'public'>('local');
     const [loading, setLoading] = useState(true);
@@ -65,7 +67,7 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-bold text-white">Pair Mobile Device</h2>
+                        <h2 className="text-2xl font-bold text-white">{t('pairing.title')}</h2>
 
                         {/* Toggle Buttons */}
                         <div className="flex bg-slate-800 p-1 rounded-lg mx-auto w-fit">
@@ -76,7 +78,7 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
                                     : 'text-slate-400 hover:text-slate-300'
                                     }`}
                             >
-                                Local Network
+                                {t('pairing.localNetwork')}
                             </button>
                             <button
                                 onClick={() => setViewMode('public')}
@@ -85,9 +87,9 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
                                     ? 'bg-cyan-500 text-white shadow-md'
                                     : 'text-slate-400 hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed'
                                     }`}
-                                title={!canSwitch ? "Public IP not found" : ""}
+                                title={!canSwitch ? t('pairing.publicIpNotFound') : ""}
                             >
-                                Public (Internet)
+                                {t('pairing.publicInternet')}
                             </button>
                         </div>
                     </div>
@@ -107,16 +109,16 @@ export const MobilePairingModal = ({ onClose }: MobilePairingModalProps) => {
 
                     <div className="space-y-4 w-full">
                         <p className="text-xs text-slate-500">
-                            Server Address: <span className="font-mono text-cyan-500/70 select-all">{currentUrl}</span>
+                            {t('pairing.serverAddress')} <span className="font-mono text-cyan-500/70 select-all">{currentUrl}</span>
                         </p>
                         <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 text-xs text-slate-300 text-left">
                             <ol className="list-decimal pl-4 space-y-1">
-                                <li>Ensure your phone is on the <strong>{viewMode === 'local' ? 'same Wi-Fi' : 'internet'}</strong></li>
-                                <li>Scan the code above 📷</li>
+                                <li>{t('pairing.ensurePhone')} <strong>{viewMode === 'local' ? t('pairing.sameWifi') : t('pairing.internet')}</strong></li>
+                                <li>{t('pairing.scanCode')} 📷</li>
                                 {viewMode === 'public' && (
-                                    <li className="text-amber-400">Requires port {port} forwarding!</li>
+                                    <li className="text-amber-400">{t('pairing.requiresPort', { port })}</li>
                                 )}
-                                <li><strong>Add to Home Screen</strong> for app experience</li>
+                                <li><strong>{t('pairing.addToHomeScreen')}</strong></li>
                             </ol>
                         </div>
                     </div>

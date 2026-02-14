@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { usersApi } from '../api/client';
 import { useServers } from '../hooks/useServers';
@@ -7,24 +8,25 @@ import { UserDetailsModal } from './UserDetailsModal';
 
 interface ColumnConfig {
     id: keyof UserTableItem | 'last_streamed' | 'ip' | 'last_played' | 'plays' | 'duration' | 'server';
-    label: string;
+    labelKey: string;
     visible: boolean;
 }
 
 const DEFAULT_COLUMNS: ColumnConfig[] = [
-    { id: 'username', label: 'User', visible: true },
-    { id: 'email', label: 'Email', visible: true },
-    { id: 'server', label: 'Server', visible: false },
-    { id: 'last_streamed', label: 'Last Streamed', visible: true },
-    { id: 'ip', label: 'Last Known IP', visible: true },
-    { id: 'platform', label: 'Last Platform', visible: true },
-    { id: 'player', label: 'Last Player', visible: true },
-    { id: 'last_played', label: 'Last Played', visible: true },
-    { id: 'plays', label: 'Total Plays', visible: true },
-    { id: 'duration', label: 'Total Played Duration', visible: true }
+    { id: 'username', labelKey: 'usersPage.user', visible: true },
+    { id: 'email', labelKey: 'usersPage.email', visible: true },
+    { id: 'server', labelKey: 'usersPage.server', visible: false },
+    { id: 'last_streamed', labelKey: 'usersPage.lastStreamed', visible: true },
+    { id: 'ip', labelKey: 'usersPage.lastKnownIP', visible: true },
+    { id: 'platform', labelKey: 'usersPage.lastPlatform', visible: true },
+    { id: 'player', labelKey: 'usersPage.lastPlayer', visible: true },
+    { id: 'last_played', labelKey: 'usersPage.lastPlayed', visible: true },
+    { id: 'plays', labelKey: 'usersPage.totalPlays', visible: true },
+    { id: 'duration', labelKey: 'usersPage.totalPlayedDuration', visible: true }
 ];
 
 export const UsersPage = () => {
+    const { t } = useTranslation();
     const { servers } = useServers();
     const [selectedServerId, setSelectedServerId] = useState<string>(''); // Empty initially
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
@@ -84,35 +86,35 @@ export const UsersPage = () => {
 
     // Helper to format duration (seconds -> days hrs mins)
     const formatDuration = (seconds: number) => {
-        if (!seconds) return '0 mins';
+        if (!seconds) return t('usersPage.zeroMins');
         const d = Math.floor(seconds / (3600 * 24));
         const h = Math.floor((seconds % (3600 * 24)) / 3600);
         const m = Math.floor((seconds % 3600) / 60);
 
         const parts = [];
-        if (d > 0) parts.push(`${d} days`);
-        if (h > 0) parts.push(`${h} hrs`);
-        if (m > 0 || parts.length === 0) parts.push(`${m} mins`);
+        if (d > 0) parts.push(t('usersPage.daysUnit', { count: d }));
+        if (h > 0) parts.push(t('usersPage.hrsUnit', { count: h }));
+        if (m > 0 || parts.length === 0) parts.push(t('usersPage.minsUnit', { count: m }));
 
         return parts.join(' ');
     };
 
     // Helper for relative time
     const timeAgo = (timestamp: number) => {
-        if (!timestamp) return 'Never';
+        if (!timestamp) return t('common.never');
         const seconds = Math.floor((Date.now() / 1000) - timestamp);
 
         let interval = seconds / 31536000;
-        if (interval > 1) return Math.floor(interval) + " years ago";
+        if (interval > 1) return t('usersPage.yearsAgo', { count: Math.floor(interval) });
         interval = seconds / 2592000;
-        if (interval > 1) return Math.floor(interval) + " months ago";
+        if (interval > 1) return t('usersPage.monthsAgo', { count: Math.floor(interval) });
         interval = seconds / 86400;
-        if (interval > 1) return Math.floor(interval) + " days ago";
+        if (interval > 1) return t('usersPage.daysAgo', { count: Math.floor(interval) });
         interval = seconds / 3600;
-        if (interval > 1) return Math.floor(interval) + " hours ago";
+        if (interval > 1) return t('usersPage.hoursAgo', { count: Math.floor(interval) });
         interval = seconds / 60;
-        if (interval > 1) return Math.floor(interval) + " minutes ago";
-        return Math.floor(seconds) + " seconds ago";
+        if (interval > 1) return t('usersPage.minutesAgo', { count: Math.floor(interval) });
+        return t('usersPage.secondsAgo', { count: Math.floor(seconds) });
     };
 
     // Filtered and Sorted data
@@ -196,7 +198,7 @@ export const UsersPage = () => {
                         <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        Users
+                        {t('usersPage.title')}
                     </h1>
 
                     {/* Server Selector */}
@@ -207,7 +209,7 @@ export const UsersPage = () => {
                                 onChange={(e) => setSelectedServerId(e.target.value)}
                                 className="bg-slate-700/50 border border-slate-600 text-white text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5 pr-8 appearance-none"
                             >
-                                <option value="all">All Servers</option>
+                                <option value="all">{t('common.allServers')}</option>
                                 {servers.map(server => (
                                     <option key={server.id} value={server.id.toString()}>
                                         {server.name}
@@ -219,7 +221,7 @@ export const UsersPage = () => {
                             </div>
                         </div>
                         {isFetching && !isLoading && (
-                            <div className="text-cyan-400 animate-spin" title="Updating...">
+                            <div className="text-cyan-400 animate-spin" title={t('usersPage.updating')}>
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -240,7 +242,7 @@ export const UsersPage = () => {
                         <input
                             type="text"
                             className="bg-slate-700/50 border border-slate-600 text-white text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full pl-10 p-2.5"
-                            placeholder="Search users..."
+                            placeholder={t('usersPage.searchPlaceholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -252,7 +254,7 @@ export const UsersPage = () => {
                             onClick={() => setShowColumnSelector(!showColumnSelector)}
                             className="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center border border-slate-600"
                         >
-                            Select columns
+                            {t('usersPage.selectColumns')}
                             <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg>
@@ -272,7 +274,7 @@ export const UsersPage = () => {
                                                     className="w-4 h-4 text-cyan-600 bg-slate-700 border-slate-500 rounded focus:ring-cyan-500 focus:ring-2"
                                                 />
                                                 <label htmlFor={`checkbox-${col.id}`} className="ml-2 text-sm font-medium text-slate-300 cursor-pointer">
-                                                    {col.label}
+                                                    {t(col.labelKey)}
                                                 </label>
                                             </div>
                                         </li>
@@ -298,7 +300,7 @@ export const UsersPage = () => {
                                         onClick={() => handleSort(col.id)}
                                     >
                                         <div className="flex items-center gap-1">
-                                            {col.label}
+                                            {t(col.labelKey)}
                                             {sortConfig?.key === col.id && (
                                                 <svg className={`w-3 h-3 transition-transform ${sortConfig.direction === 'desc' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
@@ -319,13 +321,13 @@ export const UsersPage = () => {
                                 <tr>
                                     <td colSpan={columns.filter(c => c.visible).length} className="px-6 py-8 text-center text-slate-500">
                                         <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-400 mb-2"></div>
-                                        <p>Loading users...</p>
+                                        <p>{t('usersPage.loadingUsers')}</p>
                                     </td>
                                 </tr>
                             ) : sortedUsers.length === 0 ? (
                                 <tr>
                                     <td colSpan={columns.filter(c => c.visible).length} className="px-6 py-8 text-center text-slate-500">
-                                        No users found.
+                                        {t('usersPage.noUsersFound')}
                                     </td>
                                 </tr>
                             ) : (
@@ -418,7 +420,7 @@ export const UsersPage = () => {
 
                 {/* Footer / Pagination Placeholder */}
                 <div className="px-6 py-4 bg-slate-900/30 border-t border-slate-700 flex justify-between items-center text-xs text-slate-500">
-                    <span>Showing {sortedUsers.length} users</span>
+                    <span>{t('usersPage.showingUsers', { count: sortedUsers.length })}</span>
                     {/* Add pagination controls here if needed */}
                 </div>
             </div>

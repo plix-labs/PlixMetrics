@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActiveSession } from '../types';
 import MapChart from './MapChart';
 
@@ -7,6 +8,7 @@ interface LiveMapProps {
 }
 
 export const LiveMap: React.FC<LiveMapProps> = ({ sessions }) => {
+    const { t } = useTranslation();
     return (
         <div className="h-[500px] w-full rounded-xl overflow-hidden bg-[#0f172a] relative border border-slate-700/50 shadow-2xl">
             {/* Glossy Overlay */}
@@ -17,10 +19,10 @@ export const LiveMap: React.FC<LiveMapProps> = ({ sessions }) => {
             <div className="absolute top-6 left-6 z-20 flex flex-col gap-1">
                 <h3 className="text-slate-100 font-bold text-lg tracking-tight flex items-center gap-2">
                     <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    Live Network Activity
+                    {t('liveMap.title')}
                 </h3>
                 <p className="text-slate-400 text-xs font-medium uppercase tracking-widest">
-                    Real-time global connections
+                    {t('liveMap.subtitle')}
                 </p>
             </div>
 
@@ -33,7 +35,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({ sessions }) => {
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-cyan-400"></div>
-                        <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">Active Stream</span>
+                        <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">{t('liveMap.activeStream')}</span>
                     </div>
                 </div>
             </div>

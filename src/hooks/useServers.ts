@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import i18n from '../i18n';
 import { serversApi } from '../api/client';
 import { PlexServer } from '../types';
 
@@ -15,7 +16,7 @@ export const useServers = () => {
             setError(null);
         } catch (err: any) {
             console.error("Error fetching servers:", err);
-            setError("Failed to load servers.");
+            setError(i18n.t('hooks.failedToLoadServers'));
         } finally {
             setLoading(false);
         }

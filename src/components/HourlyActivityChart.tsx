@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     AreaChart,
     Area,
@@ -14,6 +15,7 @@ interface HourlyActivityChartProps {
 }
 
 export const HourlyActivityChart: React.FC<HourlyActivityChartProps> = ({ data }) => {
+    const { t } = useTranslation();
     // Transform data for chart if valid, otherwise use empty or mock
     const chartData = data ? data.map(item => ({
         hour: `${item.hour.toString().padStart(2, '0')}:00`,
@@ -75,7 +77,7 @@ export const HourlyActivityChart: React.FC<HourlyActivityChartProps> = ({ data }
                     <Area
                         type="monotone"
                         dataKey="value"
-                        name="Plays"
+                        name={t('charts.plays')}
                         stroke="#06b6d4"
                         fillOpacity={1}
                         fill="url(#colorValue)"

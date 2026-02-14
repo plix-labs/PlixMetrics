@@ -1,0 +1,219 @@
+{
+    "nav": {
+        "dashboard": "仪表盘",
+        "statistics": "观看统计",
+        "analytics": "分析",
+        "users": "用户",
+        "stats": "统计"
+    },
+    "common": {
+        "servers": "服务器",
+        "syncing": "同步中...",
+        "loading": "加载中...",
+        "cancel": "取消",
+        "error": "错误",
+        "allServers": "所有服务器",
+        "allServersAggregated": "所有服务器（聚合）",
+        "server": "服务器",
+        "noDataAvailable": "暂无数据",
+        "moveUp": "上移",
+        "moveDown": "下移",
+        "pressEnterToApply": "按回车键应用",
+        "never": "从未",
+        "unknownError": "未知错误"
+    },
+    "dashboard": {
+        "activeStreams": "活跃流",
+        "transcoding": "转码中",
+        "totalUsers": "总用户数",
+        "bandwidth": "带宽",
+        "mbps": "Mbps",
+        "activeSessions": "活跃会话",
+        "noStreamsActive": "当前没有活跃的流",
+        "activityWillAppear": "活动将自动显示在此处",
+        "liveUserMap": "实时用户地图",
+        "loadingStatistics": "正在加载统计...",
+        "loadingAnalytics": "正在加载分析...",
+        "loadingUsers": "正在加载用户..."
+    },
+    "login": {
+        "title": "PlixMetrics",
+        "subtitle": "远程访问登录",
+        "password": "密码",
+        "placeholder": "请输入密码",
+        "verifying": "验证中...",
+        "loginButton": "登录",
+        "loginFailed": "登录失败"
+    },
+    "setup": {
+        "title": "欢迎使用 PlixMetrics",
+        "subtitle": "设置管理员密码",
+        "adminPassword": "管理员密码",
+        "createPassword": "创建一个强密码",
+        "confirmPassword": "确认密码",
+        "repeatPassword": "重复密码",
+        "minLength": "密码长度至少为 6 个字符",
+        "mismatch": "密码不匹配",
+        "settingUp": "设置中...",
+        "completeSetup": "完成设置",
+        "remoteNote": "从远程设备访问 PlixMetrics 时需要此密码。",
+        "setupFailed": "设置失败"
+    },
+    "stats": {
+        "displayMode": "显示模式",
+        "playCount": "播放次数",
+        "playDuration": "播放时长",
+        "timeRange": "时间范围（天）",
+        "loadingStatistics": "正在加载统计...",
+        "errorLoading": "加载统计出错：",
+        "mostWatchedMovies": "观看最多的电影",
+        "mostPopularMovies": "最受欢迎的电影",
+        "mostWatchedShows": "观看最多的剧集",
+        "mostPopularShows": "最受欢迎的剧集",
+        "mostActiveLibraries": "最活跃的库",
+        "mostActiveUsers": "最活跃的用户",
+        "mostActivePlatforms": "最活跃的平台",
+        "mostConcurrentStreams": "最高并发流",
+        "plays": "播放",
+        "users": "用户",
+        "streams": "流"
+    },
+    "analytics": {
+        "timeRange": "时间范围（天）",
+        "errorLoading": "加载分析数据出错：",
+        "hourlyActivity": "每小时活动",
+        "devicePreferences": "设备偏好",
+        "playbackHealth": "播放健康度",
+        "libraryQuality": "库质量",
+        "genrePopularity": "类型流行度"
+    },
+    "usersPage": {
+        "title": "用户",
+        "searchPlaceholder": "搜索用户...",
+        "selectColumns": "选择列",
+        "user": "用户",
+        "email": "邮箱",
+        "server": "服务器",
+        "lastStreamed": "上次播放",
+        "lastKnownIP": "上次已知 IP",
+        "lastPlatform": "上次平台",
+        "lastPlayer": "上次播放器",
+        "lastPlayed": "上次播放时间",
+        "totalPlays": "总播放次数",
+        "totalPlayedDuration": "总播放时长",
+        "loadingUsers": "正在加载用户...",
+        "noUsersFound": "未找到用户。",
+        "showingUsers": "显示 {{count}} 个用户",
+        "updating": "更新中...",
+        "yearsAgo": "{{count}} 年前",
+        "monthsAgo": "{{count}} 个月前",
+        "daysAgo": "{{count}} 天前",
+        "hoursAgo": "{{count}} 小时前",
+        "minutesAgo": "{{count}} 分钟前",
+        "secondsAgo": "{{count}} 秒前",
+        "zeroMins": "0 分钟",
+        "daysUnit": "{{count}} 天",
+        "hrsUnit": "{{count}} 小时",
+        "minsUnit": "{{count}} 分钟"
+    },
+    "userDetails": {
+        "profileNotFound": "未找到个人资料",
+        "couldNotRetrieve": "无法获取用户 \"{{username}}\" 的数据。",
+        "firstSeen": "首次出现：",
+        "lastActive": "上次活跃：",
+        "totalPlays": "总播放次数",
+        "hoursWatched": "观看时长（小时）",
+        "topPlatforms": "主要平台",
+        "plays": "{{count}} 次播放",
+        "dailyActivity": "每日活动（24小时）",
+        "recentlyWatched": "最近观看",
+        "all": "全部",
+        "oneYear": "1年"
+    },
+    "serverModal": {
+        "editServer": "编辑服务器",
+        "addServer": "添加 Tautulli 服务器",
+        "serverName": "服务器名称",
+        "serverNamePlaceholder": "我的 Plex 服务器",
+        "tautulliUrl": "Tautulli URL",
+        "tautulliUrlPlaceholder": "http://your-server-ip:8181",
+        "mustBeReachable": "必须从该服务器可访问。",
+        "apiKey": "API 密钥",
+        "apiKeyPlaceholder": "YOUR_API_KEY",
+        "updateServer": "更新服务器",
+        "addServerButton": "添加服务器",
+        "updating": "更新中...",
+        "verifyingAdding": "验证并添加中...",
+        "serverUpdated": "服务器 \"{{name}}\" 已成功更新",
+        "serverAdded": "服务器 \"{{name}}\" 已成功添加",
+        "failedToSave": "保存服务器失败。请检查详细信息。",
+        "manageServers": "管理服务器",
+        "addNewServer": "添加新服务器"
+    },
+    "serverList": {
+        "loadingServers": "正在加载服务器...",
+        "noServersAdded": "尚未添加服务器。",
+        "editServer": "编辑服务器",
+        "removeServer": "移除服务器",
+        "confirmRemove": "确信要移除此服务器吗？"
+    },
+    "session": {
+        "hoursMinutesLeft": "剩余 {{h}}小时 {{m}}分钟",
+        "minutesLeft": "剩余 {{m}}分钟",
+        "viewUserProfile": "查看用户资料"
+    },
+    "statCard": {
+        "shareOnTelegram": "分享到 Telegram"
+    },
+    "pairing": {
+        "title": "配对移动设备",
+        "localNetwork": "局域网",
+        "publicInternet": "公网（互联网）",
+        "publicIpNotFound": "未找到公网 IP",
+        "serverAddress": "服务器地址：",
+        "ensurePhone": "请确保您的手机连接在",
+        "sameWifi": "同一 Wi-Fi",
+        "internet": "互联网",
+        "scanCode": "扫描上方二维码",
+        "requiresPort": "需要 {{port}} 端口转发！",
+        "addToHomeScreen": "添加到主屏幕以获得应用体验"
+    },
+    "update": {
+        "available": "有更新可用",
+        "versionAvailable": "版本 {{version}} 可用。",
+        "current": "当前版本：",
+        "openingDownload": "正在打开下载页面... 请手动安装更新。",
+        "confirmUpdate": "确定要更新吗？服务器将重启。",
+        "updateStarted": "更新已开始！请等待几分钟后手动刷新页面。",
+        "updateFailed": "更新失败：",
+        "runCommands": "运行以下命令之一进行更新：",
+        "usingDocker": "使用 Docker 镜像 (GHCR)：",
+        "usingSource": "使用源代码 (git)：",
+        "commandCopied": "命令已复制！",
+        "dismiss": "忽略",
+        "updatingButton": "更新中...",
+        "downloadExe": "下载 .exe",
+        "updateNow": "立即更新",
+        "later": "稍后"
+    },
+    "charts": {
+        "waitingForData": "等待更多数据...",
+        "bandwidth": "带宽",
+        "plays": "播放"
+    },
+    "logo": {
+        "subText": "全球网络监控"
+    },
+    "liveMap": {
+        "title": "实时网络活动",
+        "subtitle": "全球实时连接",
+        "activeStream": "活跃流"
+    },
+    "hooks": {
+        "failedToLoadServers": "加载服务器失败。"
+    },
+    "telegram": {
+        "allTime": "所有时间",
+        "lastDays": "过去 {{days}} 天"
+    }
+}

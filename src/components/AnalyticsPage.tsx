@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { HourlyActivityChart } from './HourlyActivityChart';
 import { useServers } from '../hooks/useServers';
 import { useAnalytics } from '../hooks/useAnalytics';
@@ -16,6 +17,7 @@ interface AnalyticsFilters {
 }
 
 export const AnalyticsPage: React.FC = () => {
+    const { t } = useTranslation();
     // Load filters from localStorage or use defaults
     const [filters, setFilters] = useState<AnalyticsFilters>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -120,7 +122,7 @@ export const AnalyticsPage: React.FC = () => {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-cyan-500 rounded-full"></span>
-                                Hourly Activity
+                                {t('analytics.hourlyActivity')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -142,7 +144,7 @@ export const AnalyticsPage: React.FC = () => {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
-                                Device Preferences
+                                {t('analytics.devicePreferences')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -164,7 +166,7 @@ export const AnalyticsPage: React.FC = () => {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
-                                Playback Health
+                                {t('analytics.playbackHealth')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -186,7 +188,7 @@ export const AnalyticsPage: React.FC = () => {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-purple-500 rounded-full"></span>
-                                Library Quality
+                                {t('analytics.libraryQuality')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -208,7 +210,7 @@ export const AnalyticsPage: React.FC = () => {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-rose-500 rounded-full"></span>
-                                Genre Popularity
+                                {t('analytics.genrePopularity')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -237,7 +239,7 @@ export const AnalyticsPage: React.FC = () => {
                     {/* Days Input */}
                     <div>
                         <label htmlFor="analytics-days-input" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            Time Range (Days)
+                            {t('analytics.timeRange')}
                         </label>
                         <input
                             id="analytics-days-input"
@@ -250,13 +252,13 @@ export const AnalyticsPage: React.FC = () => {
                             placeholder={`Current: ${filters.days}`}
                             className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
-                        <p className="text-[10px] text-slate-500 mt-1">Press Enter to apply</p>
+                        <p className="text-[10px] text-slate-500 mt-1">{t('common.pressEnterToApply')}</p>
                     </div>
 
                     {/* Server Select */}
                     <div>
                         <label htmlFor="analytics-server-select" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            Server
+                            {t('common.server')}
                         </label>
                         <div className="relative">
                             <select
@@ -265,7 +267,7 @@ export const AnalyticsPage: React.FC = () => {
                                 onChange={(e) => setFilters(prev => ({ ...prev, server_id: e.target.value }))}
                                 className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
                             >
-                                <option value="all">All Servers (Aggregated)</option>
+                                <option value="all">{t('common.allServersAggregated')}</option>
                                 {servers.map(server => (
                                     <option key={server.id} value={server.id}>
                                         {server.name}
@@ -284,7 +286,7 @@ export const AnalyticsPage: React.FC = () => {
 
             {error && (
                 <div className="bg-red-500/20 text-red-100 p-4 rounded-xl border border-red-500/50">
-                    <p className="font-bold">Error loading analytics data:</p>
+                    <p className="font-bold">{t('analytics.errorLoading')}</p>
                     <p className="text-sm">{error.message}</p>
                 </div>
             )}
@@ -304,7 +306,7 @@ export const AnalyticsPage: React.FC = () => {
                                 <button
                                     onClick={() => moveSection(index, 'up')}
                                     className="p-1 rounded bg-slate-800/50 hover:bg-slate-700 text-slate-500 hover:text-cyan-400 transition-colors"
-                                    title="Move Up"
+                                    title={t('common.moveUp')}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                         <path fillRule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clipRule="evenodd" />
@@ -315,7 +317,7 @@ export const AnalyticsPage: React.FC = () => {
                                 <button
                                     onClick={() => moveSection(index, 'down')}
                                     className="p-1 rounded bg-slate-800/50 hover:bg-slate-700 text-slate-500 hover:text-cyan-400 transition-colors"
-                                    title="Move Down"
+                                    title={t('common.moveDown')}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                         <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01-.02-1.06z" clipRule="evenodd" />

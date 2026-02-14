@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StatItem, UserStatItem, LibraryStatItem, PlatformStatItem, ConcurrentStreamsItem } from '../types/statistics';
 import { getImageProxyUrl } from '../api/client';
 
@@ -68,6 +69,7 @@ const formatTelegramMessage = (
 };
 
 export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabel, enableTelegramShare, days, onUserClick }) => {
+    const { t } = useTranslation();
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     // Telegram share handler
@@ -87,7 +89,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-slate-200 text-sm font-bold uppercase tracking-wider">{title}</h3>
                 </div>
-                <p className="text-slate-500 text-sm text-center py-8">No data available</p>
+                <p className="text-slate-500 text-sm text-center py-8">{t('common.noDataAvailable')}</p>
             </div>
         );
     }
@@ -137,7 +139,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                             <button
                                 onClick={handleTelegramShare}
                                 className="p-1.5 hover:bg-slate-700/40 rounded-md transition-colors group"
-                                title="Share on Telegram"
+                                title={t('statCard.shareOnTelegram')}
                             >
                                 <svg
                                     className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"
@@ -240,7 +242,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                         <button
                             onClick={handleTelegramShare}
                             className="p-1.5 hover:bg-slate-700/40 rounded-md transition-colors group"
-                            title="Share on Telegram"
+                            title={t('statCard.shareOnTelegram')}
                         >
                             <svg
                                 className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"
@@ -333,7 +335,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                                     <span className="text-lg font-bold text-cyan-400 whitespace-nowrap tabular-nums block leading-none">
                                         {concurrentItem.concurrent_streams}
                                     </span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Streams</span>
+                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{t('stats.streams')}</span>
                                 </div>
                             </div>
                         );

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 
 interface LogoProps {
     className?: string;
@@ -8,8 +9,10 @@ interface LogoProps {
 export const Logo = ({
     className = "h-10",
     showText = true,
-    subText = "Global Network Monitor"
+    subText
 }: LogoProps) => {
+    const { t } = useTranslation();
+    const displaySubText = subText || t('logo.subText');
     return (
         <div className={`flex items-center gap-3 ${className}`}>
             {/* Symbol */}
@@ -56,9 +59,9 @@ export const Logo = ({
                     <span className="text-2xl font-black tracking-tighter leading-none bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
                         PlixMetrics
                     </span>
-                    {subText && (
+                    {displaySubText && (
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mt-1">
-                            {subText}
+                            {displaySubText}
                         </span>
                     )}
                 </div>

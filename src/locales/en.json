@@ -1,0 +1,219 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "statistics": "Watch Statistics",
+        "analytics": "Analytics",
+        "users": "Users",
+        "stats": "Stats"
+    },
+    "common": {
+        "servers": "Servers",
+        "syncing": "Syncing...",
+        "loading": "Loading...",
+        "cancel": "Cancel",
+        "error": "Error",
+        "allServers": "All Servers",
+        "allServersAggregated": "All Servers (Aggregated)",
+        "server": "Server",
+        "noDataAvailable": "No data available",
+        "moveUp": "Move Up",
+        "moveDown": "Move Down",
+        "pressEnterToApply": "Press Enter to apply",
+        "never": "Never",
+        "unknownError": "Unknown error"
+    },
+    "dashboard": {
+        "activeStreams": "Active Streams",
+        "transcoding": "Transcoding",
+        "totalUsers": "Total Users",
+        "bandwidth": "Bandwidth",
+        "mbps": "Mbps",
+        "activeSessions": "Active Sessions",
+        "noStreamsActive": "No streams are currently active",
+        "activityWillAppear": "Activity will appear here automatically",
+        "liveUserMap": "Live User Map",
+        "loadingStatistics": "Loading statistics...",
+        "loadingAnalytics": "Loading analytics...",
+        "loadingUsers": "Loading users..."
+    },
+    "login": {
+        "title": "PlixMetrics",
+        "subtitle": "Remote Access Login",
+        "password": "Password",
+        "placeholder": "Enter your password",
+        "verifying": "Verifying...",
+        "loginButton": "Login",
+        "loginFailed": "Login failed"
+    },
+    "setup": {
+        "title": "Welcome to PlixMetrics",
+        "subtitle": "Set up your admin password",
+        "adminPassword": "Admin Password",
+        "createPassword": "Create a strong password",
+        "confirmPassword": "Confirm Password",
+        "repeatPassword": "Repeat password",
+        "minLength": "Password must be at least 6 characters long",
+        "mismatch": "Passwords do not match",
+        "settingUp": "Setting up...",
+        "completeSetup": "Complete Setup",
+        "remoteNote": "This password will be required when accessing PlixMetrics from remote devices.",
+        "setupFailed": "Setup failed"
+    },
+    "stats": {
+        "displayMode": "Display Mode",
+        "playCount": "Play Count",
+        "playDuration": "Play Duration",
+        "timeRange": "Time Range (Days)",
+        "loadingStatistics": "Loading statistics...",
+        "errorLoading": "Error loading statistics:",
+        "mostWatchedMovies": "Most Watched Movies",
+        "mostPopularMovies": "Most Popular Movies",
+        "mostWatchedShows": "Most Watched TV Shows",
+        "mostPopularShows": "Most Popular TV Shows",
+        "mostActiveLibraries": "Most Active Libraries",
+        "mostActiveUsers": "Most Active Users",
+        "mostActivePlatforms": "Most Active Platforms",
+        "mostConcurrentStreams": "Most Concurrent Streams",
+        "plays": "Plays",
+        "users": "Users",
+        "streams": "Streams"
+    },
+    "analytics": {
+        "timeRange": "Time Range (Days)",
+        "errorLoading": "Error loading analytics data:",
+        "hourlyActivity": "Hourly Activity",
+        "devicePreferences": "Device Preferences",
+        "playbackHealth": "Playback Health",
+        "libraryQuality": "Library Quality",
+        "genrePopularity": "Genre Popularity"
+    },
+    "usersPage": {
+        "title": "Users",
+        "searchPlaceholder": "Search users...",
+        "selectColumns": "Select columns",
+        "user": "User",
+        "email": "Email",
+        "server": "Server",
+        "lastStreamed": "Last Streamed",
+        "lastKnownIP": "Last Known IP",
+        "lastPlatform": "Last Platform",
+        "lastPlayer": "Last Player",
+        "lastPlayed": "Last Played",
+        "totalPlays": "Total Plays",
+        "totalPlayedDuration": "Total Played Duration",
+        "loadingUsers": "Loading users...",
+        "noUsersFound": "No users found.",
+        "showingUsers": "Showing {{count}} users",
+        "updating": "Updating...",
+        "yearsAgo": "{{count}} years ago",
+        "monthsAgo": "{{count}} months ago",
+        "daysAgo": "{{count}} days ago",
+        "hoursAgo": "{{count}} hours ago",
+        "minutesAgo": "{{count}} minutes ago",
+        "secondsAgo": "{{count}} seconds ago",
+        "zeroMins": "0 mins",
+        "daysUnit": "{{count}} days",
+        "hrsUnit": "{{count}} hrs",
+        "minsUnit": "{{count}} mins"
+    },
+    "userDetails": {
+        "profileNotFound": "Profile Not Found",
+        "couldNotRetrieve": "Could not retrieve data for user \"{{username}}\".",
+        "firstSeen": "First seen:",
+        "lastActive": "Last active:",
+        "totalPlays": "Total Plays",
+        "hoursWatched": "Hours Watched",
+        "topPlatforms": "Top Platforms",
+        "plays": "{{count}} plays",
+        "dailyActivity": "Daily Activity (24h)",
+        "recentlyWatched": "Recently Watched",
+        "all": "ALL",
+        "oneYear": "1Y"
+    },
+    "serverModal": {
+        "editServer": "Edit Server",
+        "addServer": "Add Tautulli Server",
+        "serverName": "Server Name",
+        "serverNamePlaceholder": "My Plex Server",
+        "tautulliUrl": "Tautulli URL",
+        "tautulliUrlPlaceholder": "http://your-server-ip:8181",
+        "mustBeReachable": "Must be reachable from this server.",
+        "apiKey": "API Key",
+        "apiKeyPlaceholder": "YOUR_API_KEY",
+        "updateServer": "Update Server",
+        "addServerButton": "Add Server",
+        "updating": "Updating...",
+        "verifyingAdding": "Verifying & Adding...",
+        "serverUpdated": "Server \"{{name}}\" updated successfully",
+        "serverAdded": "Server \"{{name}}\" added successfully",
+        "failedToSave": "Failed to save server. Check details.",
+        "manageServers": "Manage Servers",
+        "addNewServer": "Add New Server"
+    },
+    "serverList": {
+        "loadingServers": "Loading servers...",
+        "noServersAdded": "No servers added yet.",
+        "editServer": "Edit Server",
+        "removeServer": "Remove Server",
+        "confirmRemove": "Are you sure you want to remove this server?"
+    },
+    "session": {
+        "hoursMinutesLeft": "{{h}}h {{m}}m left",
+        "minutesLeft": "{{m}}m left",
+        "viewUserProfile": "View User Profile"
+    },
+    "statCard": {
+        "shareOnTelegram": "Share on Telegram"
+    },
+    "pairing": {
+        "title": "Pair Mobile Device",
+        "localNetwork": "Local Network",
+        "publicInternet": "Public (Internet)",
+        "publicIpNotFound": "Public IP not found",
+        "serverAddress": "Server Address:",
+        "ensurePhone": "Ensure your phone is on the",
+        "sameWifi": "same Wi-Fi",
+        "internet": "internet",
+        "scanCode": "Scan the code above",
+        "requiresPort": "Requires port {{port}} forwarding!",
+        "addToHomeScreen": "Add to Home Screen for app experience"
+    },
+    "update": {
+        "available": "Update Available",
+        "versionAvailable": "Version {{version}} is available.",
+        "current": "Current:",
+        "openingDownload": "Opening download page... Please install the update manually.",
+        "confirmUpdate": "Are you sure you want to update? The server will restart.",
+        "updateStarted": "Update started! Please wait a few minutes and refresh the page manually.",
+        "updateFailed": "Update failed:",
+        "runCommands": "Run one of these commands to update:",
+        "usingDocker": "Using Docker Image (GHCR):",
+        "usingSource": "Using Source Code (git):",
+        "commandCopied": "Command Copied!",
+        "dismiss": "Dismiss",
+        "updatingButton": "Updating...",
+        "downloadExe": "Download .exe",
+        "updateNow": "Update Now",
+        "later": "Later"
+    },
+    "charts": {
+        "waitingForData": "Waiting for more data...",
+        "bandwidth": "Bandwidth",
+        "plays": "Plays"
+    },
+    "logo": {
+        "subText": "Global Network Monitor"
+    },
+    "liveMap": {
+        "title": "Live Network Activity",
+        "subtitle": "Real-time global connections",
+        "activeStream": "Active Stream"
+    },
+    "hooks": {
+        "failedToLoadServers": "Failed to load servers."
+    },
+    "telegram": {
+        "allTime": "All Time",
+        "lastDays": "Last {{days}} Days"
+    }
+}

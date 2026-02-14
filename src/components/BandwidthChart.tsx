@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HistoryPoint } from '../hooks/useNetworkHistory';
 
@@ -7,7 +8,8 @@ interface BandwidthChartProps {
 }
 
 export const BandwidthChart: React.FC<BandwidthChartProps> = ({ data }) => {
-    if (data.length < 2) return <div className="h-full flex items-center justify-center text-slate-500 text-sm">Waiting for more data...</div>;
+    const { t } = useTranslation();
+    if (data.length < 2) return <div className="h-full flex items-center justify-center text-slate-500 text-sm">{t('charts.waitingForData')}</div>;
 
     // Custom dot for the last data point (Scanning effect)
     const renderDot = (props: any) => {
@@ -62,7 +64,7 @@ export const BandwidthChart: React.FC<BandwidthChartProps> = ({ data }) => {
                     <Tooltip
                         contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f8fafc' }}
                         itemStyle={{ color: '#22d3ee' }}
-                        formatter={(value: number) => [`${value.toFixed(1)} Mbps`, 'Bandwidth']}
+                        formatter={(value: number) => [`${value.toFixed(1)} Mbps`, t('charts.bandwidth')]}
                         labelStyle={{ color: '#94a3b8' }}
                     />
                     <Area

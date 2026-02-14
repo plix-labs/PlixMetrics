@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ServerList } from './ServerList';
 import { PlexServer } from '../types';
 
@@ -9,6 +10,7 @@ interface ServerListModalProps {
 }
 
 export const ServerListModal: React.FC<ServerListModalProps> = ({ onClose, onEditServer, onAddServer }) => {
+    const { t } = useTranslation();
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[80vh] animate-scale-in">
@@ -17,7 +19,7 @@ export const ServerListModal: React.FC<ServerListModalProps> = ({ onClose, onEdi
                 <div className="flex justify-between items-center p-6 border-b border-slate-700/50">
                     <h2 className="text-xl font-bold text-white flex items-center gap-2">
                         <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
-                        Manage Servers
+                        {t('serverModal.manageServers')}
                     </h2>
                     <button
                         onClick={onClose}
@@ -43,7 +45,7 @@ export const ServerListModal: React.FC<ServerListModalProps> = ({ onClose, onEdi
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
-                        Add New Server
+                        {t('serverModal.addNewServer')}
                     </button>
                 </div>
             </div>

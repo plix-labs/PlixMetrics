@@ -1,0 +1,219 @@
+{
+    "nav": {
+        "dashboard": "Panel",
+        "statistics": "Estadísticas",
+        "analytics": "Analíticas",
+        "users": "Usuarios",
+        "stats": "Stats"
+    },
+    "common": {
+        "servers": "Servidores",
+        "syncing": "Sincronizando...",
+        "loading": "Cargando...",
+        "cancel": "Cancelar",
+        "error": "Error",
+        "allServers": "Todos los Servidores",
+        "allServersAggregated": "Todos los Servidores (Agregado)",
+        "server": "Servidor",
+        "noDataAvailable": "Sin datos disponibles",
+        "moveUp": "Subir",
+        "moveDown": "Bajar",
+        "pressEnterToApply": "Pulsa Enter para aplicar",
+        "never": "Nunca",
+        "unknownError": "Error desconocido"
+    },
+    "dashboard": {
+        "activeStreams": "Streams Activos",
+        "transcoding": "Transcodificación",
+        "totalUsers": "Usuarios Totales",
+        "bandwidth": "Ancho de Banda",
+        "mbps": "Mbps",
+        "activeSessions": "Sesiones Activas",
+        "noStreamsActive": "No hay streams activos actualmente",
+        "activityWillAppear": "La actividad aparecerá aquí automáticamente",
+        "liveUserMap": "Mapa de Usuarios en Vivo",
+        "loadingStatistics": "Cargando estadísticas...",
+        "loadingAnalytics": "Cargando analíticas...",
+        "loadingUsers": "Cargando usuarios..."
+    },
+    "login": {
+        "title": "PlixMetrics",
+        "subtitle": "Inicio de Sesión Remoto",
+        "password": "Contraseña",
+        "placeholder": "Introduce tu contraseña",
+        "verifying": "Verificando...",
+        "loginButton": "Iniciar Sesión",
+        "loginFailed": "Error de inicio de sesión"
+    },
+    "setup": {
+        "title": "Bienvenido a PlixMetrics",
+        "subtitle": "Configura tu contraseña de administrador",
+        "adminPassword": "Contraseña de Administrador",
+        "createPassword": "Crea una contraseña segura",
+        "confirmPassword": "Confirmar Contraseña",
+        "repeatPassword": "Repite la contraseña",
+        "minLength": "La contraseña debe tener al menos 6 caracteres",
+        "mismatch": "Las contraseñas no coinciden",
+        "settingUp": "Configurando...",
+        "completeSetup": "Completar Configuración",
+        "remoteNote": "Esta contraseña será necesaria para acceder a PlixMetrics desde dispositivos remotos.",
+        "setupFailed": "Error en la configuración"
+    },
+    "stats": {
+        "displayMode": "Modo de Visualización",
+        "playCount": "Reproducciones",
+        "playDuration": "Duración",
+        "timeRange": "Rango de Tiempo (Días)",
+        "loadingStatistics": "Cargando estadísticas...",
+        "errorLoading": "Error al cargar estadísticas:",
+        "mostWatchedMovies": "Películas Más Vistas",
+        "mostPopularMovies": "Películas Más Populares",
+        "mostWatchedShows": "Series Más Vistas",
+        "mostPopularShows": "Series Más Populares",
+        "mostActiveLibraries": "Bibliotecas Más Activas",
+        "mostActiveUsers": "Usuarios Más Activos",
+        "mostActivePlatforms": "Plataformas Más Activas",
+        "mostConcurrentStreams": "Streams Más Concurrentes",
+        "plays": "Reprod.",
+        "users": "Usuarios",
+        "streams": "Streams"
+    },
+    "analytics": {
+        "timeRange": "Rango de Tiempo (Días)",
+        "errorLoading": "Error al cargar datos analíticos:",
+        "hourlyActivity": "Actividad por Hora",
+        "devicePreferences": "Preferencias de Dispositivo",
+        "playbackHealth": "Salud de Reproducción",
+        "libraryQuality": "Calidad de Biblioteca",
+        "genrePopularity": "Popularidad por Género"
+    },
+    "usersPage": {
+        "title": "Usuarios",
+        "searchPlaceholder": "Buscar usuarios...",
+        "selectColumns": "Seleccionar columnas",
+        "user": "Usuario",
+        "email": "Email",
+        "server": "Servidor",
+        "lastStreamed": "Último Stream",
+        "lastKnownIP": "Última IP Conocida",
+        "lastPlatform": "Última Plataforma",
+        "lastPlayer": "Último Reproductor",
+        "lastPlayed": "Último Reproducido",
+        "totalPlays": "Reproducciones Totales",
+        "totalPlayedDuration": "Duración Total Reproducida",
+        "loadingUsers": "Cargando usuarios...",
+        "noUsersFound": "No se encontraron usuarios.",
+        "showingUsers": "Mostrando {{count}} usuarios",
+        "updating": "Actualizando...",
+        "yearsAgo": "hace {{count}} años",
+        "monthsAgo": "hace {{count}} meses",
+        "daysAgo": "hace {{count}} días",
+        "hoursAgo": "hace {{count}} horas",
+        "minutesAgo": "hace {{count}} minutos",
+        "secondsAgo": "hace {{count}} segundos",
+        "zeroMins": "0 mins",
+        "daysUnit": "{{count}} días",
+        "hrsUnit": "{{count}} hrs",
+        "minsUnit": "{{count}} mins"
+    },
+    "userDetails": {
+        "profileNotFound": "Perfil No Encontrado",
+        "couldNotRetrieve": "No se pudieron obtener datos del usuario \"{{username}}\".",
+        "firstSeen": "Primera vez:",
+        "lastActive": "Última actividad:",
+        "totalPlays": "Reproducciones Totales",
+        "hoursWatched": "Horas Vistas",
+        "topPlatforms": "Plataformas Principales",
+        "plays": "{{count}} reprod.",
+        "dailyActivity": "Actividad Diaria (24h)",
+        "recentlyWatched": "Visto Recientemente",
+        "all": "TODO",
+        "oneYear": "1A"
+    },
+    "serverModal": {
+        "editServer": "Editar Servidor",
+        "addServer": "Añadir Servidor Tautulli",
+        "serverName": "Nombre del Servidor",
+        "serverNamePlaceholder": "Mi Servidor Plex",
+        "tautulliUrl": "URL de Tautulli",
+        "tautulliUrlPlaceholder": "http://tu-servidor-ip:8181",
+        "mustBeReachable": "Debe ser accesible desde este servidor.",
+        "apiKey": "Clave API",
+        "apiKeyPlaceholder": "TU_CLAVE_API",
+        "updateServer": "Actualizar Servidor",
+        "addServerButton": "Añadir Servidor",
+        "updating": "Actualizando...",
+        "verifyingAdding": "Verificando y Añadiendo...",
+        "serverUpdated": "Servidor \"{{name}}\" actualizado correctamente",
+        "serverAdded": "Servidor \"{{name}}\" añadido correctamente",
+        "failedToSave": "Error al guardar el servidor. Verifica los datos.",
+        "manageServers": "Gestionar Servidores",
+        "addNewServer": "Añadir Nuevo Servidor"
+    },
+    "serverList": {
+        "loadingServers": "Cargando servidores...",
+        "noServersAdded": "No hay servidores añadidos.",
+        "editServer": "Editar Servidor",
+        "removeServer": "Eliminar Servidor",
+        "confirmRemove": "¿Estás seguro de que quieres eliminar este servidor?"
+    },
+    "session": {
+        "hoursMinutesLeft": "{{h}}h {{m}}m restantes",
+        "minutesLeft": "{{m}}m restantes",
+        "viewUserProfile": "Ver Perfil de Usuario"
+    },
+    "statCard": {
+        "shareOnTelegram": "Compartir en Telegram"
+    },
+    "pairing": {
+        "title": "Vincular Dispositivo Móvil",
+        "localNetwork": "Red Local",
+        "publicInternet": "Público (Internet)",
+        "publicIpNotFound": "IP pública no encontrada",
+        "serverAddress": "Dirección del Servidor:",
+        "ensurePhone": "Asegúrate de que tu móvil esté en la",
+        "sameWifi": "misma Wi-Fi",
+        "internet": "internet",
+        "scanCode": "Escanea el código de arriba",
+        "requiresPort": "¡Requiere redirección del puerto {{port}}!",
+        "addToHomeScreen": "Añadir a pantalla de inicio para experiencia de app"
+    },
+    "update": {
+        "available": "Actualización Disponible",
+        "versionAvailable": "La versión {{version}} está disponible.",
+        "current": "Actual:",
+        "openingDownload": "Abriendo página de descarga... Instala la actualización manualmente.",
+        "confirmUpdate": "¿Estás seguro de que quieres actualizar? El servidor se reiniciará.",
+        "updateStarted": "¡Actualización iniciada! Espera unos minutos y recarga la página manualmente.",
+        "updateFailed": "Error en la actualización:",
+        "runCommands": "Ejecuta uno de estos comandos para actualizar:",
+        "usingDocker": "Usando Docker Image (GHCR):",
+        "usingSource": "Usando Código Fuente (git):",
+        "commandCopied": "¡Comando Copiado!",
+        "dismiss": "Cerrar",
+        "updatingButton": "Actualizando...",
+        "downloadExe": "Descargar .exe",
+        "updateNow": "Actualizar Ahora",
+        "later": "Más Tarde"
+    },
+    "charts": {
+        "waitingForData": "Esperando más datos...",
+        "bandwidth": "Ancho de Banda",
+        "plays": "Reproducciones"
+    },
+    "logo": {
+        "subText": "Monitor de Red Global"
+    },
+    "liveMap": {
+        "title": "Actividad de Red en Vivo",
+        "subtitle": "Conexiones globales en tiempo real",
+        "activeStream": "Stream Activo"
+    },
+    "hooks": {
+        "failedToLoadServers": "Error al cargar los servidores."
+    },
+    "telegram": {
+        "allTime": "Todo el Tiempo",
+        "lastDays": "Últimos {{days}} Días"
+    }
+}

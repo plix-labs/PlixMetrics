@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { usePlexNetwork } from './hooks/usePlexNetwork';
@@ -6,6 +7,7 @@ import { LiveMap } from './components/LiveMap';
 import { AddServerModal } from './components/AddServerModal';
 
 import { SessionCard } from './components/SessionCard';
+import { LanguageSelector } from './components/LanguageSelector';
 import { PlexServer } from './types';
 
 // Lazy load Statistics page (solo se carga cuando se necesita)
@@ -59,6 +61,7 @@ function AppContent() {
 
 // Renamed original App to AppDashboard to separate concerns clearly
 function AppDashboard() {
+    const { t } = useTranslation();
     const [showAddServer, setShowAddServer] = useState(false);
     const [showServerListModal, setShowServerListModal] = useState(false);
     const [serverToEdit, setServerToEdit] = useState<PlexServer | undefined>(undefined);
@@ -131,27 +134,27 @@ function AppDashboard() {
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                                 <div>
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Active Streams</h3>
+                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.activeStreams')}</h3>
                                     <div className="text-3xl font-black text-cyan-400 leading-none">
                                         {data?.total_stream_count || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Transcoding</h3>
+                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.transcoding')}</h3>
                                     <div className="text-3xl font-black text-amber-500 leading-none">
                                         {data?.total_transcodes || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Total Users</h3>
+                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.totalUsers')}</h3>
                                     <div className="text-3xl font-black text-slate-200 leading-none">
                                         {data?.total_users || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Bandwidth</h3>
+                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.bandwidth')}</h3>
                                     <div className="text-3xl font-black text-indigo-400 leading-none">
-                                        {data ? (data.total_bandwidth / 1000).toFixed(1) : '0'} <span className="text-sm text-slate-500 font-bold">Mbps</span>
+                                        {data ? (data.total_bandwidth / 1000).toFixed(1) : '0'} <span className="text-sm text-slate-500 font-bold">{t('dashboard.mbps')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +167,7 @@ function AppDashboard() {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-cyan-500 rounded-full"></span>
-                                Active Sessions
+                                {t('dashboard.activeSessions')}
                                 {data && data.active_sessions.length > 0 && (
                                     <span className="ml-2 text-sm font-normal text-slate-500 bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700">
                                         {data.active_sessions.length}
@@ -193,8 +196,8 @@ function AppDashboard() {
                             </div>
                         ) : !data || data.active_sessions.length === 0 ? (
                             <div className="text-slate-400 text-center py-20 bg-slate-800/20 rounded-2xl border-2 border-slate-800/50 border-dashed">
-                                <p className="text-lg">No streams are currently active</p>
-                                <p className="text-sm text-slate-500 mt-1">Activity will appear here automatically</p>
+                                <p className="text-lg">{t('dashboard.noStreamsActive')}</p>
+                                <p className="text-sm text-slate-500 mt-1">{t('dashboard.activityWillAppear')}</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -215,7 +218,7 @@ function AppDashboard() {
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-slate-100 px-1 flex items-center gap-3">
                                 <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
-                                Live User Map
+                                {t('dashboard.liveUserMap')}
                             </h2>
                             <div className="flex gap-1">
                                 {controls}
@@ -251,10 +254,11 @@ function AppDashboard() {
                     <div className="flex justify-between items-center mb-6">
                         <Logo />
                         <div className="flex items-center gap-4">
+                            <LanguageSelector />
                             <button
                                 onClick={() => setShowMobilePairing(true)}
                                 className="hidden md:block p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors"
-                                title="Pair Mobile Device"
+                                title={t('pairing.title')}
                             >
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -271,7 +275,7 @@ function AppDashboard() {
                             >
                                 <div className={`h-2 w-2 rounded-full ${loading ? 'bg-amber-400 animate-pulse' : error ? 'bg-red-500' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
                                 <span className="text-xs font-bold uppercase tracking-wider">
-                                    {loading ? 'Syncing...' : 'Servers'}
+                                    {loading ? t('common.syncing') : t('common.servers')}
                                 </span>
                             </button>
                         </div>
@@ -286,7 +290,7 @@ function AppDashboard() {
                                 : 'text-slate-400 hover:text-white'
                                 }`}
                         >
-                            Dashboard
+                            {t('nav.dashboard')}
                         </button>
                         <button
                             onClick={() => setCurrentView('statistics')}
@@ -295,7 +299,7 @@ function AppDashboard() {
                                 : 'text-slate-400 hover:text-white'
                                 }`}
                         >
-                            Watch Statistics
+                            {t('nav.statistics')}
                         </button>
                         <button
                             onClick={() => setCurrentView('analytics')}
@@ -304,7 +308,7 @@ function AppDashboard() {
                                 : 'text-slate-400 hover:text-white'
                                 }`}
                         >
-                            Analytics
+                            {t('nav.analytics')}
                         </button>
                         <button
                             onClick={() => setCurrentView('users')}
@@ -313,7 +317,7 @@ function AppDashboard() {
                                 : 'text-slate-400 hover:text-white'
                                 }`}
                         >
-                            Users
+                            {t('nav.users')}
                         </button>
                     </div>
                 </header>
@@ -336,7 +340,7 @@ function AppDashboard() {
                 {
                     error && currentView === 'dashboard' && (
                         <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-4 rounded-lg mb-8 backdrop-blur-sm">
-                            Error: {error}
+                            {t('common.error')}: {error}
                         </div>
                     )
                 }
@@ -346,7 +350,7 @@ function AppDashboard() {
                         <Suspense fallback={
                             <div className="text-center py-20">
                                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
-                                <p className="text-slate-400 mt-4">Loading statistics...</p>
+                                <p className="text-slate-400 mt-4">{t('dashboard.loadingStatistics')}</p>
                             </div>
                         }>
                             <StatisticsPage />
@@ -355,7 +359,7 @@ function AppDashboard() {
                         <Suspense fallback={
                             <div className="text-center py-20">
                                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
-                                <p className="text-slate-400 mt-4">Loading analytics...</p>
+                                <p className="text-slate-400 mt-4">{t('dashboard.loadingAnalytics')}</p>
                             </div>
                         }>
                             <AnalyticsPage />
@@ -364,7 +368,7 @@ function AppDashboard() {
                         <Suspense fallback={
                             <div className="text-center py-20">
                                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
-                                <p className="text-slate-400 mt-4">Loading users...</p>
+                                <p className="text-slate-400 mt-4">{t('dashboard.loadingUsers')}</p>
                             </div>
                         }>
                             <UsersPage />
@@ -382,7 +386,7 @@ function AppDashboard() {
                                                 <button
                                                     onClick={() => moveSection(index, 'up')}
                                                     className="p-1 rounded bg-slate-800/50 hover:bg-slate-700 text-slate-500 hover:text-cyan-400 transition-colors"
-                                                    title="Move Up"
+                                                    title={t('common.moveUp')}
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                                         <path fillRule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clipRule="evenodd" />
@@ -393,7 +397,7 @@ function AppDashboard() {
                                                 <button
                                                     onClick={() => moveSection(index, 'down')}
                                                     className="p-1 rounded bg-slate-800/50 hover:bg-slate-700 text-slate-500 hover:text-cyan-400 transition-colors"
-                                                    title="Move Down"
+                                                    title={t('common.moveDown')}
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                                         <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01-.02-1.06z" clipRule="evenodd" />

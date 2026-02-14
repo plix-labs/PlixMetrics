@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWatchStats } from '../hooks/useWatchStats';
 import { useServers } from '../hooks/useServers';
 import { StatCard } from './StatCard';
@@ -8,6 +9,7 @@ import { WatchStatsFilters } from '../types/statistics';
 const STORAGE_KEY = 'plixmetrics_watch_stats_filters';
 
 export const StatisticsPage: React.FC = () => {
+    const { t } = useTranslation();
     // Load filters from localStorage or use defaults
     const [filters, setFilters] = useState<WatchStatsFilters>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -62,7 +64,7 @@ export const StatisticsPage: React.FC = () => {
                     {/* Stat Type Toggle */}
                     <div>
                         <label className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            Display Mode
+                            {t('stats.displayMode')}
                         </label>
                         <div className="flex gap-2">
                             <button
@@ -72,7 +74,7 @@ export const StatisticsPage: React.FC = () => {
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
                             >
-                                Play Count
+                                {t('stats.playCount')}
                             </button>
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, stat_type: 'duration' }))}
@@ -81,7 +83,7 @@ export const StatisticsPage: React.FC = () => {
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
                             >
-                                Play Duration
+                                {t('stats.playDuration')}
                             </button>
                         </div>
                     </div>
@@ -89,7 +91,7 @@ export const StatisticsPage: React.FC = () => {
                     {/* Days Input */}
                     <div>
                         <label htmlFor="days-input" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            Time Range (Days)
+                            {t('stats.timeRange')}
                         </label>
                         <input
                             id="days-input"
@@ -102,13 +104,13 @@ export const StatisticsPage: React.FC = () => {
                             placeholder={`Current: ${filters.days}`}
                             className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
-                        <p className="text-[10px] text-slate-500 mt-1">Press Enter to apply</p>
+                        <p className="text-[10px] text-slate-500 mt-1">{t('common.pressEnterToApply')}</p>
                     </div>
 
                     {/* Server Select */}
                     <div>
                         <label htmlFor="server-select" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            Server
+                            {t('common.server')}
                         </label>
                         <div className="relative">
                             <select
@@ -117,7 +119,7 @@ export const StatisticsPage: React.FC = () => {
                                 onChange={(e) => setFilters(prev => ({ ...prev, server_id: e.target.value }))}
                                 className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
                             >
-                                <option value="all">All Servers (Aggregated)</option>
+                                <option value="all">{t('common.allServersAggregated')}</option>
                                 {servers.map(server => (
                                     <option key={server.id} value={server.id}>
                                         {server.name}
@@ -138,14 +140,14 @@ export const StatisticsPage: React.FC = () => {
             {isLoading && (
                 <div className="text-center py-20">
                     <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
-                    <p className="text-slate-400 mt-4">Loading statistics...</p>
+                    <p className="text-slate-400 mt-4">{t('stats.loadingStatistics')}</p>
                 </div>
             )}
 
             {/* Error State */}
             {error && (
                 <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-4 rounded-lg">
-                    Error loading statistics: {error instanceof Error ? error.message : 'Unknown error'}
+                    {t('stats.errorLoading')} {error instanceof Error ? error.message : t('common.unknownError')}
                 </div>
             )}
 
@@ -153,64 +155,64 @@ export const StatisticsPage: React.FC = () => {
             {!isLoading && data && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <StatCard
-                        title="Most Watched Movies"
+                        title={t('stats.mostWatchedMovies')}
                         data={data.most_watched_movies}
                         type="media"
-                        valueLabel={filters.stat_type === 'plays' ? 'Plays' : 'hh:mm'}
+                        valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Popular Movies"
+                        title={t('stats.mostPopularMovies')}
                         data={data.most_popular_movies}
                         type="media"
-                        valueLabel="Users"
+                        valueLabel={t('stats.users')}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Watched TV Shows"
+                        title={t('stats.mostWatchedShows')}
                         data={data.most_watched_shows}
                         type="media"
-                        valueLabel={filters.stat_type === 'plays' ? 'Plays' : 'hh:mm'}
+                        valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Popular TV Shows"
+                        title={t('stats.mostPopularShows')}
                         data={data.most_popular_shows}
                         type="media"
-                        valueLabel="Users"
+                        valueLabel={t('stats.users')}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Active Libraries"
+                        title={t('stats.mostActiveLibraries')}
                         data={data.most_active_libraries}
                         type="library"
-                        valueLabel={filters.stat_type === 'plays' ? 'Plays' : 'hh:mm'}
+                        valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Active Users"
+                        title={t('stats.mostActiveUsers')}
                         data={data.most_active_users}
                         type="user"
-                        valueLabel={filters.stat_type === 'plays' ? 'Plays' : 'hh:mm'}
+                        valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
                         onUserClick={setSelectedUser}
                     />
                     <StatCard
-                        title="Most Active Platforms"
+                        title={t('stats.mostActivePlatforms')}
                         data={data.most_active_platforms}
                         type="platform"
-                        valueLabel={filters.stat_type === 'plays' ? 'Plays' : 'hh:mm'}
+                        valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
                     />
                     <StatCard
-                        title="Most Concurrent Streams"
+                        title={t('stats.mostConcurrentStreams')}
                         data={data.most_concurrent_streams}
                         type="concurrent"
                     />

@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { systemApi } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
@@ -14,6 +15,7 @@ interface VersionInfo {
 }
 
 export const UpdateChecker = () => {
+    const { t } = useTranslation();
     const { status } = useAuth();
     const [info, setInfo] = useState<VersionInfo | null>(null);
     const [updating, setUpdating] = useState(false);
@@ -39,20 +41,20 @@ export const UpdateChecker = () => {
         if (info?.isWindows) {
             const url = info.downloadUrl || `https://github.com/plix-labs/PlixMetrics/releases/tag/v${info.latest}`;
             window.open(url, '_blank');
-            setMessage('Opening download page... Please install the update manually.');
+            setMessage(t('update.openingDownload'));
             return;
         }
 
-        const text = 'Are you sure you want to update? The server will restart.';
+        const text = t('update.confirmUpdate');
 
         if (!confirm(text)) return;
 
         setUpdating(true);
         try {
             await systemApi.update();
-            setMessage('Update started! Please wait a few minutes and refresh the page manually.');
+            setMessage(t('update.updateStarted'));
         } catch (err: any) {
-            setMessage('Update failed: ' + (err.response?.data?.error || err.message));
+            setMessage(t('update.updateFailed') + ' ' + (err.response?.data?.error || err.message));
             setUpdating(false);
         }
     };
@@ -71,10 +73,9 @@ export const UpdateChecker = () => {
                         </svg>
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-slate-100 mb-1">Update Available</h3>
+                        <h3 className="font-bold text-slate-100 mb-1">{t('update.available')}</h3>
                         <p className="text-sm text-slate-400 mb-3">
-                            Version <span className="text-cyan-400 font-mono">{info.latest}</span> is available.
-                            Current: <span className="text-slate-500 font-mono">{info.current}</span>
+                            {t('update.versionAvailable', { latest: info.latest, current: info.current })}
                         </p>
 
                         {message ? (
@@ -82,11 +83,11 @@ export const UpdateChecker = () => {
                         ) : info.isDocker ? (
                             // Docker install - show command to copy
                             <div className="space-y-3">
-                                <p className="text-xs text-slate-400">Run one of these commands to update:</p>
+                                <p className="text-xs text-slate-400">{t('update.runCommands')}</p>
 
                                 {/* Image Update (Recommended) */}
                                 <div className="space-y-1">
-                                    <span className="text-[10px] text-slate-500 font-medium">Using Docker Image (GHCR):</span>
+                                    <span className="text-[10px] text-slate-500 font-medium">{t('update.usingDocker')}</span>
                                     <div
                                         onClick={() => {
                                             navigator.clipboard.writeText('docker-compose pull && docker-compose up -d');
@@ -101,7 +102,7 @@ export const UpdateChecker = () => {
 
                                 {/* Source Update (Legacy) */}
                                 <div className="space-y-1 opacity-60 hover:opacity-100 transition-opacity">
-                                    <span className="text-[10px] text-slate-500 font-medium">Using Source Code (git):</span>
+                                    <span className="text-[10px] text-slate-500 font-medium">{t('update.usingSource')}</span>
                                     <div
                                         onClick={() => {
                                             navigator.clipboard.writeText('git pull && docker-compose up -d --build');
@@ -119,7 +120,7 @@ export const UpdateChecker = () => {
                                         onClick={() => setInfo(null)}
                                         className="w-full px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-lg transition-colors"
                                     >
-                                        {copied ? '✓ Command Copied!' : 'Dismiss'}
+                                        {copied ? '✓ ' + t('update.commandCopied') : t('update.dismiss')}
                                     </button>
                                 </div>
                             </div>
@@ -131,13 +132,13 @@ export const UpdateChecker = () => {
                                     disabled={updating}
                                     className="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
                                 >
-                                    {updating ? 'Updating...' : (info.isWindows ? 'Download .exe' : 'Update Now')}
+                                    {updating ? t('update.updatingButton') : (info.isWindows ? t('update.downloadExe') : t('update.updateNow'))}
                                 </button>
                                 <button
                                     onClick={() => setInfo(null)}
                                     className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-lg transition-colors"
                                 >
-                                    Later
+                                    {t('update.later')}
                                 </button>
                             </div>
                         )}

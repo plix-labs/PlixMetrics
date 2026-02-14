@@ -1,0 +1,219 @@
+{
+    "nav": {
+        "dashboard": "Дашборд",
+        "statistics": "Статистика просмотров",
+        "analytics": "Аналитика",
+        "users": "Пользователи",
+        "stats": "Стат."
+    },
+    "common": {
+        "servers": "Серверы",
+        "syncing": "Синхронизация...",
+        "loading": "Загрузка...",
+        "cancel": "Отмена",
+        "error": "Ошибка",
+        "allServers": "Все серверы",
+        "allServersAggregated": "Все серверы (Агрегировано)",
+        "server": "Сервер",
+        "noDataAvailable": "Нет данных",
+        "moveUp": "Вверх",
+        "moveDown": "Вниз",
+        "pressEnterToApply": "Нажмите Enter для применения",
+        "never": "Никогда",
+        "unknownError": "Неизвестная ошибка"
+    },
+    "dashboard": {
+        "activeStreams": "Активные потоки",
+        "transcoding": "Транскодирование",
+        "totalUsers": "Всего пользователей",
+        "bandwidth": "Пропускная способность",
+        "mbps": "Мбит/с",
+        "activeSessions": "Активные сессии",
+        "noStreamsActive": "В данный момент нет активных потоков",
+        "activityWillAppear": "Активность появится здесь автоматически",
+        "liveUserMap": "Карта пользователей",
+        "loadingStatistics": "Загрузка статистики...",
+        "loadingAnalytics": "Загрузка аналитики...",
+        "loadingUsers": "Загрузка пользователей..."
+    },
+    "login": {
+        "title": "PlixMetrics",
+        "subtitle": "Удаленный вход",
+        "password": "Пароль",
+        "placeholder": "Введите ваш пароль",
+        "verifying": "Проверка...",
+        "loginButton": "Войти",
+        "loginFailed": "Ошибка входа"
+    },
+    "setup": {
+        "title": "Добро пожаловать в PlixMetrics",
+        "subtitle": "Установите пароль администратора",
+        "adminPassword": "Пароль администратора",
+        "createPassword": "Создайте надежный пароль",
+        "confirmPassword": "Подтвердите пароль",
+        "repeatPassword": "Повторите пароль",
+        "minLength": "Пароль должен содержать не менее 6 символов",
+        "mismatch": "Пароли не совпадают",
+        "settingUp": "Настройка...",
+        "completeSetup": "Завершить настройку",
+        "remoteNote": "Этот пароль потребуется для доступа к PlixMetrics с удаленных устройств.",
+        "setupFailed": "Ошибка настройки"
+    },
+    "stats": {
+        "displayMode": "Режим отображения",
+        "playCount": "Количество просмотров",
+        "playDuration": "Длительность просмотра",
+        "timeRange": "Период (Дни)",
+        "loadingStatistics": "Загрузка статистики...",
+        "errorLoading": "Ошибка загрузки статистики:",
+        "mostWatchedMovies": "Самые просматриваемые фильмы",
+        "mostPopularMovies": "Самые популярные фильмы",
+        "mostWatchedShows": "Самые просматриваемые сериалы",
+        "mostPopularShows": "Самые популярные сериалы",
+        "mostActiveLibraries": "Самые активные библиотеки",
+        "mostActiveUsers": "Самые активные пользователи",
+        "mostActivePlatforms": "Самые активные платформы",
+        "mostConcurrentStreams": "Максимальное число одновременных потоков",
+        "plays": "Просмотры",
+        "users": "Пользователи",
+        "streams": "Потоки"
+    },
+    "analytics": {
+        "timeRange": "Период (Дни)",
+        "errorLoading": "Ошибка загрузки данных аналитики:",
+        "hourlyActivity": "Почасовая активность",
+        "devicePreferences": "Предпочтения устройств",
+        "playbackHealth": "Здоровье воспроизведения",
+        "libraryQuality": "Качество библиотеки",
+        "genrePopularity": "Популярность жанров"
+    },
+    "usersPage": {
+        "title": "Пользователи",
+        "searchPlaceholder": "Поиск пользователей...",
+        "selectColumns": "Выбрать столбцы",
+        "user": "Пользователь",
+        "email": "Email",
+        "server": "Сервер",
+        "lastStreamed": "Последний поток",
+        "lastKnownIP": "Последний известный IP",
+        "lastPlatform": "Последняя платформа",
+        "lastPlayer": "Последний плеер",
+        "lastPlayed": "Последний просмотр",
+        "totalPlays": "Всего просмотров",
+        "totalPlayedDuration": "Общая длительность",
+        "loadingUsers": "Загрузка пользователей...",
+        "noUsersFound": "Пользователи не найдены.",
+        "showingUsers": "Показано {{count}} пользователей",
+        "updating": "Обновление...",
+        "yearsAgo": "{{count}} лет назад",
+        "monthsAgo": "{{count}} месяцев назад",
+        "daysAgo": "{{count}} дней назад",
+        "hoursAgo": "{{count}} часов назад",
+        "minutesAgo": "{{count}} минут назад",
+        "secondsAgo": "{{count}} секунд назад",
+        "zeroMins": "0 мин",
+        "daysUnit": "{{count}} дн.",
+        "hrsUnit": "{{count}} ч.",
+        "minsUnit": "{{count}} мин."
+    },
+    "userDetails": {
+        "profileNotFound": "Профиль не найден",
+        "couldNotRetrieve": "Не удалось получить данные для пользователя \"{{username}}\".",
+        "firstSeen": "Впервые замечен:",
+        "lastActive": "Последняя активность:",
+        "totalPlays": "Всего просмотров",
+        "hoursWatched": "Часов просмотра",
+        "topPlatforms": "Топ платформ",
+        "plays": "{{count}} просмотров",
+        "dailyActivity": "Суточная активность (24ч)",
+        "recentlyWatched": "Недавно просмотрено",
+        "all": "ВСЕ",
+        "oneYear": "1Г"
+    },
+    "serverModal": {
+        "editServer": "Редактировать сервер",
+        "addServer": "Добавить сервер Tautulli",
+        "serverName": "Имя сервера",
+        "serverNamePlaceholder": "Мой Plex сервер",
+        "tautulliUrl": "URL Tautulli",
+        "tautulliUrlPlaceholder": "http://your-server-ip:8181",
+        "mustBeReachable": "Должен быть доступен с этого сервера.",
+        "apiKey": "API Ключ",
+        "apiKeyPlaceholder": "ВАШ_API_КЛЮЧ",
+        "updateServer": "Обновить сервер",
+        "addServerButton": "Добавить сервер",
+        "updating": "Обновление...",
+        "verifyingAdding": "Проверка и добавление...",
+        "serverUpdated": "Сервер \"{{name}}\" успешно обновлен",
+        "serverAdded": "Сервер \"{{name}}\" успешно добавлен",
+        "failedToSave": "Не удалось сохранить сервер. Проверьте данные.",
+        "manageServers": "Управление серверами",
+        "addNewServer": "Добавить новый сервер"
+    },
+    "serverList": {
+        "loadingServers": "Загрузка серверов...",
+        "noServersAdded": "Серверы еще не добавлены.",
+        "editServer": "Редактировать сервер",
+        "removeServer": "Удалить сервер",
+        "confirmRemove": "Вы уверены, что хотите удалить этот сервер?"
+    },
+    "session": {
+        "hoursMinutesLeft": "Осталось {{h}}ч {{m}}м",
+        "minutesLeft": "Осталось {{m}}м",
+        "viewUserProfile": "Профиль пользователя"
+    },
+    "statCard": {
+        "shareOnTelegram": "Поделиться в Telegram"
+    },
+    "pairing": {
+        "title": "Подключить мобильное устройство",
+        "localNetwork": "Локальная сеть",
+        "publicInternet": "Публичный (Интернет)",
+        "publicIpNotFound": "Публичный IP не найден",
+        "serverAddress": "Адрес сервера:",
+        "ensurePhone": "Убедитесь, что ваш телефон подключен к",
+        "sameWifi": "той же Wi-Fi сети",
+        "internet": "интернету",
+        "scanCode": "Отсканируйте код выше",
+        "requiresPort": "Требуется проброс порта {{port}}!",
+        "addToHomeScreen": "Добавить на главный экран как приложение"
+    },
+    "update": {
+        "available": "Доступно обновление",
+        "versionAvailable": "Версия {{version}} доступна.",
+        "current": "Текущая:",
+        "openingDownload": "Открытие страницы загрузки... Пожалуйста, установите обновление вручную.",
+        "confirmUpdate": "Вы уверены, что хотите обновить? Сервер будет перезагружен.",
+        "updateStarted": "Обновление начато! Пожалуйста, подождите несколько минут и обновите страницу вручную.",
+        "updateFailed": "Ошибка обновления:",
+        "runCommands": "Выполните одну из этих команд для обновления:",
+        "usingDocker": "Используя Docker Image (GHCR):",
+        "usingSource": "Используя исходный код (git):",
+        "commandCopied": "Команда скопирована!",
+        "dismiss": "Закрыть",
+        "updatingButton": "Обновление...",
+        "downloadExe": "Скачать .exe",
+        "updateNow": "Обновить сейчас",
+        "later": "Позже"
+    },
+    "charts": {
+        "waitingForData": "Ожидание данных...",
+        "bandwidth": "Пропускная способность",
+        "plays": "Просмотры"
+    },
+    "logo": {
+        "subText": "Глобальный мониторинг сети"
+    },
+    "liveMap": {
+        "title": "Сетевая активность (Live)",
+        "subtitle": "Глобальные подключения в реальном времени",
+        "activeStream": "Активный поток"
+    },
+    "hooks": {
+        "failedToLoadServers": "Не удалось загрузить серверы."
+    },
+    "telegram": {
+        "allTime": "За все время",
+        "lastDays": "За последние {{days}} дней"
+    }
+}

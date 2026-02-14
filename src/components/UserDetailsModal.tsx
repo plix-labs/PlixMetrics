@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 import { useUserDetails } from '../hooks/useUserDetails';
 import { Skeleton } from './ui/Skeleton';
@@ -9,6 +10,7 @@ interface UserDetailsModalProps {
 }
 
 export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, onClose }) => {
+    const { t } = useTranslation();
     const [days, setDays] = useState(30);
     const { data: user, isLoading, error } = useUserDetails(username, days);
 
@@ -71,8 +73,8 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Profile Not Found</h3>
-                        <p className="text-slate-400">Could not retrieve data for user "{username}".</p>
+                        <h3 className="text-xl font-bold text-white mb-2">{t('userDetails.profileNotFound')}</h3>
+                        <p className="text-slate-400">{t('userDetails.couldNotRetrieve', { username })}</p>
                     </div>
                 )}
 
@@ -101,15 +103,15 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                                             ? 'bg-cyan-500 text-slate-900 shadow-md'
                                                             : 'text-slate-400 hover:text-white hover:bg-slate-700'}`}
                                                     >
-                                                        {d === 0 ? 'ALL' : d === 365 ? '1Y' : `${d}D`}
+                                                        {d === 0 ? t('userDetails.all') : d === 365 ? t('userDetails.oneYear') : `${d}D`}
                                                     </button>
                                                 ))}
                                             </div>
                                         </div>
                                         <p className="text-slate-400 mt-1 flex items-center gap-2 text-sm">
-                                            First seen: <span className="text-slate-300">{new Date(user.first_seen * 1000).toLocaleDateString()}</span>
+                                            {t('userDetails.firstSeen')} <span className="text-slate-300">{new Date(user.first_seen * 1000).toLocaleDateString()}</span>
                                             <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                                            Last active: <span className="text-emerald-400">{new Date(user.last_seen * 1000).toLocaleDateString()}</span>
+                                            {t('userDetails.lastActive')} <span className="text-emerald-400">{new Date(user.last_seen * 1000).toLocaleDateString()}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -125,11 +127,11 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                     {/* Key Stats Grid */}
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                                            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Total Plays</p>
+                                            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">{t('userDetails.totalPlays')}</p>
                                             <p className="text-2xl font-black text-white">{user.total_plays.toLocaleString()}</p>
                                         </div>
                                         <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                                            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Hours Watched</p>
+                                            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">{t('userDetails.hoursWatched')}</p>
                                             <p className="text-2xl font-black text-cyan-400">{Math.floor(user.total_duration / 3600).toLocaleString()}h</p>
                                         </div>
                                     </div>
@@ -140,7 +142,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                             <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                             </svg>
-                                            Top Platforms
+                                            {t('userDetails.topPlatforms')}
                                         </h3>
                                         <div className="space-y-4">
                                             {user.platforms.slice(0, 5).map((p, i) => {
@@ -150,7 +152,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                                     <div key={p.name}>
                                                         <div className="flex justify-between text-xs mb-1.5">
                                                             <span className="text-slate-200 font-medium">{p.name}</span>
-                                                            <span className="text-slate-400">{p.count} plays</span>
+                                                            <span className="text-slate-400">{t('userDetails.plays', { count: p.count })}</span>
                                                         </div>
                                                         <div className="h-2 w-full bg-slate-700/50 rounded-full overflow-hidden">
                                                             <div
@@ -173,7 +175,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                             <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Daily Activity (24h)
+                                            {t('userDetails.dailyActivity')}
                                         </h3>
                                         <div className="flex items-end h-32 gap-1">
                                             {user.activity_heatmap.map((count, hour) => {
@@ -213,7 +215,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Recently Watched
+                                            {t('userDetails.recentlyWatched')}
                                         </h3>
                                         <div className="space-y-3">
                                             {user.last_watched.slice(0, 4).map((item, i) => (
