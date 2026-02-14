@@ -19,6 +19,7 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 - 🐳 **Docker Ready** - Easy deployment with Docker Compose
 - 🚀 **Lightweight** - Single container, SQLite database
 - 📱 **Mobile Ready** - Responsive design with PWA support
+- 🌍 **Multi-language Support** - Available in English, Spanish, French, Portuguese, German, Russian, and Chinese
 
 ## Installation & Deployment
 
