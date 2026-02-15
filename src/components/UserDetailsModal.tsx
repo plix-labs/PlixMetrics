@@ -89,7 +89,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <div className="flex items-center gap-4 mb-2">
+                                        <div className="flex flex-col md:flex-row md:items-center items-start gap-4 mb-4 md:mb-2">
                                             <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
                                                 {user.username}
                                             </h2>
