@@ -10,10 +10,36 @@ import de from './locales/de.json';
 import ru from './locales/ru.json';
 import zh from './locales/zh.json';
 
+// Patch console to suppress i18next promotional message
+const originalLog = console.log;
+const originalInfo = console.info;
+
+const shouldSuppress = (args: any[]) => {
+    return args.some(arg =>
+        typeof arg === 'string' && (
+            arg.includes('i18next is maintained with support') ||
+            arg.includes('Locize') ||
+            arg.includes('locize.com') ||
+            arg.includes('managed localization')
+        )
+    );
+};
+
+console.log = (...args: any[]) => {
+    if (shouldSuppress(args)) return;
+    originalLog(...args);
+};
+
+console.info = (...args: any[]) => {
+    if (shouldSuppress(args)) return;
+    originalInfo(...args);
+};
+
 i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
+        debug: false,
         resources: {
             en: { translation: en },
             es: { translation: es },
