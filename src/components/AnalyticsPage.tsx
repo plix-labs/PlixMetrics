@@ -267,7 +267,7 @@ export const AnalyticsPage: React.FC = () => {
                                     </svg>
                                 </button>
                             </div>
-                            <p className="text-[10px] text-slate-500 mt-1">{t('common.pressEnterToApply')}</p>
+
                         </div>
                     </div>
 
