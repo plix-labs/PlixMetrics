@@ -34,7 +34,9 @@
         "liveUserMap": "Карта пользователей",
         "loadingStatistics": "Загрузка статистики...",
         "loadingAnalytics": "Загрузка аналитики...",
-        "loadingUsers": "Загрузка пользователей..."
+        "loadingUsers": "Загрузка пользователей...",
+        "serverBreakdown": "Разбивка по серверам",
+        "noActiveServers": "Нет активных серверов"
     },
     "login": {
         "title": "PlixMetrics",

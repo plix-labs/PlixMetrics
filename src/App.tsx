@@ -71,13 +71,23 @@ function AppDashboard() {
 
     // Sidebar Order State with Persistence
     const [sidebarOrder, setSidebarOrder] = useState<string[]>(() => {
+        const defaultOrder = ['metrics', 'sessions', 'map'];
         try {
-            const saved = localStorage.getItem('dashboardOrder'); // Renamed key for new layout
-            return saved ? JSON.parse(saved) : ['metrics', 'sessions', 'map'];
+            const saved = localStorage.getItem('dashboardOrder');
+            if (!saved) return defaultOrder;
+            const parsed = JSON.parse(saved);
+            // Ensure any new default keys are added to the saved order
+            const merged = [...parsed];
+            defaultOrder.forEach(key => {
+                if (!merged.includes(key)) merged.push(key);
+            });
+            return merged;
         } catch {
-            return ['metrics', 'sessions', 'map'];
+            return defaultOrder;
         }
     });
+
+    const [isMetricsExpanded, setIsMetricsExpanded] = useState(false);
 
     const moveSection = (index: number, direction: 'up' | 'down') => {
         const newOrder = [...sidebarOrder];
@@ -97,8 +107,25 @@ function AppDashboard() {
 
     // Widget Renderers
     const renderWidget = (id: string, controls: React.ReactNode) => {
+        const getServerStats = () => {
+            if (!data?.active_sessions) return [];
+
+            const statsMap = new Map<string, { name: string, streams: number, bandwidth: number }>();
+
+            data.active_sessions.forEach(session => {
+                const serverName = session.server_name || 'Unknown';
+                const existing = statsMap.get(serverName) || { name: serverName, streams: 0, bandwidth: 0 };
+                existing.streams += 1;
+                existing.bandwidth += (session.bandwidth || 0);
+                statsMap.set(serverName, existing);
+            });
+
+            return Array.from(statsMap.values()).sort((a, b) => b.streams - a.streams);
+        };
+
         switch (id) {
             case 'metrics':
+                const serverStats = getServerStats();
                 return (
                     <section className="space-y-4">
                         <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-4 sm:p-5 rounded-2xl overflow-hidden hover:bg-slate-800/60 transition-colors relative">
@@ -106,12 +133,25 @@ function AppDashboard() {
                                 {controls}
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 sm:gap-8">
-                                <div>
-                                    <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.activeStreams')}</h3>
-                                    <div className="text-2xl sm:text-3xl font-black text-cyan-400 leading-none">
-                                        {data?.total_stream_count || 0}
+                                <button
+                                    onClick={() => setIsMetricsExpanded(!isMetricsExpanded)}
+                                    className="group flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity"
+                                >
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest">{t('dashboard.activeStreams')}</h3>
+                                        {isMetricsExpanded && <span className="flex h-1.5 w-1.5 rounded-full bg-cyan-500 animate-pulse"></span>}
                                     </div>
-                                </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="text-2xl sm:text-3xl font-black text-cyan-400 leading-none">
+                                            {data?.total_stream_count || 0}
+                                        </div>
+                                        <div className={`p-1 rounded bg-slate-700/30 border border-slate-700/50 group-hover:bg-slate-700/60 transition-all ${isMetricsExpanded ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400' : 'text-slate-500'}`}>
+                                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </button>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
                                     <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.transcoding')}</h3>
                                     <div className="text-2xl sm:text-3xl font-black text-amber-500 leading-none">
@@ -131,9 +171,41 @@ function AppDashboard() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Server Breakdown Expansion */}
+                            {isMetricsExpanded && serverStats.length > 0 && (
+                                <div className="mt-6 pt-5 border-t border-white/5 animate-in slide-in-from-top-4 duration-300">
+                                    <div className="flex items-center gap-2 mb-3 px-1">
+                                        <span className="w-1 h-3 bg-cyan-500 rounded-full"></span>
+                                        <h3 className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{t('dashboard.serverBreakdown')}</h3>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        {serverStats.map((server) => (
+                                            <div key={server.name} className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-slate-400/5 hover:bg-slate-400/10 transition-colors">
+                                                <div className="flex items-center gap-2 min-w-0">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50"></div>
+                                                    <p className="text-slate-200 text-[11px] font-bold truncate">{server.name}</p>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-1">
+                                                        <span className="text-xs font-black text-cyan-400 leading-none">{server.streams}</span>
+                                                        <span className="text-[8px] text-slate-500 font-bold uppercase tracking-tighter">{t('stats.streams')}</span>
+                                                    </div>
+                                                    <div className="w-px h-2.5 bg-white/5"></div>
+                                                    <div className="flex items-center gap-1">
+                                                        <span className="text-xs font-black text-indigo-400 leading-none">{(server.bandwidth / 1000).toFixed(1)}</span>
+                                                        <span className="text-[8px] text-slate-500 font-bold tracking-tighter">Mbps</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </section>
                 );
+
             case 'sessions':
                 return (
                     <section className="space-y-6">
@@ -185,6 +257,7 @@ function AppDashboard() {
                         )}
                     </section>
                 );
+
             case 'map':
                 return (
                     <section className="space-y-6">

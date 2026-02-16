@@ -34,7 +34,9 @@
         "liveUserMap": "Mapa de Utilizadores em Direto",
         "loadingStatistics": "Carregando estatísticas...",
         "loadingAnalytics": "Carregando análises...",
-        "loadingUsers": "Carregando utilizadores..."
+        "loadingUsers": "Carregando utilizadores...",
+        "serverBreakdown": "Detalhamento do Servidor",
+        "noActiveServers": "Nenhum servidor ativo"
     },
     "login": {
         "title": "PlixMetrics",
