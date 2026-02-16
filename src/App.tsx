@@ -101,33 +101,33 @@ function AppDashboard() {
             case 'metrics':
                 return (
                     <section className="space-y-4">
-                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-3xl overflow-hidden hover:bg-slate-800/60 transition-colors relative">
+                        <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-4 sm:p-5 rounded-2xl overflow-hidden hover:bg-slate-800/60 transition-colors relative">
                             <div className="absolute top-4 right-4 flex gap-1 z-10">
                                 {controls}
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 sm:gap-8">
                                 <div>
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.activeStreams')}</h3>
-                                    <div className="text-3xl font-black text-cyan-400 leading-none">
+                                    <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.activeStreams')}</h3>
+                                    <div className="text-2xl sm:text-3xl font-black text-cyan-400 leading-none">
                                         {data?.total_stream_count || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.transcoding')}</h3>
-                                    <div className="text-3xl font-black text-amber-500 leading-none">
+                                    <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.transcoding')}</h3>
+                                    <div className="text-2xl sm:text-3xl font-black text-amber-500 leading-none">
                                         {data?.total_transcodes || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.totalUsers')}</h3>
-                                    <div className="text-3xl font-black text-slate-200 leading-none">
+                                    <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.totalUsers')}</h3>
+                                    <div className="text-2xl sm:text-3xl font-black text-slate-200 leading-none">
                                         {data?.total_users || 0}
                                     </div>
                                 </div>
                                 <div className="md:border-l md:border-white/5 md:pl-8">
-                                    <h3 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">{t('dashboard.bandwidth')}</h3>
-                                    <div className="text-3xl font-black text-indigo-400 leading-none">
-                                        {data ? (data.total_bandwidth / 1000).toFixed(1) : '0'} <span className="text-sm text-slate-500 font-bold">{t('dashboard.mbps')}</span>
+                                    <h3 className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">{t('dashboard.bandwidth')}</h3>
+                                    <div className="text-2xl sm:text-3xl font-black text-indigo-400 leading-none">
+                                        {data ? (data.total_bandwidth / 1000).toFixed(1) : '0'} <span className="text-xs sm:text-sm text-slate-500 font-bold">{t('dashboard.mbps')}</span>
                                     </div>
                                 </div>
                             </div>
