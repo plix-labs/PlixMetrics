@@ -184,17 +184,17 @@ function AppDashboard() {
                                             <div key={server.name} className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-slate-400/5 hover:bg-slate-400/10 transition-colors">
                                                 <div className="flex items-center gap-2 min-w-0">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50"></div>
-                                                    <p className="text-slate-200 text-[11px] font-bold truncate">{server.name}</p>
+                                                    <p className="text-slate-200 text-xs font-bold truncate">{server.name}</p>
                                                 </div>
                                                 <div className="flex items-center gap-3">
-                                                    <div className="flex items-center gap-1">
-                                                        <span className="text-xs font-black text-cyan-400 leading-none">{server.streams}</span>
-                                                        <span className="text-[8px] text-slate-500 font-bold uppercase tracking-tighter">{t('stats.streams')}</span>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="text-sm font-black text-cyan-400 leading-none">{server.streams}</span>
+                                                        <span className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">{t('stats.streams')}</span>
                                                     </div>
                                                     <div className="w-px h-2.5 bg-white/5"></div>
-                                                    <div className="flex items-center gap-1">
-                                                        <span className="text-xs font-black text-indigo-400 leading-none">{(server.bandwidth / 1000).toFixed(1)}</span>
-                                                        <span className="text-[8px] text-slate-500 font-bold tracking-tighter">Mbps</span>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="text-sm font-black text-indigo-400 leading-none">{(server.bandwidth / 1000).toFixed(1)}</span>
+                                                        <span className="text-[9px] text-slate-500 font-bold tracking-tighter">Mbps</span>
                                                     </div>
                                                 </div>
                                             </div>
