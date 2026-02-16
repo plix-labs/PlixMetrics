@@ -214,5 +214,11 @@
     "telegram": {
         "allTime": "All Time",
         "lastDays": "Last {{days}} Days"
+    },
+    "privacy": {
+        "enable": "Enable Privacy Mode",
+        "disable": "Disable Privacy Mode",
+        "anonymous": "Anonymous",
+        "unknownServer": "Unknown Server"
     }
 }

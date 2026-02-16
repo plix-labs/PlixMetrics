@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { ActiveSession } from '../types';
 import { getImageProxyUrl } from '../api/client';
 
+import { usePrivacy } from '../lib/privacy';
+
 interface SessionCardProps {
     session: ActiveSession;
     onUserClick?: (username: string) => void;
@@ -10,6 +12,7 @@ interface SessionCardProps {
 
 export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }) => {
     const { t } = useTranslation();
+    const { anonymizeUser, anonymizeServer } = usePrivacy();
     // ... (rest of the code same until return)
     const getImageUrl = (path: string | undefined, serverId: number | string | undefined, w = 300) => {
         if (!path || !serverId) return '';
@@ -94,7 +97,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
 
                     {/* Level 4: Server - User */}
                     <div className="text-[10px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1">
-                        <span className="text-indigo-400/80 font-bold">{session.server_name}</span>
+                        <span className="text-indigo-400/80 font-bold">{anonymizeServer(session.server_name || '')}</span>
                         <span className="opacity-40">•</span>
                         <span
                             onClick={(e) => {
@@ -104,7 +107,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
                             className={`transition-colors ${onUserClick ? 'cursor-pointer hover:text-cyan-400 hover:underline hover:decoration-cyan-400/50' : ''}`}
                             title={onUserClick ? t('session.viewUserProfile') : undefined}
                         >
-                            {session.user}
+                            {anonymizeUser(session.user)}
                         </span>
                     </div>
 

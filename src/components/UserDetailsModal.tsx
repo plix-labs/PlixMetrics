@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 import { useUserDetails } from '../hooks/useUserDetails';
 import { Skeleton } from './ui/Skeleton';
+import { usePrivacy } from '../lib/privacy';
 
 interface UserDetailsModalProps {
     username: string | null;
@@ -12,6 +13,7 @@ interface UserDetailsModalProps {
 export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, onClose }) => {
     const { t } = useTranslation();
     const [days, setDays] = useState(30);
+    const { anonymizeUser, anonymizeServer } = usePrivacy();
     const { data: user, isLoading, error } = useUserDetails(username, days);
 
     if (!username) return null;
@@ -74,7 +76,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                             </svg>
                         </div>
                         <h3 className="text-xl font-bold text-white mb-2">{t('userDetails.profileNotFound')}</h3>
-                        <p className="text-slate-400">{t('userDetails.couldNotRetrieve', { username })}</p>
+                        <p className="text-slate-400">{t('userDetails.couldNotRetrieve', { username: anonymizeUser(username) })}</p>
                     </div>
                 )}
 
@@ -91,7 +93,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                     <div>
                                         <div className="flex flex-col md:flex-row md:items-center items-start gap-4 mb-4 md:mb-2">
                                             <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                                                {user.username}
+                                                {anonymizeUser(user.username)}
                                             </h2>
                                             {/* Time Range Selector */}
                                             <div className="flex bg-slate-800/80 rounded-lg p-1 border border-slate-700/50">
@@ -223,7 +225,7 @@ export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, on
                                                     <div className="flex-1 min-w-0">
                                                         <h4 className="text-slate-200 font-medium truncate group-hover:text-white transition-colors">{item.title}</h4>
                                                         <p className="text-xs text-slate-500">
-                                                            {new Date(item.date * 1000).toLocaleString()} • {item.server_name}
+                                                            {new Date(item.date * 1000).toLocaleString()} • {anonymizeServer(item.server_name)}
                                                         </p>
                                                     </div>
                                                 </div>

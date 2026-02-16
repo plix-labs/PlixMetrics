@@ -5,6 +5,7 @@ import { usersApi } from '../api/client';
 import { useServers } from '../hooks/useServers';
 import { UserTableItem } from '../types';
 import { UserDetailsModal } from './UserDetailsModal';
+import { usePrivacy } from '../lib/privacy';
 
 interface ColumnConfig {
     id: keyof UserTableItem | 'last_streamed' | 'ip' | 'last_played' | 'plays' | 'duration' | 'server';
@@ -28,6 +29,7 @@ const DEFAULT_COLUMNS: ColumnConfig[] = [
 export const UsersPage = () => {
     const { t } = useTranslation();
     const { servers } = useServers();
+    const { privacyMode, anonymizeUser, anonymizeServer } = usePrivacy();
     const [selectedServerId, setSelectedServerId] = useState<string>(''); // Empty initially
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -212,7 +214,7 @@ export const UsersPage = () => {
                                 <option value="all">{t('common.allServers')}</option>
                                 {servers.map(server => (
                                     <option key={server.id} value={server.id.toString()}>
-                                        {server.name}
+                                        {anonymizeServer(server.name)}
                                     </option>
                                 ))}
                             </select>
@@ -341,8 +343,8 @@ export const UsersPage = () => {
                                                 onClick={() => setSelectedUser(user.username || user.friendly_name || user.email)}
                                             >
                                                 <div className="flex flex-col">
-                                                    <span className="font-semibold text-sm group-hover:text-cyan-400 transition-colors">{user.friendly_name || user.username}</span>
-                                                    <span className="text-[10px] text-slate-500 group-hover:text-cyan-500/70">{user.username}</span>
+                                                    <span className="font-semibold text-sm group-hover:text-cyan-400 transition-colors">{anonymizeUser(user.friendly_name || user.username)}</span>
+                                                    <span className="text-[10px] text-slate-500 group-hover:text-cyan-500/70">{privacyMode ? '********' : user.username}</span>
                                                 </div>
                                             </td>
                                         )}
@@ -350,7 +352,7 @@ export const UsersPage = () => {
                                         {/* Email */}
                                         {columns.find(c => c.id === 'email')?.visible && (
                                             <td className="px-3 py-2 whitespace-nowrap">
-                                                {user.email}
+                                                {privacyMode ? '********' : user.email}
                                             </td>
                                         )}
 
@@ -358,7 +360,7 @@ export const UsersPage = () => {
                                         {columns.find(c => c.id === 'server')?.visible && (
                                             <td className="px-3 py-2 whitespace-nowrap">
                                                 <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider bg-cyan-950/30 px-2 py-0.5 rounded border border-cyan-900/50">
-                                                    {user.server_name}
+                                                    {anonymizeServer(user.server_name || '')}
                                                 </span>
                                             </td>
                                         )}

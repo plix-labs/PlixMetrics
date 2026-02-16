@@ -214,5 +214,11 @@
     "telegram": {
         "allTime": "Todo el Tiempo",
         "lastDays": "Últimos {{days}} Días"
+    },
+    "privacy": {
+        "enable": "Activar Modo Privacidad",
+        "disable": "Desactivar Modo Privacidad",
+        "anonymous": "Anónimo",
+        "unknownServer": "Servidor Desconocido"
     }
 }

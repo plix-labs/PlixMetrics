@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import { ActiveSession } from '../types';
+import { usePrivacy } from '../lib/privacy';
 
 interface InteractiveMapProps {
     sessions: ActiveSession[];
@@ -122,6 +123,7 @@ const createClusterCustomIcon = (cluster: any) => {
 };
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ sessions, enableClustering = true, onUserClick }) => {
+    const { anonymizeUser, anonymizeServer } = usePrivacy();
     // Filter valid sessions
     const validSessions = useMemo(() => {
         return sessions.filter(s =>
@@ -191,10 +193,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sessions, enableCluster
                                             if (onUserClick) onUserClick(session.user);
                                         }}
                                     >
-                                        {session.user}
+                                        {anonymizeUser(session.user)}
                                     </div>
                                     <div className="text-[10px] uppercase tracking-wider text-slate-500 font-medium truncate">
-                                        {session.server_name || 'Unknown Server'}
+                                        {anonymizeServer(session.server_name || 'Unknown Server')}
                                     </div>
                                 </div>
                             </Popup>
@@ -220,10 +222,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sessions, enableCluster
                                         if (onUserClick) onUserClick(session.user);
                                     }}
                                 >
-                                    {session.user}
+                                    {anonymizeUser(session.user)}
                                 </div>
                                 <div className="text-[10px] uppercase tracking-wider text-slate-500 font-medium truncate">
-                                    {session.server_name || 'Unknown Server'}
+                                    {anonymizeServer(session.server_name || 'Unknown Server')}
                                 </div>
                             </div>
                         </Popup>

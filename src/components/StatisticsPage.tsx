@@ -4,12 +4,14 @@ import { useWatchStats } from '../hooks/useWatchStats';
 import { useServers } from '../hooks/useServers';
 import { StatCard } from './StatCard';
 import { UserDetailsModal } from './UserDetailsModal';
+import { usePrivacy } from '../lib/privacy';
 import { WatchStatsFilters } from '../types/statistics';
 
 const STORAGE_KEY = 'plixmetrics_watch_stats_filters';
 
 export const StatisticsPage: React.FC = () => {
     const { t } = useTranslation();
+    const { anonymizeServer } = usePrivacy();
     // Load filters from localStorage or use defaults
     const [filters, setFilters] = useState<WatchStatsFilters>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -122,7 +124,7 @@ export const StatisticsPage: React.FC = () => {
                                 <option value="all">{t('common.allServersAggregated')}</option>
                                 {servers.map(server => (
                                     <option key={server.id} value={server.id}>
-                                        {server.name}
+                                        {anonymizeServer(server.name)}
                                     </option>
                                 ))}
                             </select>

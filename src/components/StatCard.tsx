@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatItem, UserStatItem, LibraryStatItem, PlatformStatItem, ConcurrentStreamsItem } from '../types/statistics';
 import { getImageProxyUrl } from '../api/client';
+import { usePrivacy } from '../lib/privacy';
 
 // ... (imports)
 
@@ -39,8 +40,10 @@ const formatTelegramMessage = (
     title: string,
     items: (StatItem | UserStatItem | LibraryStatItem | PlatformStatItem)[],
     label: string,
+    privacyUtils: { anonymizeUser: (n: string) => string; anonymizeServer: (n: string) => string },
     days?: string | number
 ): string => {
+    const { anonymizeUser, anonymizeServer } = privacyUtils;
     const emoji = getEmoji(title);
     const period = days === 'all' ? 'All Time' : `Last ${days} Days`;
     let message = `${emoji} **${title.toUpperCase()}** (${period})\n\n`;
@@ -54,10 +57,10 @@ const formatTelegramMessage = (
             message += `${rankEmoji} ${item.title}${item.year ? ` (${item.year})` : ''} — **${value}** ${label}\n`;
         } else if ('user' in item) {
             // User cards (UserStatItem)
-            message += `${rankEmoji} ${item.user} — **${value}** ${label}\n`;
+            message += `${rankEmoji} ${anonymizeUser(item.user)} — **${value}** ${label}\n`;
         } else if ('library_name' in item) {
             // Library cards (LibraryStatItem)
-            message += `${rankEmoji} ${item.library_name} — **${value}** ${label}\n`;
+            message += `${rankEmoji} ${anonymizeServer(item.library_name)} — **${value}** ${label}\n`;
         } else if ('platform' in item) {
             // Platform cards (PlatformStatItem)
             message += `${rankEmoji} ${item.platform} — **${value}** ${label}\n`;
@@ -71,11 +74,12 @@ const formatTelegramMessage = (
 export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabel, enableTelegramShare, days, onUserClick }) => {
     const { t } = useTranslation();
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const { anonymizeUser, anonymizeServer } = usePrivacy();
 
     // Telegram share handler
     const handleTelegramShare = () => {
         const items = data as (StatItem | UserStatItem | LibraryStatItem | PlatformStatItem)[];
-        const message = formatTelegramMessage(title, items, valueLabel || '', days);
+        const message = formatTelegramMessage(title, items, valueLabel || '', { anonymizeUser, anonymizeServer }, days);
         // Usar un espacio como URL para que no aparezca en el mensaje
         const url = `https://t.me/share/url?url=${encodeURIComponent(' ')}&text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
@@ -271,8 +275,8 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                                     {userItem.rank}
                                 </span>
                                 <div className="flex-1 min-w-0">
-                                    <p className={`text-sm font-semibold truncate leading-tight ${onUserClick ? 'text-white group-hover:text-cyan-400' : 'text-white'}`}>{userItem.user}</p>
-                                    <p className="text-xs text-indigo-400 leading-tight mt-0.5">{userItem.server_name}</p>
+                                    <p className={`text-sm font-semibold truncate leading-tight ${onUserClick ? 'text-white group-hover:text-cyan-400' : 'text-white'}`}>{anonymizeUser(userItem.user)}</p>
+                                    <p className="text-xs text-indigo-400 leading-tight mt-0.5">{anonymizeServer(userItem.server_name)}</p>
                                 </div>
                                 <span className="text-lg font-bold text-cyan-400 whitespace-nowrap tabular-nums">
                                     {userItem.formatted_value}
@@ -291,7 +295,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm text-white font-semibold truncate leading-tight">{libraryItem.library_name}</p>
                                     {libraryItem.server_name && (
-                                        <p className="text-xs text-slate-500 leading-tight mt-0.5">{libraryItem.server_name}</p>
+                                        <p className="text-xs text-slate-500 leading-tight mt-0.5">{anonymizeServer(libraryItem.server_name)}</p>
                                     )}
                                 </div>
                                 <span className="text-lg font-bold text-cyan-400 whitespace-nowrap tabular-nums">
@@ -328,7 +332,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                                     {rank}
                                 </span>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm text-white font-semibold truncate leading-tight">{concurrentItem.server_name || 'Unknown Server'}</p>
+                                    <p className="text-sm text-white font-semibold truncate leading-tight">{anonymizeServer(concurrentItem.server_name || 'Unknown Server')}</p>
 
                                 </div>
                                 <div className="text-right">

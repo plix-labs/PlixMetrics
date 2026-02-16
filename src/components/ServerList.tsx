@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useServers } from '../hooks/useServers';
 import { PlexServer } from '../types';
+import { usePrivacy } from '../lib/privacy';
 
 interface ServerListProps {
     onEdit: (server: PlexServer) => void;
@@ -10,6 +11,7 @@ interface ServerListProps {
 export const ServerList: React.FC<ServerListProps> = ({ onEdit }) => {
     const { t } = useTranslation();
     const { servers, loading, error, removeServer } = useServers();
+    const { privacyMode, anonymizeServer } = usePrivacy();
 
     if (loading) return <div className="text-slate-500 text-sm">{t('serverList.loadingServers')}</div>;
     if (error) return <div className="text-red-400 text-sm">{error}</div>;
@@ -31,8 +33,8 @@ export const ServerList: React.FC<ServerListProps> = ({ onEdit }) => {
                     <div className="flex items-center gap-3 overflow-hidden">
                         <div className="h-2 w-2 min-w-[8px] rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
                         <div className="min-w-0">
-                            <div className="font-medium text-slate-200 text-sm truncate">{server.name}</div>
-                            <div className="text-xs text-slate-500 truncate">{formatUrl(server.tautulli_url)}</div>
+                            <div className="font-medium text-slate-200 text-sm truncate">{anonymizeServer(server.name)}</div>
+                            <div className="text-xs text-slate-500 truncate">{privacyMode ? '********' : formatUrl(server.tautulli_url)}</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
