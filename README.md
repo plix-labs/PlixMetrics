@@ -6,9 +6,17 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 
 ## 📸 Screenshots
 
-| 📊 Statistics | 👥 Users | 📱 Mobile View |
-| :---: | :---: | :---: |
-| ![Stats](docs/stats.png) | ![Users](docs/users.png) | ![Mobile](docs/mobile.png) |
+| 📊 Statistics | � Analytics |
+| :---: | :---: |
+| ![Stats](docs/stats.png) | ![Analytics](docs/analytics.png) |
+
+| 👥 Users | 📱 Mobile View |
+| :---: | :---: |
+| ![Users](docs/users.png) | ![Mobile](docs/mobile.png) |
+
+| ✨ Session Detail |
+| :---: |
+| ![Session Detail](docs/sessioncard.png) |
 
 ## Features
 
@@ -17,6 +25,7 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 - 📈 **Watch Statistics** - Most watched movies, shows, users, platforms
 - 🔒 **Secure & Self-Hosted** - Password protection, JWT authentication, and local data storage
 - 🐳 **Docker Ready** - Easy deployment with Docker Compose
+- 🖥️ **Windows Native** - Easy to use standalone installer (.exe) with auto-updates
 - 🚀 **Lightweight** - Single container, SQLite database
 - 📱 **Mobile Ready** - Responsive design with PWA support
 - 🌍 **Multi-language Support** - Available in English, Spanish, French, Portuguese, German, Russian, and Chinese
