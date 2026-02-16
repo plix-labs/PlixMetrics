@@ -50,7 +50,7 @@ New-Item -ItemType Directory -Path $APP_DIR -Force | Out-Null
 # ─── Step 2: Build Frontend ──────────────────────────────────────
 Write-Host "[2/7] Installing dependencies & Building frontend..." -ForegroundColor Yellow
 Push-Location $ROOT
-npm install
+npm install --legacy-peer-deps
 npm run build
 if ($LASTEXITCODE -ne 0) { throw "Frontend build failed" }
 Pop-Location
@@ -58,7 +58,7 @@ Pop-Location
 # ─── Step 3: Build Server ────────────────────────────────────────
 Write-Host "[3/7] Installing server dependencies & Building server..." -ForegroundColor Yellow
 Push-Location "$ROOT\server"
-npm install
+npm install --legacy-peer-deps
 npm run build
 if ($LASTEXITCODE -ne 0) { throw "Server build failed" }
 Pop-Location
