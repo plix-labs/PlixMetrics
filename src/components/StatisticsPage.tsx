@@ -62,7 +62,7 @@ export const StatisticsPage: React.FC = () => {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, stat_type: 'plays' }))}
-                                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'plays'
+                                className={`flex-1 h-11 px-4 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'plays'
                                     ? 'bg-cyan-600 text-white border-2 border-cyan-500'
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
@@ -71,7 +71,7 @@ export const StatisticsPage: React.FC = () => {
                             </button>
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, stat_type: 'duration' }))}
-                                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'duration'
+                                className={`flex-1 h-11 px-4 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'duration'
                                     ? 'bg-amber-600 text-white border-2 border-amber-500'
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
@@ -103,7 +103,7 @@ export const StatisticsPage: React.FC = () => {
                                         }
                                     }}
                                     placeholder={`Current: ${filters.days}`}
-                                    className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    className="w-full h-11 px-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                 />
                                 <button
                                     onClick={() => {
@@ -112,7 +112,7 @@ export const StatisticsPage: React.FC = () => {
                                             setFilters(prev => ({ ...prev, days: value }));
                                         }
                                     }}
-                                    className="px-4 py-2 bg-slate-700/50 border-2 border-slate-600 hover:bg-slate-700 text-cyan-400 rounded-lg transition-colors flex items-center justify-center"
+                                    className="h-11 px-4 bg-slate-700/50 border-2 border-slate-600 hover:bg-slate-700 text-cyan-400 rounded-lg transition-colors flex items-center justify-center"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                         <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
@@ -133,7 +133,7 @@ export const StatisticsPage: React.FC = () => {
                                 id="server-select"
                                 value={filters.server_id}
                                 onChange={(e) => setFilters(prev => ({ ...prev, server_id: e.target.value }))}
-                                className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
+                                className="w-full h-11 px-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
                             >
                                 <option value="all">{t('common.allServersAggregated')}</option>
                                 {servers.map(server => (
