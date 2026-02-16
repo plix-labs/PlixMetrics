@@ -171,7 +171,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                     </div>
 
                     {/* Right: Scrollable List */}
-                    <div className="flex-1 overflow-y-auto h-[180px] sm:h-[208px] pr-1.5 custom-scrollbar">
+                    <div className="overflow-y-auto h-[240px] sm:h-[208px] pr-1.5 custom-scrollbar">
                         {mediaItems.map((item, index) => (
                             <div
                                 key={item.rank}
@@ -256,7 +256,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                 </div>
             </div>
 
-            <div className="overflow-y-auto h-[200px] sm:h-[208px] pr-1.5 custom-scrollbar">
+            <div className="overflow-y-auto h-[240px] sm:h-[208px] pr-1.5 custom-scrollbar">
                 {items.map((item, index) => {
                     if (type === 'user') {
                         const userItem = item as UserStatItem;
