@@ -90,34 +90,7 @@ function AppDashboard() {
         }
     };
 
-    // Touch Handling
-    const [touchStart, setTouchStart] = useState<number | null>(null);
-    const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-    const minSwipeDistance = 50;
-
-    const onTouchStart = (e: React.TouchEvent) => {
-        setTouchEnd(null);
-        setTouchStart(e.targetTouches[0].clientX);
-    };
-
-    const onTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
-    };
-
-    const onTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
-        const distance = touchStart - touchEnd;
-        const isLeftSwipe = distance > minSwipeDistance;
-        const isRightSwipe = distance < -minSwipeDistance;
-
-        if (isLeftSwipe && currentView === 'dashboard') {
-            setCurrentView('statistics');
-        }
-        if (isRightSwipe && currentView === 'statistics') {
-            setCurrentView('dashboard');
-        }
-    };
 
     // No authentication needed - single user mode
     const { data, loading, error, refetch } = usePlexNetwork();
@@ -241,9 +214,7 @@ function AppDashboard() {
     return (
         <div
             className="min-h-screen bg-slate-900 text-slate-50 selection:bg-cyan-500/30"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
+
         >
             {/* ... (background and header remain same) ... */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
