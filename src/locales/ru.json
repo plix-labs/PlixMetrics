@@ -208,7 +208,8 @@
     },
     "liveMap": {
         "activeStream": "Активный поток",
-        "group": "Группа"
+        "group": "Группа",
+        "list": "Список"
     },
     "hooks": {
         "failedToLoadServers": "Не удалось загрузить серверы."

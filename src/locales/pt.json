@@ -208,7 +208,8 @@
     },
     "liveMap": {
         "activeStream": "Stream Ativo",
-        "group": "Grupo"
+        "group": "Grupo",
+        "list": "Lista"
     },
     "hooks": {
         "failedToLoadServers": "Falha ao carregar os servidores."

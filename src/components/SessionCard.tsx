@@ -6,9 +6,10 @@ import { getImageProxyUrl } from '../api/client';
 interface SessionCardProps {
     session: ActiveSession;
     onUserClick?: (username: string) => void;
+    hideBackground?: boolean;
 }
 
-export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }) => {
+export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick, hideBackground }) => {
     const { t } = useTranslation();
     // ... (rest of the code same until return)
     const getImageUrl = (path: string | undefined, serverId: number | string | undefined, w = 300) => {
@@ -35,13 +36,13 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick }
     };
 
     return (
-        <div className="relative h-[100px] w-full bg-slate-800/60 rounded-lg overflow-hidden shadow-lg group border border-white/5 hover:bg-slate-800/80 transition-all duration-300">
+        <div className={`relative h-[100px] w-full rounded-lg overflow-hidden group transition-all duration-300 ${hideBackground ? '' : 'bg-slate-800/60 shadow-lg border border-white/5 hover:bg-slate-800/80'}`}>
             {/* Background Art */}
             <div
-                className="absolute inset-0 bg-cover bg-center opacity-20 blur-sm pointer-events-none"
+                className={`absolute inset-0 bg-cover bg-center blur-sm pointer-events-none ${hideBackground ? 'opacity-40' : 'opacity-20'}`}
                 style={{ backgroundImage: `url(${getImageUrl(session.art || session.thumb, session.server_id, 150)})` }}
             ></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent pointer-events-none"></div>
+            {!hideBackground && <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent pointer-events-none"></div>}
 
             {/* Content */}
             <div className="relative h-full flex items-center p-2 gap-3">

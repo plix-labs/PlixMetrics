@@ -7,9 +7,11 @@ interface LiveMapProps {
     sessions: ActiveSession[];
     onUserClick?: (username: string) => void;
     hideControls?: boolean;
+    showSessions?: boolean;
+    onToggleSessions?: (show: boolean) => void;
 }
 
-export const LiveMap: React.FC<LiveMapProps> = ({ sessions, onUserClick, hideControls = false }) => {
+export const LiveMap: React.FC<LiveMapProps> = ({ sessions, onUserClick, hideControls = false, showSessions = true, onToggleSessions }) => {
     const { t } = useTranslation();
     const [enableClustering, setEnableClustering] = useState(() => {
         return localStorage.getItem('map_clustering') === 'true';
@@ -53,6 +55,23 @@ export const LiveMap: React.FC<LiveMapProps> = ({ sessions, onUserClick, hideCon
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider group-hover/label:text-slate-200 transition-colors drop-shadow-md">{t('liveMap.group')}</span>
                 </label>
+
+                {hideControls && onToggleSessions && (
+                    <label className="flex items-center gap-2 cursor-pointer select-none group/label">
+                        <div className="relative flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={showSessions}
+                                onChange={(e) => onToggleSessions(e.target.checked)}
+                                className="peer appearance-none w-3 h-3 border border-slate-500 rounded bg-slate-800 checked:bg-indigo-500 checked:border-indigo-500 focus:outline-none transition-colors"
+                            />
+                            <svg className="absolute w-2 h-2 text-slate-900 pointer-events-none opacity-0 peer-checked:opacity-100 left-0.5 top-0.5 transition-opacity" viewBox="0 0 14 14" fill="none">
+                                <path d="M3 8L6 11L11 3.5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider group-hover/label:text-slate-200 transition-colors drop-shadow-md">{t('liveMap.list')}</span>
+                    </label>
+                )}
             </div>
         </div>
     );

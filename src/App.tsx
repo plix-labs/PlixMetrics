@@ -103,6 +103,7 @@ function AppDashboard() {
     const [isMonochromeView, setIsMonochromeView] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
     const [showZenControls, setShowZenControls] = useState(true);
+    const [showZenSessions, setShowZenSessions] = useState(true);
 
     useEffect(() => {
         let timeout: any;
@@ -588,11 +589,13 @@ function AppDashboard() {
                             sessions={data?.active_sessions || []}
                             onUserClick={() => { }}
                             hideControls={true}
+                            showSessions={showZenSessions}
+                            onToggleSessions={setShowZenSessions}
                         />
                     </div>
 
                     {/* Floating Info Overlay Over Map */}
-                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-10 pointer-events-none">
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-10 pointer-events-none h-full pb-12">
                         <div className="flex gap-8">
                             <div className="flex flex-col items-start pointer-events-auto">
                                 <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1 drop-shadow-md">{t('dashboard.activeStreams')}</span>
@@ -608,12 +611,50 @@ function AppDashboard() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Right Side Sessions "Roulette" */}
+                        <div className={`hidden md:flex flex-col w-[350px] h-full relative pointer-events-none overflow-hidden mask-roulette transition-all duration-700 ${showZenSessions ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}>
+                            <div
+                                className="flex flex-col gap-6 py-20 pointer-events-auto animate-roulette"
+                                style={{
+                                    animationDuration: `${(data?.active_sessions.length || 0) * 4}s`,
+                                }}
+                            >
+                                {/* Duplicate three times to ensure seamless infinite loop */}
+                                {[...(data?.active_sessions || []), ...(data?.active_sessions || []), ...(data?.active_sessions || [])].map((session, idx) => (
+                                    <div key={`${session.session_id}-${idx}`} className="transition-all duration-500 hover:scale-105 pointer-events-auto">
+                                        <SessionCard
+                                            session={session}
+                                            hideBackground={true}
+                                            onUserClick={() => { }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
+
+                    <style>{`
+                        @keyframes roulette-scroll {
+                            0% { transform: translateY(-33.33%); }
+                            100% { transform: translateY(0); }
+                        }
+                        .animate-roulette {
+                            animation: roulette-scroll linear infinite;
+                        }
+                        .animate-roulette:hover {
+                            animation-play-state: paused;
+                        }
+                        .mask-roulette {
+                            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+                            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+                        }
+                    `}</style>
 
                     {/* Floating Close Button for Zen Mode */}
                     <button
                         onClick={() => setIsMonochromeView(false)}
-                        className={`fixed top-6 right-6 z-[110] p-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white/50 hover:text-white hover:bg-black/60 transition-all duration-500 transform pointer-events-auto ${showZenControls ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+                        className={`fixed top-6 left-1/2 -translate-x-1/2 z-[110] p-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white/50 hover:text-white hover:bg-black/60 transition-all duration-500 transform pointer-events-auto ${showZenControls ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
                         title="Exit Zen Mode (ESC)"
                     >
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
