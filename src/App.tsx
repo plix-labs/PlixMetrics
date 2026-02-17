@@ -469,7 +469,7 @@ function AppDashboard() {
                                 <p className="text-slate-400 mt-4">{t('dashboard.loadingStatistics')}</p>
                             </div>
                         }>
-                            <StatisticsPage />
+                            <StatisticsPage onAddServer={() => setShowAddServer(true)} />
                         </Suspense>
                     ) : currentView === 'analytics' ? (
                         <Suspense fallback={
@@ -478,7 +478,7 @@ function AppDashboard() {
                                 <p className="text-slate-400 mt-4">{t('dashboard.loadingAnalytics')}</p>
                             </div>
                         }>
-                            <AnalyticsPage />
+                            <AnalyticsPage onAddServer={() => setShowAddServer(true)} />
                         </Suspense>
                     ) : currentView === 'users' ? (
                         <Suspense fallback={
@@ -487,7 +487,7 @@ function AppDashboard() {
                                 <p className="text-slate-400 mt-4">{t('dashboard.loadingUsers')}</p>
                             </div>
                         }>
-                            <UsersPage />
+                            <UsersPage onAddServer={() => setShowAddServer(true)} />
                         </Suspense>
                     ) : (
                         <div className="space-y-8">

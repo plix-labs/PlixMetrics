@@ -5,10 +5,15 @@ import { useServers } from '../hooks/useServers';
 import { StatCard } from './StatCard';
 import { UserDetailsModal } from './UserDetailsModal';
 import { WatchStatsFilters } from '../types/statistics';
+import { EmptyServersState } from './EmptyServersState';
 
 const STORAGE_KEY = 'plixmetrics_watch_stats_filters';
 
-export const StatisticsPage: React.FC = () => {
+interface StatisticsPageProps {
+    onAddServer?: () => void;
+}
+
+export const StatisticsPage: React.FC<StatisticsPageProps> = ({ onAddServer }) => {
     const { t } = useTranslation();
     // Load filters from localStorage or use defaults
     const [filters, setFilters] = useState<WatchStatsFilters>(() => {
@@ -30,11 +35,11 @@ export const StatisticsPage: React.FC = () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
     }, [filters]);
 
-    // Fetch watch stats (only when this component is mounted)
-    const { data, isLoading, error } = useWatchStats(filters, true);
-
     // Fetch servers for the dropdown
-    const { servers } = useServers();
+    const { servers, loading: serversLoading } = useServers();
+
+    // Fetch watch stats (only when this component is mounted and we have servers)
+    const { data, isLoading, error } = useWatchStats(filters, servers.length > 0);
 
     const [daysInput, setDaysInput] = useState(filters.days.toString());
 
@@ -48,6 +53,10 @@ export const StatisticsPage: React.FC = () => {
     };
 
 
+
+    if (!serversLoading && servers.length === 0) {
+        return <EmptyServersState onAddServer={onAddServer || (() => { })} />;
+    }
 
     return (
         <div className="space-y-8">

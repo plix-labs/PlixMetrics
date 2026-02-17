@@ -8,6 +8,7 @@ import { DevicePreferenceChart } from './DevicePreferenceChart';
 import { PlaybackHealthChart } from './PlaybackHealthChart';
 import { LibraryQualityChart } from './LibraryQualityChart';
 import { GenrePopularityChart } from './GenrePopularityChart';
+import { EmptyServersState } from './EmptyServersState';
 
 const STORAGE_KEY = 'plixmetrics_analytics_filters';
 
@@ -16,7 +17,11 @@ interface AnalyticsFilters {
     server_id: string;
 }
 
-export const AnalyticsPage: React.FC = () => {
+interface AnalyticsPageProps {
+    onAddServer?: () => void;
+}
+
+export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ onAddServer }) => {
     const { t } = useTranslation();
     // Load filters from localStorage or use defaults
     const [filters, setFilters] = useState<AnalyticsFilters>(() => {
@@ -37,10 +42,10 @@ export const AnalyticsPage: React.FC = () => {
     }, [filters]);
 
     // Fetch servers for the dropdown
-    const { servers } = useServers();
+    const { servers, loading: serversLoading } = useServers();
 
-    // Fetch Analytics Data
-    const { data: analyticsData, isLoading, error } = useAnalytics(filters.days, filters.server_id);
+    // Fetch Analytics Data (only if we have servers)
+    const { data: analyticsData, isLoading, error } = useAnalytics(filters.days, filters.server_id, servers.length > 0);
 
     const [daysInput, setDaysInput] = useState(filters.days.toString());
 
@@ -223,6 +228,10 @@ export const AnalyticsPage: React.FC = () => {
                 return null;
         }
     };
+
+    if (!serversLoading && servers.length === 0) {
+        return <EmptyServersState onAddServer={onAddServer || (() => { })} />;
+    }
 
     return (
         <div className="space-y-8 animate-fade-in">

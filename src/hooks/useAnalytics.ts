@@ -9,7 +9,7 @@ interface UseAnalyticsResult {
     refetch: () => void;
 }
 
-export const useAnalytics = (days: number, serverId: string): UseAnalyticsResult => {
+export const useAnalytics = (days: number, serverId: string, enabled: boolean = true): UseAnalyticsResult => {
     const [data, setData] = useState<AnalyticsResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
@@ -45,13 +45,18 @@ export const useAnalytics = (days: number, serverId: string): UseAnalyticsResult
     };
 
     useEffect(() => {
+        if (!enabled) {
+            setIsLoading(false);
+            return;
+        }
+
         if (status?.authenticated) {
             fetchData();
         } else if (status && !status.authenticated) {
             setIsLoading(false);
             setError(new Error('User not authenticated'));
         }
-    }, [days, serverId, token, status]);
+    }, [days, serverId, token, status, enabled]);
 
     return { data, isLoading, error, refetch: fetchData };
 };

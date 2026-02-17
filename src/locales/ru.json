@@ -20,7 +20,9 @@
         "moveDown": "Вниз",
         "pressEnterToApply": "Нажмите Enter для применения",
         "never": "Никогда",
-        "unknownError": "Неизвестная ошибка"
+        "unknownError": "Неизвестная ошибка",
+        "noServers": "Серверы не добавлены",
+        "addServerToStart": "Добавьте сервер Tautulli, чтобы начать просматривать статистику."
     },
     "dashboard": {
         "activeStreams": "Активные потоки",

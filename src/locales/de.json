@@ -20,7 +20,9 @@
         "moveDown": "Nach unten",
         "pressEnterToApply": "Enter drücken zum Anwenden",
         "never": "Nie",
-        "unknownError": "Unbekannter Fehler"
+        "unknownError": "Unbekannter Fehler",
+        "noServers": "Keine Server hinzugefügt",
+        "addServerToStart": "Fügen Sie einen Tautulli-Server hinzu, um Ihre Statistiken anzuzeigen."
     },
     "dashboard": {
         "activeStreams": "Aktive Streams",

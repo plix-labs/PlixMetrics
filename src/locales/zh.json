@@ -20,7 +20,9 @@
         "moveDown": "下移",
         "pressEnterToApply": "按回车键应用",
         "never": "从未",
-        "unknownError": "未知错误"
+        "unknownError": "未知错误",
+        "noServers": "未添加服务器",
+        "addServerToStart": "添加 Tautulli 服务器以开始查看您的统计数据。"
     },
     "dashboard": {
         "activeStreams": "活跃流",

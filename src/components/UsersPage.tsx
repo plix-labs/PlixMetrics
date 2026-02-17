@@ -5,6 +5,7 @@ import { usersApi } from '../api/client';
 import { useServers } from '../hooks/useServers';
 import { UserTableItem } from '../types';
 import { UserDetailsModal } from './UserDetailsModal';
+import { EmptyServersState } from './EmptyServersState';
 
 interface ColumnConfig {
     id: keyof UserTableItem | 'last_streamed' | 'ip' | 'last_played' | 'plays' | 'duration' | 'server';
@@ -25,9 +26,13 @@ const DEFAULT_COLUMNS: ColumnConfig[] = [
     { id: 'duration', labelKey: 'usersPage.totalPlayedDuration', visible: true }
 ];
 
-export const UsersPage = () => {
+interface UsersPageProps {
+    onAddServer?: () => void;
+}
+
+export const UsersPage: React.FC<UsersPageProps> = ({ onAddServer }) => {
     const { t } = useTranslation();
-    const { servers } = useServers();
+    const { servers, loading: serversLoading } = useServers();
     const [selectedServerId, setSelectedServerId] = useState<string>(''); // Empty initially
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -188,6 +193,10 @@ export const UsersPage = () => {
             col.id === id ? { ...col, visible: !col.visible } : col
         ));
     };
+
+    if (!serversLoading && servers.length === 0) {
+        return <EmptyServersState onAddServer={onAddServer || (() => { })} />;
+    }
 
     return (
         <div className="space-y-6 pb-20">

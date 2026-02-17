@@ -20,7 +20,9 @@
         "moveDown": "Descendre",
         "pressEnterToApply": "Appuyez sur Entrée pour appliquer",
         "never": "Jamais",
-        "unknownError": "Erreur inconnue"
+        "unknownError": "Erreur inconnue",
+        "noServers": "Aucun serveur ajouté",
+        "addServerToStart": "Ajoutez un serveur Tautulli pour commencer à voir vos statistiques."
     },
     "dashboard": {
         "activeStreams": "Flux Actifs",
