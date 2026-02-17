@@ -102,6 +102,39 @@ function AppDashboard() {
     const [isLandscapeMobile, setIsLandscapeMobile] = useState(false);
     const [isMonochromeView, setIsMonochromeView] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+    const [showZenControls, setShowZenControls] = useState(true);
+
+    useEffect(() => {
+        let timeout: any;
+        const handleMouseMove = () => {
+            setShowZenControls(true);
+            clearTimeout(timeout);
+            timeout = setTimeout(() => setShowZenControls(false), 3000);
+        };
+
+        if (isMonochromeView) {
+            window.addEventListener('mousemove', handleMouseMove);
+            handleMouseMove();
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            clearTimeout(timeout);
+        };
+    }, [isMonochromeView]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key.toLowerCase() === 'z' || e.key.toLowerCase() === 'f') {
+                if (!isMonochromeView) setIsMonochromeView(true);
+            } else if (e.key === 'Escape') {
+                setIsMonochromeView(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isMonochromeView]);
 
     useEffect(() => {
         const checkOrientation = () => {
@@ -576,6 +609,17 @@ function AppDashboard() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Floating Close Button for Zen Mode */}
+                    <button
+                        onClick={() => setIsMonochromeView(false)}
+                        className={`fixed top-6 right-6 z-[110] p-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white/50 hover:text-white hover:bg-black/60 transition-all duration-500 transform pointer-events-auto ${showZenControls ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+                        title="Exit Zen Mode (ESC)"
+                    >
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             )}
             <UpdateChecker />
