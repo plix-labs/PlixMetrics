@@ -6,7 +6,7 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 
 ## 📸 Screenshots
 
-| 📊 Statistics | � Analytics |
+| 📊 Statistics | 📈 Analytics |
 | :---: | :---: |
 | ![Stats](docs/stats.png) | ![Analytics](docs/analytics.png) |
 
@@ -35,7 +35,7 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 
 ## Installation & Deployment
 
-### minimal Requirements
+### Minimal Requirements
 - **Node.js**: v20 or higher (for manual install)
 - **Docker**: Engine 20.10+ (for Docker install)
 - **Memory**: ~256MB RAM (very lightweight)
