@@ -101,12 +101,16 @@ function AppDashboard() {
     };
     const [isLandscapeMobile, setIsLandscapeMobile] = useState(false);
     const [isMonochromeView, setIsMonochromeView] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
     useEffect(() => {
         const checkOrientation = () => {
-            const isLandscape = window.innerWidth > window.innerHeight;
-            const isMobile = window.innerWidth < 1024;
-            setIsLandscapeMobile(isLandscape && isMobile);
+            const width = window.innerWidth;
+            const isLandscape = width > window.innerHeight;
+            const isMobileDetected = width < 1024;
+
+            setIsLandscapeMobile(isLandscape && isMobileDetected);
+            setIsDesktop(!isMobileDetected);
 
             // Auto-exit monochrome if orientation changes to portrait
             if (!isLandscape) {
@@ -320,15 +324,17 @@ function AppDashboard() {
                         <Logo />
                         <div className="flex items-center gap-4">
                             <LanguageSelector />
-                            <button
-                                onClick={() => setShowMobilePairing(true)}
-                                className="hidden md:block p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors"
-                                title={t('pairing.title')}
-                            >
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                </svg>
-                            </button>
+                            {isDesktop && (
+                                <button
+                                    onClick={() => setShowMobilePairing(true)}
+                                    className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors"
+                                    title={t('pairing.title')}
+                                >
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            )}
                             {isLandscapeMobile && (
                                 <button
                                     onClick={() => setIsMonochromeView(!isMonochromeView)}
