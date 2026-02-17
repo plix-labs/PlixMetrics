@@ -14,9 +14,9 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 | :---: | :---: |
 | ![Users](docs/users.png) | ![Mobile](docs/mobile.png) |
 
-| ✨ Session Detail |
-| :---: |
-| ![Session Detail](docs/sessioncard.png) |
+| ✨ Session Detail | 🧘 Zen Mode |
+| :---: | :---: |
+| ![Session Detail](docs/sessioncard.png) | ![Zen Mode](docs/zenmode.gif) |
 
 ## Features
 
