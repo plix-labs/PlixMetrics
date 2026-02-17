@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
@@ -99,8 +99,25 @@ function AppDashboard() {
             localStorage.setItem('dashboardOrder', JSON.stringify(newOrder));
         }
     };
+    const [isLandscapeMobile, setIsLandscapeMobile] = useState(false);
+    const [isMonochromeView, setIsMonochromeView] = useState(false);
 
+    useEffect(() => {
+        const checkOrientation = () => {
+            const isLandscape = window.innerWidth > window.innerHeight;
+            const isMobile = window.innerWidth < 1024;
+            setIsLandscapeMobile(isLandscape && isMobile);
 
+            // Auto-exit monochrome if orientation changes to portrait
+            if (!isLandscape) {
+                setIsMonochromeView(false);
+            }
+        };
+
+        window.addEventListener('resize', checkOrientation);
+        checkOrientation();
+        return () => window.removeEventListener('resize', checkOrientation);
+    }, []);
 
     // No authentication needed - single user mode
     const { data, loading, error, refetch } = usePlexNetwork();
@@ -274,6 +291,7 @@ function AppDashboard() {
                             <LiveMap
                                 sessions={data?.active_sessions || []}
                                 onUserClick={setSelectedUser}
+                                hideControls={isMonochromeView}
                             />
                         </div>
                     </section>
@@ -311,6 +329,17 @@ function AppDashboard() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                 </svg>
                             </button>
+                            {isLandscapeMobile && (
+                                <button
+                                    onClick={() => setIsMonochromeView(!isMonochromeView)}
+                                    className={`p-2 rounded-lg transition-all ${isMonochromeView ? 'bg-white text-black' : 'bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                                    title={t('dashboard.minimalView')}
+                                >
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            )}
                             <button
                                 onClick={() => setShowServerListModal(true)}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${loading
@@ -510,8 +539,42 @@ function AppDashboard() {
                 />
                 <UpdateChecker />
             </div >
-        </div >
-    )
+
+            {/* Minimal Landscape View Overlay */}
+            {isMonochromeView && (
+                <div className="fixed inset-0 z-[100] bg-slate-950 overflow-hidden animate-in fade-in duration-300">
+                    {/* Full Screen Map in Original Colors */}
+                    <div className="absolute inset-0 z-0">
+                        <LiveMap
+                            sessions={data?.active_sessions || []}
+                            onUserClick={() => { }}
+                            hideControls={true}
+                        />
+                    </div>
+
+                    {/* Floating Info Overlay Over Map */}
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-10 pointer-events-none">
+                        <div className="flex gap-8">
+                            <div className="flex flex-col items-start pointer-events-auto">
+                                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1 drop-shadow-md">{t('dashboard.activeStreams')}</span>
+                                <span className="text-5xl font-black text-cyan-400 leading-none drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{data?.total_stream_count || 0}</span>
+                            </div>
+                            <div className="flex flex-col items-start pointer-events-auto">
+                                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1 drop-shadow-md">{t('dashboard.bandwidth')}</span>
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="text-5xl font-black text-indigo-400 leading-none drop-shadow-[0_0_10px_rgba(129,140,248,0.5)]">
+                                        {data ? (data.total_bandwidth / 1000).toFixed(1) : '0'}
+                                    </span>
+                                    <span className="text-sm font-bold text-slate-500 uppercase tracking-wider drop-shadow-md">Mbps</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <UpdateChecker />
+        </div>
+    );
 }
 
 function AppWrapper() {

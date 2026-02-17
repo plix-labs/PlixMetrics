@@ -36,7 +36,8 @@
         "loadingAnalytics": "Cargando analíticas...",
         "loadingUsers": "Cargando usuarios...",
         "serverBreakdown": "Desglose por Servidor",
-        "noActiveServers": "No hay servidores activos"
+        "noActiveServers": "No hay servidores activos",
+        "minimalView": "Vista Minimalista"
     },
     "login": {
         "title": "PlixMetrics",
