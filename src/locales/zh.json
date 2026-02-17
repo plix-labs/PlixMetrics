@@ -34,7 +34,9 @@
         "liveUserMap": "实时用户地图",
         "loadingStatistics": "正在加载统计...",
         "loadingAnalytics": "正在加载分析...",
-        "loadingUsers": "正在加载用户..."
+        "loadingUsers": "正在加载用户...",
+        "serverBreakdown": "服务器细分",
+        "noActiveServers": "无活跃服务器"
     },
     "login": {
         "title": "PlixMetrics",
@@ -205,8 +207,9 @@
         "subText": "全球网络监控"
     },
     "liveMap": {
-        "activeStream": "活跃流",
-        "group": "组"
+        "activeStream": "活跃串流",
+        "group": "分组",
+        "list": "列表"
     },
     "hooks": {
         "failedToLoadServers": "加载服务器失败。"

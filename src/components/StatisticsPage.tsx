@@ -49,14 +49,7 @@ export const StatisticsPage: React.FC = () => {
         setDaysInput(e.target.value);
     };
 
-    const handleDaysKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            const value = parseInt(daysInput, 10);
-            if (value > 0 && value <= 365) {
-                setFilters(prev => ({ ...prev, days: value }));
-            }
-        }
-    };
+
 
     return (
         <div className="space-y-8">
@@ -71,7 +64,7 @@ export const StatisticsPage: React.FC = () => {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, stat_type: 'plays' }))}
-                                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'plays'
+                                className={`flex-1 h-11 px-4 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'plays'
                                     ? 'bg-cyan-600 text-white border-2 border-cyan-500'
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
@@ -80,7 +73,7 @@ export const StatisticsPage: React.FC = () => {
                             </button>
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, stat_type: 'duration' }))}
-                                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'duration'
+                                className={`flex-1 h-11 px-4 rounded-lg text-sm font-medium transition-all ${filters.stat_type === 'duration'
                                     ? 'bg-amber-600 text-white border-2 border-amber-500'
                                     : 'bg-slate-700/50 text-slate-300 border-2 border-slate-600 hover:bg-slate-700'
                                     }`}
@@ -90,23 +83,46 @@ export const StatisticsPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Days Input */}
-                    <div>
-                        <label htmlFor="days-input" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
-                            {t('stats.timeRange')}
-                        </label>
-                        <input
-                            id="days-input"
-                            type="number"
-                            min="1"
-                            max="365"
-                            value={daysInput}
-                            onChange={handleDaysChange}
-                            onKeyPress={handleDaysKeyPress}
-                            placeholder={`Current: ${filters.days}`}
-                            className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <p className="text-[10px] text-slate-500 mt-1">{t('common.pressEnterToApply')}</p>
+                    <div className="flex gap-2">
+                        <div className="flex-1">
+                            <label htmlFor="days-input" className="text-xs text-slate-400 uppercase tracking-widest font-bold block mb-2">
+                                {t('stats.timeRange')}
+                            </label>
+                            <div className="flex gap-2">
+                                <input
+                                    id="days-input"
+                                    type="number"
+                                    min="1"
+                                    max="365"
+                                    value={daysInput}
+                                    onChange={handleDaysChange}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            const value = parseInt(daysInput, 10);
+                                            if (value > 0 && value <= 365) {
+                                                setFilters(prev => ({ ...prev, days: value }));
+                                            }
+                                        }
+                                    }}
+                                    placeholder={`Current: ${filters.days}`}
+                                    className="w-full h-11 px-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                />
+                                <button
+                                    onClick={() => {
+                                        const value = parseInt(daysInput, 10);
+                                        if (value > 0 && value <= 365) {
+                                            setFilters(prev => ({ ...prev, days: value }));
+                                        }
+                                    }}
+                                    className="h-11 px-4 bg-slate-700/50 border-2 border-slate-600 hover:bg-slate-700 text-cyan-400 rounded-lg transition-colors flex items-center justify-center"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                        <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
                     {/* Server Select */}
@@ -119,7 +135,7 @@ export const StatisticsPage: React.FC = () => {
                                 id="server-select"
                                 value={filters.server_id}
                                 onChange={(e) => setFilters(prev => ({ ...prev, server_id: e.target.value }))}
-                                className="w-full px-4 py-2 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
+                                className="w-full h-11 px-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-lg focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
                             >
                                 <option value="all">{t('common.allServersAggregated')}</option>
                                 {servers.map(server => (

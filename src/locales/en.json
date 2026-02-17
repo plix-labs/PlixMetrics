@@ -34,7 +34,10 @@
         "liveUserMap": "Live User Map",
         "loadingStatistics": "Loading statistics...",
         "loadingAnalytics": "Loading analytics...",
-        "loadingUsers": "Loading users..."
+        "loadingUsers": "Loading users...",
+        "serverBreakdown": "Server Breakdown",
+        "noActiveServers": "No active servers",
+        "minimalView": "Minimal View"
     },
     "login": {
         "title": "PlixMetrics",
@@ -206,7 +209,8 @@
     },
     "liveMap": {
         "activeStream": "Active Stream",
-        "group": "Group"
+        "group": "Group",
+        "list": "List"
     },
     "hooks": {
         "failedToLoadServers": "Failed to load servers."

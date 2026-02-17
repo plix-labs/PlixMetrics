@@ -34,7 +34,9 @@
         "liveUserMap": "Carte des Utilisateurs en Direct",
         "loadingStatistics": "Chargement des statistiques...",
         "loadingAnalytics": "Chargement des analytiques...",
-        "loadingUsers": "Chargement des utilisateurs..."
+        "loadingUsers": "Chargement des utilisateurs...",
+        "serverBreakdown": "Répartition par serveur",
+        "noActiveServers": "Aucun serveur actif"
     },
     "login": {
         "title": "PlixMetrics",
@@ -206,7 +208,8 @@
     },
     "liveMap": {
         "activeStream": "Flux Actif",
-        "group": "Groupe"
+        "group": "Groupe",
+        "list": "Liste"
     },
     "hooks": {
         "failedToLoadServers": "Échec du chargement des serveurs."
