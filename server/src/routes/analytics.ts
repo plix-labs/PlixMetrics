@@ -49,10 +49,14 @@ router.get('/', async (req, res) => {
 
                 if (hourlyRes.data.response.result === 'success') {
                     const data = hourlyRes.data.response.data;
+                    const categories = data.categories || [];
                     if (data.series && data.series.length > 0) {
                         data.series.forEach((serie: any) => {
                             serie.data.forEach((count: number, index: number) => {
-                                hourlyActivityMap.set(index, (hourlyActivityMap.get(index) || 0) + count);
+                                // Use category label to determine the hour, fallback to index
+                                const hourLabel = categories[index];
+                                const hour = hourLabel !== undefined ? parseInt(hourLabel, 10) : index;
+                                hourlyActivityMap.set(hour, (hourlyActivityMap.get(hour) || 0) + count);
                             });
                         });
                     }
