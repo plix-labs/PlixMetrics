@@ -29,6 +29,9 @@ A self-hosted, real-time Plex network monitoring dashboard. Track multiple Tautu
 - 🚀 **Lightweight** - Single container, SQLite database
 - 📱 **Mobile Ready** - Responsive design with PWA support
 - 🌍 **Multi-language Support** - Available in English, Spanish, French, Portuguese, German, Russian, and Chinese
+- 🧘 **Zen Mode** - Immersive, full-screen map-only view with floating metrics
+
+---
 
 ## Installation & Deployment
 
@@ -169,6 +172,18 @@ PlixMetrics is a Progressive Web App. You can install it on your phone for a nat
 2. Scan the **QR Code** with your mobile phone.
 3. On your phone, tap **"Add to Home Screen"** in your browser menu.
 4. Launch it from your home screen for a full-screen experience.
+
+### 4. 🧘 Zen Mode (Minimal View)
+A distraction-free, immersive view designed for dedicated monitoring screens or a clean dashboard experience. It features a full-screen map with floating real-time metrics and no UI clutter.
+
+#### Desktop Access:
+- **Enter**: Press **`Z`** or **`F`** keys while on the dashboard.
+- **Exit**: Press **`ESC`** key or click the floating **X** close button (which appears automatically when moving the mouse).
+- **Interactive**: A minimalist "Group" checkbox is available in the bottom-left to toggle marker clustering.
+
+#### Mobile Access:
+- **Enter**: Rotate your device to **Landscape** orientation. A "Minimal View" (monitor icon) will appear in the top header; tap it to activate the mode.
+- **Exit**: Simply rotate your device back to **Portrait** orientation.
 
 ---
 
