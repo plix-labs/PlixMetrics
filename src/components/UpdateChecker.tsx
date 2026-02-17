@@ -75,7 +75,7 @@ export const UpdateChecker = () => {
                     <div className="flex-1">
                         <h3 className="font-bold text-slate-100 mb-1">{t('update.available')}</h3>
                         <p className="text-sm text-slate-400 mb-3">
-                            {t('update.versionAvailable', { latest: info.latest, current: info.current })}
+                            {t('update.versionAvailable', { version: info.latest, current: info.current })}
                         </p>
 
                         {message ? (
