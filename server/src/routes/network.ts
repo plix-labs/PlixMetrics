@@ -39,7 +39,7 @@ router.get('/status', async (req, res) => {
                     // Fetch Activity (Always fresh)
                     const activityRes = await axios.get(`${server.tautulli_url}/api/v2`, {
                         params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                        timeout: 5000
+                        timeout: 1500
                     });
 
                     if (activityRes.data.response.result !== 'success') return null;
@@ -51,11 +51,11 @@ router.get('/status', async (req, res) => {
                         const [hRes, uRes] = await Promise.all([
                             axios.get(`${server.tautulli_url}/api/v2`, {
                                 params: { apikey: server.api_key_secret, cmd: 'get_home_stats' },
-                                timeout: 5000
+                                timeout: 1500
                             }),
                             axios.get(`${server.tautulli_url}/api/v2`, {
                                 params: { apikey: server.api_key_secret, cmd: 'get_users' },
-                                timeout: 5000
+                                timeout: 1500
                             })
                         ]);
                         homeStats = hRes.data.response.data;
@@ -105,6 +105,7 @@ router.get('/status', async (req, res) => {
         let totalStreamCount = 0;
         let totalTranscodes = 0;
         let totalPlays24h = 0;
+        let offlineServers = 0;
         const globalUniqueUsers = new Set<string>();
         const ipsToLookup: string[] = [];
         const sessionData: any[] = [];
@@ -136,6 +137,8 @@ router.get('/status', async (req, res) => {
                         sessionData.push({ session, serverData, sessionBandwidth, ipToLookup, lat, lon });
                     }
                 }
+            } else {
+                offlineServers++;
             }
         }
 
@@ -202,7 +205,9 @@ router.get('/status', async (req, res) => {
             total_transcodes: totalTranscodes,
             total_users: globalUniqueUsers.size,
             total_libraries_size: totalPlays24h,
-            active_sessions: allSessions
+            active_sessions: allSessions,
+            offline_servers_count: offlineServers,
+            total_servers_count: servers.length
         };
 
         res.json(response);
@@ -229,7 +234,7 @@ router.get('/sessions', async (req, res) => {
                 try {
                     const activityRes = await axios.get(`${server.tautulli_url}/api/v2`, {
                         params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                        timeout: 5000
+                        timeout: 1500
                     });
 
                     if (activityRes.data.response.result !== 'success') return null;
@@ -251,6 +256,7 @@ router.get('/sessions', async (req, res) => {
         const sessionData: any[] = [];
         let totalBandwidth = 0;
         let totalStreamCount = 0;
+        let offlineServers = 0;
 
         for (const result of results) {
             if (result.status === 'fulfilled' && result.value) {
@@ -274,6 +280,8 @@ router.get('/sessions', async (req, res) => {
                         sessionData.push({ session, serverData, sessionBandwidth, ipToLookup, lat, lon });
                     }
                 }
+            } else {
+                offlineServers++;
             }
         }
 
@@ -336,7 +344,9 @@ router.get('/sessions', async (req, res) => {
         res.json({
             active_sessions: allSessions,
             total_stream_count: totalStreamCount,
-            total_bandwidth: totalBandwidth
+            total_bandwidth: totalBandwidth,
+            offline_servers_count: offlineServers,
+            total_servers_count: servers.length
         });
     } catch (error) {
         console.error('[Sessions] Critical error:', error);

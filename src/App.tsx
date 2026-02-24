@@ -340,6 +340,16 @@ function AppDashboard() {
         }
     };
 
+    const serverStatus = (() => {
+        if (loading) return 'checking';
+        if (error) return 'error';
+        if (data && data.total_servers_count && data.total_servers_count > 0) {
+            if (data.offline_servers_count === data.total_servers_count) return 'all_offline';
+            if (data.offline_servers_count && data.offline_servers_count > 0) return 'some_offline';
+        }
+        return 'online';
+    })();
+
     return (
         <div
             className="min-h-screen bg-slate-900 text-slate-50 selection:bg-cyan-500/30"
@@ -382,16 +392,25 @@ function AppDashboard() {
                             )}
                             <button
                                 onClick={() => setShowServerListModal(true)}
-                                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${loading
-                                    ? 'bg-slate-800/50 border-slate-700 text-slate-400'
-                                    : error
-                                        ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20'
-                                        : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${serverStatus === 'checking'
+                                        ? 'bg-slate-800/50 border-slate-700 text-slate-400'
+                                        : serverStatus === 'error' || serverStatus === 'all_offline'
+                                            ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20'
+                                            : serverStatus === 'some_offline'
+                                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+                                                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
                                     }`}
                             >
-                                <div className={`h-2 w-2 rounded-full ${loading ? 'bg-amber-400 animate-pulse' : error ? 'bg-red-500' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
+                                <div className={`h-2 w-2 rounded-full ${serverStatus === 'checking'
+                                        ? 'bg-amber-400 animate-pulse'
+                                        : serverStatus === 'error' || serverStatus === 'all_offline'
+                                            ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'
+                                            : serverStatus === 'some_offline'
+                                                ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]'
+                                                : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'
+                                    }`}></div>
                                 <span className="text-xs font-bold uppercase tracking-wider">
-                                    {loading ? t('common.syncing') : t('common.servers')}
+                                    {serverStatus === 'checking' ? t('common.syncing') : t('common.servers')}
                                 </span>
                             </button>
                         </div>

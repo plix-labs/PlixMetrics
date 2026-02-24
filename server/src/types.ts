@@ -40,6 +40,8 @@ export interface NetworkStatus {
     total_libraries_size?: number;
     total_transcodes?: number;
     active_sessions: ActiveSession[];
+    offline_servers_count?: number;
+    total_servers_count?: number;
 }
 
 export interface StatItem {
