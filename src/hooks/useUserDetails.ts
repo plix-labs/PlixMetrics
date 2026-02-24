@@ -11,6 +11,7 @@ export interface UserDetails {
     platforms: { name: string; count: number }[];
     players: { name: string; count: number }[];
     known_ips: string[];
+    locations: { lat: number; lon: number; ip: string; date: number }[];
     last_watched: {
         title: string;
         type: string;

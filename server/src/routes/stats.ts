@@ -2,6 +2,7 @@ import { Router } from 'express';
 import axios from 'axios';
 import { getAllServersWithKeys } from './servers.js';
 import { WatchStatsResponse } from '../types.js';
+import { lookupIp } from '../services/geoip.js';
 
 const router = Router();
 
@@ -362,7 +363,7 @@ router.get('/user/:username', async (req, res) => {
             last_seen: null as number | null,
             platforms: new Map<string, number>(),
             players: new Map<string, number>(),
-            ips: new Set<string>(),
+            ips: new Map<string, number>(), // Store IP and latest connection date
             last_watched: [] as any[],
             hourly_activity: new Array(24).fill(0),
             server_breakdown: [] as any[]
@@ -438,7 +439,12 @@ router.get('/user/:username', async (req, res) => {
                             userStats.players.set(player, (userStats.players.get(player) || 0) + 1);
 
                             // IP tracking (geo-history)
-                            if (play.ip_address) userStats.ips.add(play.ip_address);
+                            if (play.ip_address) {
+                                const existingDate = userStats.ips.get(play.ip_address) || 0;
+                                if (date > existingDate) {
+                                    userStats.ips.set(play.ip_address, date);
+                                }
+                            }
 
                             // Hourly heatmap
                             const playDate = new Date(date * 1000);
@@ -480,7 +486,15 @@ router.get('/user/:username', async (req, res) => {
                 .map(([name, count]) => ({ name, count }))
                 .sort((a, b) => b.count - a.count)
                 .slice(0, 5),
-            known_ips: Array.from(userStats.ips).slice(0, 10), // Limit IP exposure
+            known_ips: Array.from(userStats.ips.keys()).slice(0, 10), // Limit IP exposure
+            locations: Array.from(userStats.ips.entries())
+                .sort((a, b) => b[1] - a[1]) // Sort by date descending
+                .slice(0, 10)
+                .map(([ip, date]) => {
+                    const geo = lookupIp(ip);
+                    return geo ? { lat: geo.lat, lon: geo.lon, ip, date } : null;
+                })
+                .filter(Boolean),
             last_watched: userStats.last_watched
                 .sort((a, b) => b.date - a.date)
                 .slice(0, 5)
