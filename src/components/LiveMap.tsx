@@ -5,7 +5,7 @@ import InteractiveMap from './InteractiveMap';
 
 interface LiveMapProps {
     sessions: ActiveSession[];
-    onUserClick?: (username: string) => void;
+    onUserClick?: (username: string, serverId?: number | string) => void;
     hideControls?: boolean;
     showSessions?: boolean;
     onToggleSessions?: (show: boolean) => void;

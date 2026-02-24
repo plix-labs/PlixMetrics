@@ -5,7 +5,7 @@ import { getImageProxyUrl } from '../api/client';
 
 interface SessionCardProps {
     session: ActiveSession;
-    onUserClick?: (username: string) => void;
+    onUserClick?: (username: string, serverId?: number | string) => void;
     hideBackground?: boolean;
 }
 
@@ -100,7 +100,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, onUserClick, 
                         <span
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onUserClick && onUserClick(session.user);
+                                onUserClick && onUserClick(session.user, session.server_id);
                             }}
                             className={`transition-colors ${onUserClick ? 'cursor-pointer hover:text-cyan-400 hover:underline hover:decoration-cyan-400/50' : ''}`}
                             title={onUserClick ? t('session.viewUserProfile') : undefined}

@@ -66,7 +66,7 @@ function AppDashboard() {
     const [showServerListModal, setShowServerListModal] = useState(false);
     const [serverToEdit, setServerToEdit] = useState<PlexServer | undefined>(undefined);
     const [currentView, setCurrentView] = useState<'dashboard' | 'statistics' | 'analytics' | 'users'>('dashboard');
-    const [selectedUser, setSelectedUser] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<{ username: string, serverId?: number | string } | null>(null);
     const [showMobilePairing, setShowMobilePairing] = useState(false);
 
     // Sidebar Order State with Persistence
@@ -305,7 +305,7 @@ function AppDashboard() {
                                     <SessionCard
                                         key={session.session_id}
                                         session={session}
-                                        onUserClick={setSelectedUser}
+                                        onUserClick={(username, serverId) => setSelectedUser({ username, serverId })}
                                     />
                                 ))}
                             </div>
@@ -328,7 +328,7 @@ function AppDashboard() {
                         <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 p-1 rounded-2xl overflow-hidden shadow-2xl h-[500px]">
                             <LiveMap
                                 sessions={data?.active_sessions || []}
-                                onUserClick={setSelectedUser}
+                                onUserClick={(username, serverId) => setSelectedUser({ username, serverId })}
                                 hideControls={isMonochromeView}
                             />
                         </div>
@@ -393,21 +393,21 @@ function AppDashboard() {
                             <button
                                 onClick={() => setShowServerListModal(true)}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${serverStatus === 'checking'
-                                        ? 'bg-slate-800/50 border-slate-700 text-slate-400'
-                                        : serverStatus === 'error' || serverStatus === 'all_offline'
-                                            ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20'
-                                            : serverStatus === 'some_offline'
-                                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
-                                                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
+                                    ? 'bg-slate-800/50 border-slate-700 text-slate-400'
+                                    : serverStatus === 'error' || serverStatus === 'all_offline'
+                                        ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20'
+                                        : serverStatus === 'some_offline'
+                                            ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+                                            : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
                                     }`}
                             >
                                 <div className={`h-2 w-2 rounded-full ${serverStatus === 'checking'
-                                        ? 'bg-amber-400 animate-pulse'
-                                        : serverStatus === 'error' || serverStatus === 'all_offline'
-                                            ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'
-                                            : serverStatus === 'some_offline'
-                                                ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]'
-                                                : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'
+                                    ? 'bg-amber-400 animate-pulse'
+                                    : serverStatus === 'error' || serverStatus === 'all_offline'
+                                        ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'
+                                        : serverStatus === 'some_offline'
+                                            ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]'
+                                            : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'
                                     }`}></div>
                                 <span className="text-xs font-bold uppercase tracking-wider">
                                     {serverStatus === 'checking' ? t('common.syncing') : t('common.servers')}
@@ -557,7 +557,8 @@ function AppDashboard() {
                 {
                     selectedUser && (
                         <UserDetailsModal
-                            username={selectedUser}
+                            username={selectedUser.username}
+                            serverId={selectedUser.serverId}
                             onClose={() => setSelectedUser(null)}
                         />
                     )

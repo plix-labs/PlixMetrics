@@ -7,7 +7,7 @@ import { ActiveSession } from '../types';
 interface InteractiveMapProps {
     sessions: ActiveSession[];
     enableClustering?: boolean;
-    onUserClick?: (username: string) => void;
+    onUserClick?: (username: string, serverId?: number | string) => void;
     hideControls?: boolean;
 }
 
@@ -173,7 +173,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sessions, enableCluster
                                         className={`font-bold text-cyan-400 text-sm mb-1 truncate ${onUserClick ? 'cursor-pointer hover:text-cyan-300 hover:underline' : ''}`}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            if (onUserClick) onUserClick(session.user);
+                                            if (onUserClick) onUserClick(session.user, session.server_id);
                                         }}
                                     >
                                         {session.user}
@@ -202,7 +202,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sessions, enableCluster
                                     className={`font-bold text-cyan-400 text-sm mb-1 truncate ${onUserClick ? 'cursor-pointer hover:text-cyan-300 hover:underline' : ''}`}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        if (onUserClick) onUserClick(session.user);
+                                        if (onUserClick) onUserClick(session.user, session.server_id);
                                     }}
                                 >
                                     {session.user}

@@ -31,8 +31,8 @@ export const networkApi = {
 export const statsApi = {
     getWatchStats: (params: { days: number; stat_type: string; server_id: string }) =>
         api.get('/api/stats', { params }),
-    getUserDetails: (username: string, days: number = 30) =>
-        api.get(`/api/stats/user/${encodeURIComponent(username)}`, { params: { days } })
+    getUserDetails: (username: string, days: number = 30, server_id?: number | string | null) =>
+        api.get(`/api/stats/user/${encodeURIComponent(username)}`, { params: { days, server_id } })
 };
 
 // Users API

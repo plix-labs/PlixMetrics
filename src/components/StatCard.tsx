@@ -13,7 +13,7 @@ interface StatCardProps {
     valueLabel?: string; // "Plays", "Users", "Streams", "hh:mm"
     enableTelegramShare?: boolean; // Enable Telegram share button
     days?: string | number;
-    onUserClick?: (username: string) => void;
+    onUserClick?: (username: string, serverId?: number | string) => void;
 }
 
 // Helper function to get emoji based on card title
@@ -263,7 +263,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, data, type, valueLabe
                         return (
                             <div
                                 key={userItem.rank}
-                                onClick={() => onUserClick && onUserClick(userItem.user)}
+                                onClick={() => onUserClick && onUserClick(userItem.user, userItem.server_id)}
                                 className={`flex items-center gap-3 py-2 px-3 rounded-lg mb-1 transition-colors ${onUserClick ? 'cursor-pointer hover:bg-cyan-500/10' : 'hover:bg-slate-700/20'}`}
                             >
                                 <span className={`text-base sm:text-2xl font-black ${getRankColor(userItem.rank)} min-w-[24px] sm:min-w-[32px] text-center`}>

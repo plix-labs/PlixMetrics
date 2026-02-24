@@ -27,12 +27,12 @@ export interface UserDetails {
     }[];
 }
 
-export const useUserDetails = (username: string | null, days: number = 30) => {
+export const useUserDetails = (username: string | null, days: number = 30, serverId?: number | string | null) => {
     return useQuery<UserDetails>({
-        queryKey: ['userDetails', username, days],
+        queryKey: ['userDetails', username, days, serverId],
         queryFn: async () => {
             if (!username) throw new Error('No username provided');
-            const response = await statsApi.getUserDetails(username, days);
+            const response = await statsApi.getUserDetails(username, days, serverId);
             return response.data;
         },
         enabled: !!username,

@@ -39,6 +39,16 @@ router.get('/', async (req, res) => {
         // Fetch data from servers in parallel
         await Promise.allSettled(servers.map(async (server) => {
             try {
+                // Fast health check before heavy query
+                try {
+                    await axios.get(`${server.tautulli_url}/api/v2`, {
+                        params: { apikey: server.api_key_secret, cmd: 'get_activity' },
+                        timeout: 1500
+                    });
+                } catch (e) {
+                    return; // Skip if offline or unresponsive
+                }
+
                 const apiParams = { apikey: server.api_key_secret, time_range: days };
 
                 // 1. Hourly Activity

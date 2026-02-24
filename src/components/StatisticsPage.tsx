@@ -28,7 +28,7 @@ export const StatisticsPage: React.FC<StatisticsPageProps> = ({ onAddServer }) =
         return { days: 30, stat_type: 'plays', server_id: 'all' };
     });
 
-    const [selectedUser, setSelectedUser] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<{ username: string, serverId?: number | string } | null>(null);
 
     // Save filters to localStorage whenever they change
     useEffect(() => {
@@ -226,7 +226,7 @@ export const StatisticsPage: React.FC<StatisticsPageProps> = ({ onAddServer }) =
                         valueLabel={filters.stat_type === 'plays' ? t('stats.plays') : 'hh:mm'}
                         enableTelegramShare={true}
                         days={filters.days}
-                        onUserClick={setSelectedUser}
+                        onUserClick={(username, serverId) => setSelectedUser({ username, serverId })}
                     />
                     <StatCard
                         title={t('stats.mostActivePlatforms')}
@@ -247,7 +247,8 @@ export const StatisticsPage: React.FC<StatisticsPageProps> = ({ onAddServer }) =
             {/* User Details Modal */}
             {selectedUser && (
                 <UserDetailsModal
-                    username={selectedUser}
+                    username={selectedUser.username}
+                    serverId={selectedUser.serverId}
                     onClose={() => setSelectedUser(null)}
                 />
             )}

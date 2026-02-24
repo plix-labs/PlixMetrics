@@ -46,6 +46,16 @@ router.get('/', async (req, res) => {
         const results = await Promise.allSettled(
             servers.map(async (server) => {
                 try {
+                    // Fast health check to avoid hanging on offline servers
+                    try {
+                        await axios.get(`${server.tautulli_url}/api/v2`, {
+                            params: { apikey: server.api_key_secret, cmd: 'get_activity' },
+                            timeout: 1500
+                        });
+                    } catch (e) {
+                        return null;
+                    }
+
                     const res = await axios.get(`${server.tautulli_url}/api/v2`, {
                         params: {
                             apikey: server.api_key_secret,
@@ -333,7 +343,12 @@ router.get('/user/:username', async (req, res) => {
         const { username } = req.params;
         const days = req.query.days ? parseInt(req.query.days as string) : 30;
         const decodeUser = decodeURIComponent(username);
-        const servers = getAllServersWithKeys();
+        let servers = getAllServersWithKeys();
+        const serverIdFilter = req.query.server_id as string;
+
+        if (serverIdFilter && serverIdFilter !== 'all' && serverIdFilter !== 'undefined') {
+            servers = servers.filter(s => s.id === parseInt(serverIdFilter, 10));
+        }
 
         if (servers.length === 0) {
             return res.status(404).json({ error: 'No servers configured' });
@@ -356,6 +371,16 @@ router.get('/user/:username', async (req, res) => {
         await Promise.allSettled(
             servers.map(async (server) => {
                 try {
+                    // Fast health check before heavy query
+                    try {
+                        await axios.get(`${server.tautulli_url}/api/v2`, {
+                            params: { apikey: server.api_key_secret, cmd: 'get_activity' },
+                            timeout: 1500
+                        });
+                    } catch (e) {
+                        return; // Skip if offline or unresponsive
+                    }
+
                     // Fetch generic history for user to calculate totals and timeline
                     const apiParams: any = {
                         apikey: server.api_key_secret,

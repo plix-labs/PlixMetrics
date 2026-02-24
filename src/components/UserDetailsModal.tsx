@@ -6,13 +6,14 @@ import { Skeleton } from './ui/Skeleton';
 
 interface UserDetailsModalProps {
     username: string | null;
+    serverId?: number | string | null;
     onClose: () => void;
 }
 
-export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, onClose }) => {
+export const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ username, serverId, onClose }) => {
     const { t } = useTranslation();
     const [days, setDays] = useState(30);
-    const { data: user, isLoading, error } = useUserDetails(username, days);
+    const { data: user, isLoading, error } = useUserDetails(username, days, serverId);
 
     if (!username) return null;
 

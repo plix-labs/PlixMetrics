@@ -34,7 +34,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({ onAddServer }) => {
     const { t } = useTranslation();
     const { servers, loading: serversLoading } = useServers();
     const [selectedServerId, setSelectedServerId] = useState<string>(''); // Empty initially
-    const [selectedUser, setSelectedUser] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<{ username: string, serverId?: number | string } | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [columns, setColumns] = useState<ColumnConfig[]>(DEFAULT_COLUMNS);
     const [showColumnSelector, setShowColumnSelector] = useState(false);
@@ -347,7 +347,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({ onAddServer }) => {
                                         {columns.find(c => c.id === 'username')?.visible && (
                                             <td
                                                 className="px-3 py-2 font-medium text-white whitespace-nowrap flex items-center gap-3 cursor-pointer hover:bg-slate-700/50 transition-colors group"
-                                                onClick={() => setSelectedUser(user.username || user.friendly_name || user.email)}
+                                                onClick={() => setSelectedUser({ username: user.username || user.friendly_name || user.email, serverId: user.server_id })}
                                             >
                                                 <div className="flex flex-col">
                                                     <span className="font-semibold text-sm group-hover:text-cyan-400 transition-colors">{user.friendly_name || user.username}</span>
@@ -437,7 +437,8 @@ export const UsersPage: React.FC<UsersPageProps> = ({ onAddServer }) => {
             {/* User Details Modal */}
             {selectedUser && (
                 <UserDetailsModal
-                    username={selectedUser}
+                    username={selectedUser.username}
+                    serverId={selectedUser.serverId}
                     onClose={() => setSelectedUser(null)}
                 />
             )}
