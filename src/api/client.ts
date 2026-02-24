@@ -17,7 +17,8 @@ export const serversApi = {
         api.post('/api/servers', data),
     update: (id: number, data: { name: string; tautulli_url: string; api_key: string }) =>
         api.put(`/api/servers/${id}`, data),
-    delete: (id: number) => api.delete(`/api/servers/${id}`)
+    delete: (id: number) => api.delete(`/api/servers/${id}`),
+    checkStatus: (id: number) => api.get(`/api/servers/${id}/status`)
 };
 
 // Network API

@@ -130,6 +130,33 @@ router.delete('/:id', (req, res) => {
     }
 });
 
+/**
+ * GET /api/servers/:id/status - Check a server's connection
+ */
+router.get('/:id/status', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const stmt = db.prepare('SELECT tautulli_url, api_key_secret FROM servers WHERE id = ?');
+        const server = stmt.get(id) as PlexServer | undefined;
+
+        if (!server) {
+            return res.status(404).json({ error: 'Server not found' });
+        }
+
+        const response = await axios.get(`${server.tautulli_url}/api/v2`, {
+            params: { apikey: server.api_key_secret, cmd: 'get_activity' },
+            timeout: 5000
+        });
+
+        if (response.data.response.result === 'success') {
+            res.json({ status: 'online' });
+        } else {
+            res.json({ status: 'offline' });
+        }
+    } catch (error) {
+        res.json({ status: 'offline' });
+    }
+});
 
 
 /**
