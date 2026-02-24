@@ -11,7 +11,9 @@ router.get('/status', (req, res) => {
 
     // Check if requester is local
     const ip = req.ip || req.connection.remoteAddress || '';
-    const isLocal = ip === '::1' || ip === '127.0.0.1' || ip.endsWith('127.0.0.1');
+    const isProxied = Boolean(req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.headers['forwarded']);
+    const isLocalIp = ip === '::1' || ip === '127.0.0.1' || ip.endsWith('127.0.0.1');
+    const isLocal = isLocalIp && !isProxied;
 
     // Check token validity if provided (just for informational purposes in this endpoint)
     let authenticated = isLocal; // Local is inherently authenticated for access, but UI might want to know if *token* is valid too.

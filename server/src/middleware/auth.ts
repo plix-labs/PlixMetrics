@@ -16,8 +16,14 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     // 1. Check for Localhost (Direct Bypass)
     const ip = req.ip || req.connection.remoteAddress || '';
 
+    // Prevents bypass if the app is behind a local reverse proxy (e.g. NGINX on same machine)
+    // or if an attacker tries to spoof X-Forwarded-For headers.
+    const isProxied = Boolean(req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.headers['forwarded']);
+
     // Normalize IP
-    const isLocal = ip === '::1' || ip === '127.0.0.1' || ip.endsWith('127.0.0.1');
+    const isLocalIp = ip === '::1' || ip === '127.0.0.1' || ip.endsWith('127.0.0.1');
+
+    const isLocal = isLocalIp && !isProxied;
 
     req.isLocal = isLocal;
 
