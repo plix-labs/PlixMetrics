@@ -39,7 +39,7 @@ router.get('/status', async (req, res) => {
                     // Fetch Activity (Always fresh)
                     const activityRes = await axios.get(`${server.tautulli_url}/api/v2`, {
                         params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                        timeout: 1500
+                        timeout: 5000
                     });
 
                     if (activityRes.data.response.result !== 'success') return null;
@@ -51,11 +51,11 @@ router.get('/status', async (req, res) => {
                         const [hRes, uRes] = await Promise.all([
                             axios.get(`${server.tautulli_url}/api/v2`, {
                                 params: { apikey: server.api_key_secret, cmd: 'get_home_stats' },
-                                timeout: 1500
+                                timeout: 5000
                             }),
                             axios.get(`${server.tautulli_url}/api/v2`, {
                                 params: { apikey: server.api_key_secret, cmd: 'get_users' },
-                                timeout: 1500
+                                timeout: 5000
                             })
                         ]);
                         homeStats = hRes.data.response.data;
@@ -234,7 +234,7 @@ router.get('/sessions', async (req, res) => {
                 try {
                     const activityRes = await axios.get(`${server.tautulli_url}/api/v2`, {
                         params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                        timeout: 1500
+                        timeout: 5000
                     });
 
                     if (activityRes.data.response.result !== 'success') return null;

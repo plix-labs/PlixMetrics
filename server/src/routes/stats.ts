@@ -50,8 +50,8 @@ router.get('/', async (req, res) => {
                     // Fast health check to avoid hanging on offline servers
                     try {
                         await axios.get(`${server.tautulli_url}/api/v2`, {
-                            params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                            timeout: 1500
+                            params: { apikey: server.api_key_secret, cmd: 'status' },
+                            timeout: 2000
                         });
                     } catch (e) {
                         return null;
@@ -375,8 +375,8 @@ router.get('/user/:username', async (req, res) => {
                     // Fast health check before heavy query
                     try {
                         await axios.get(`${server.tautulli_url}/api/v2`, {
-                            params: { apikey: server.api_key_secret, cmd: 'get_activity' },
-                            timeout: 1500
+                            params: { apikey: server.api_key_secret, cmd: 'status' },
+                            timeout: 2000
                         });
                     } catch (e) {
                         return; // Skip if offline or unresponsive
