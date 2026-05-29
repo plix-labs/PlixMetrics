@@ -147,7 +147,8 @@ router.get('/status', async (req, res) => {
         const allSessions: ActiveSession[] = [];
         const newGeoCache: Array<{ ip: string; lat: number; lon: number; city?: string; country?: string }> = [];
 
-        for (const item of sessionData) {
+        for (let idx = 0; idx < sessionData.length; idx++) {
+            const item = sessionData[idx];
             let { lat, lon } = item;
             const { session, serverData, sessionBandwidth, ipToLookup } = item;
 
@@ -166,8 +167,11 @@ router.get('/status', async (req, res) => {
                 }
             }
 
+            // session_key is unique per active stream; session_id is empty for direct play
+            // streams, so falling back to it alone caused colliding React keys (and dropped cards).
+            const uniqueKey = session.session_key || session.session_id || idx;
             allSessions.push({
-                session_id: `${serverData.server_id}-${session.session_id}`,
+                session_id: `${serverData.server_id}-${uniqueKey}`,
                 title: session.full_title || session.title,
                 user: session.user || session.username,
                 player: session.player,
@@ -290,7 +294,8 @@ router.get('/sessions', async (req, res) => {
         const allSessions: ActiveSession[] = [];
         const newGeoCache: Array<{ ip: string; lat: number; lon: number; city?: string; country?: string }> = [];
 
-        for (const item of sessionData) {
+        for (let idx = 0; idx < sessionData.length; idx++) {
+            const item = sessionData[idx];
             let { lat, lon } = item;
             const { session, serverData, sessionBandwidth, ipToLookup } = item;
 
@@ -309,8 +314,11 @@ router.get('/sessions', async (req, res) => {
                 }
             }
 
+            // session_key is unique per active stream; session_id is empty for direct play
+            // streams, so falling back to it alone caused colliding React keys (and dropped cards).
+            const uniqueKey = session.session_key || session.session_id || idx;
             allSessions.push({
-                session_id: `${serverData.server_id}-${session.session_id}`,
+                session_id: `${serverData.server_id}-${uniqueKey}`,
                 title: session.full_title || session.title,
                 user: session.user || session.username,
                 player: session.player,
