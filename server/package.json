@@ -1,6 +1,6 @@
 {
     "name": "plixmetrics-server",
-    "version": "1.4.6",
+    "version": "1.4.7",
     "description": "PlixMetrics self-hosted backend",
     "main": "dist/index.js",
     "type": "module",
