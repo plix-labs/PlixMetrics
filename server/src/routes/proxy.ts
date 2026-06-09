@@ -29,8 +29,129 @@ try {
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB safety cap per image
 
+interface ImageCandidate {
+    label: string;
+    url: string;
+}
+
+interface ImageFetchResult {
+    buffer: Buffer;
+    contentType: string;
+}
+
 function safeUnlink(filePath: string): void {
     fs.unlink(filePath, () => { /* ignore */ });
+}
+
+function normalizePlexImagePath(img: string): string {
+    const trimmed = img.trim();
+
+    try {
+        const parsed = new URL(trimmed);
+        if (parsed.pathname.startsWith('/library/metadata/')) {
+            parsed.searchParams.delete('X-Plex-Token');
+            parsed.searchParams.delete('X-Plex-Token'.toLowerCase());
+            return `${parsed.pathname}${parsed.search}`;
+        }
+    } catch {
+        // Not an absolute URL; use it as-is.
+    }
+
+    return trimmed;
+}
+
+function getImageFallback(img: string): string {
+    const lowerImg = img.toLowerCase();
+    if (lowerImg.includes('/art/')) return 'art';
+    if (lowerImg.includes('user')) return 'user';
+    return 'poster';
+}
+
+function getRatingKeyFromImagePath(img: string): string | null {
+    const match = img.match(/\/library\/metadata\/(\d+)(?:\/|$)/);
+    return match?.[1] || null;
+}
+
+function appendImageProxyParams(
+    params: URLSearchParams,
+    options: { img?: string; ratingKey?: string; width?: unknown; height?: unknown; fallback: string }
+): void {
+    if (options.img) params.append('img', options.img);
+    if (options.ratingKey) params.append('rating_key', options.ratingKey);
+    params.append('width', String(options.width || 300));
+    params.append('height', String(options.height || 300));
+    params.append('fallback', options.fallback);
+    params.append('img_format', 'jpg');
+}
+
+function buildImageCandidates(
+    server: PlexServer,
+    img: string,
+    width: unknown,
+    height: unknown
+): ImageCandidate[] {
+    const normalizedImg = normalizePlexImagePath(img);
+    const fallback = getImageFallback(normalizedImg);
+    const ratingKey = getRatingKeyFromImagePath(normalizedImg);
+    const candidates: ImageCandidate[] = [];
+
+    const apiImgParams = new URLSearchParams();
+    apiImgParams.append('apikey', server.api_key_secret);
+    apiImgParams.append('cmd', 'pms_image_proxy');
+    appendImageProxyParams(apiImgParams, { img: normalizedImg, width, height, fallback });
+    candidates.push({
+        label: 'api-img',
+        url: `${server.tautulli_url}/api/v2?${apiImgParams.toString()}`
+    });
+
+    const directImgParams = new URLSearchParams();
+    appendImageProxyParams(directImgParams, { img: normalizedImg, width, height, fallback });
+    directImgParams.append('apikey', server.api_key_secret);
+    candidates.push({
+        label: 'direct-img',
+        url: `${server.tautulli_url}/pms_image_proxy?${directImgParams.toString()}`
+    });
+
+    if (ratingKey) {
+        const apiRatingParams = new URLSearchParams();
+        apiRatingParams.append('apikey', server.api_key_secret);
+        apiRatingParams.append('cmd', 'pms_image_proxy');
+        appendImageProxyParams(apiRatingParams, { ratingKey, width, height, fallback });
+        candidates.push({
+            label: 'api-rating-key',
+            url: `${server.tautulli_url}/api/v2?${apiRatingParams.toString()}`
+        });
+
+        const directRatingParams = new URLSearchParams();
+        appendImageProxyParams(directRatingParams, { ratingKey, width, height, fallback });
+        directRatingParams.append('apikey', server.api_key_secret);
+        candidates.push({
+            label: 'direct-rating-key',
+            url: `${server.tautulli_url}/pms_image_proxy?${directRatingParams.toString()}`
+        });
+    }
+
+    return candidates;
+}
+
+async function fetchImageCandidate(candidate: ImageCandidate): Promise<ImageFetchResult> {
+    const response = await axios.get<ArrayBuffer>(candidate.url, {
+        responseType: 'arraybuffer',
+        timeout: 15000,
+        headers: { 'User-Agent': 'PlixMetrics/1.0' },
+        validateStatus: (status) => status < 400,
+        maxContentLength: MAX_IMAGE_SIZE,
+        maxBodyLength: MAX_IMAGE_SIZE
+    });
+
+    const buffer = Buffer.from(response.data);
+    const contentType = String(response.headers['content-type'] || '').split(';')[0].trim().toLowerCase();
+
+    if (!contentType.startsWith('image/') || buffer.length === 0) {
+        throw new Error(`${candidate.label} returned ${contentType || 'unknown content type'} (${buffer.length} bytes)`);
+    }
+
+    return { buffer, contentType };
 }
 
 /**
@@ -79,33 +200,31 @@ router.get('/image', async (req: Request, res: Response) => {
             return res.status(404).send('Server not found');
         }
 
-        const params = new URLSearchParams();
-        params.append('img', String(img));
-        params.append('width', String(width || 300));
-        params.append('height', String(height || 300));
-        params.append('apikey', server.api_key_secret);
-        params.append('fallback', 'poster');
-
-        const targetUrl = `${server.tautulli_url}/pms_image_proxy?${params.toString()}`;
-
         // Buffer the full image in memory. This decouples the cache write from
         // the client connection: the browser can abort lazy-loaded image requests
         // (which it does aggressively during scroll) without leaving partial files
         // on disk and without races between the response stream and the file writer.
         // Poster artwork from Plex is typically 50-200 KB; 10 MB is a safety cap.
-        const response = await axios.get<ArrayBuffer>(targetUrl, {
-            responseType: 'arraybuffer',
-            timeout: 15000,
-            headers: { 'User-Agent': 'PlixMetrics/1.0' },
-            validateStatus: (status) => status < 400,
-            maxContentLength: MAX_IMAGE_SIZE,
-            maxBodyLength: MAX_IMAGE_SIZE
-        });
+        const candidates = buildImageCandidates(server, String(img), width, height);
+        const errors: string[] = [];
+        let image: ImageFetchResult | null = null;
 
-        const buffer = Buffer.from(response.data);
-        const upstreamType = String(response.headers['content-type'] || '');
+        for (const candidate of candidates) {
+            try {
+                image = await fetchImageCandidate(candidate);
+                break;
+            } catch (candidateError: any) {
+                errors.push(candidateError.message || String(candidateError));
+            }
+        }
 
-        if (upstreamType) res.set('Content-Type', upstreamType);
+        if (!image) {
+            throw new Error(`All image proxy candidates failed: ${errors.join(' | ')}`);
+        }
+
+        const { buffer, contentType } = image;
+
+        res.set('Content-Type', contentType);
         res.set('Cache-Control', 'public, max-age=604800, immutable');
         res.set('X-Cache-Status', 'MISS');
 
@@ -114,7 +233,7 @@ router.get('/image', async (req: Request, res: Response) => {
 
         // Persist to cache atomically (write to .tmp then rename), only if upstream
         // actually returned an image and we have bytes.
-        if (upstreamType.startsWith('image/') && buffer.length > 0) {
+        if (contentType.startsWith('image/') && buffer.length > 0) {
             const tmpPath = `${cacheFilePath}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
             fs.writeFile(tmpPath, buffer, (err) => {
                 if (err) {
